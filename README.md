@@ -1,3 +1,8 @@
+[![CI DepAC](https://github.com/rivm-syso/DepAC/actions/workflows/ci_depac.yml/badge.svg)](https://github.com/rivm-syso/DepAC/actions/workflows/ci_depac.yml)
+![Static Badge](https://img.shields.io/badge/coverage-100%25-green)
+![GitHub Tag](https://img.shields.io/github/v/tag/rivm-syso/DepAC)
+![Release Date](https://img.shields.io/badge/release-2026--03--11-blue)
+
 # DepAC: Deposition of Airborne Compounds
 
 DepAC (Deposition of Airborne Compounds) is a scientific Fortran library and toolkit for modeling atmospheric deposition processes. Developed by RIVM, DepAC provides robust routines for calculating dry deposition velocities, resistances, conductances, and compensation points for a specific set of chemical species and land use types.
@@ -74,7 +79,7 @@ A coverage report will be generated in the `coverage_html` folder. Open `coverag
 > ```
 
 # Version History
-- 1.4.0 First releasable version of DepAC with 100% code coverage and working CI/CD implementation. This version is compatible with the new DepAC module in OPS_LT.
+- 1.4.0 First releasable version of DepAC with 100% code coverage and working CI/CD implementation. This version is compatible with the new DepAC module in OPS_LT. (release date: 2026-03-11)
 - 1.3.2 Significant performace improvements by using indices comparisons instead of string comparisons in determining component types and land use types.
 - 1.3.1 Added better documentation and comments to the code with publications where missing.
 - 1.3.0 The newest version which is working with OPS_LT for the implementation of the new DepAC module in OPS_LT.
