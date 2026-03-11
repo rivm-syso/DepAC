@@ -1,0 +1,66 @@
+name: CI DepAC
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: depac.yml
+          activate-environment: depac
+          auto-activate-base: false
+          use-only-tar-bz2: false
+      - name: Install fortitude-lint
+        run: pip install fortitude-lint
+      - name: Run Fortitude style checker
+        run: fortitude check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: depac.yml
+          activate-environment: depac
+          auto-activate-base: false
+          use-only-tar-bz2: false
+      - name: Build with fpm
+        shell: bash -el {0}
+        run: |
+          fpm --version
+          fpm build
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: depac.yml
+          activate-environment: depac
+          auto-activate-base: false
+          use-only-tar-bz2: false
+      - name: Run tests
+        shell: bash -el {0}
+        run: fpm test
