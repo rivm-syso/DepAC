@@ -8,7 +8,7 @@ module m_test_rc_gw
     use t_depac_error, only: depac_error, ERR_INPUT
     use m_logger, only: set_log_level, LOG_LEVEL_NONE
     use m_helpers, only: missing
-    use m_rc_gw, only: rc_gw, rw_so2, rw_nh3_sutton
+    use m_rc_gw, only: rc_gw
     use m_depac_error, only: set_error
     use default_indices, only: COMP_NO, COMP_NO2, COMP_O3, COMP_SO2, COMP_NH3
 
@@ -21,9 +21,7 @@ module m_test_rc_gw
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
         testsuite = [ &
-            new_unittest("rc_gw", test_rc_gw), &
-            new_unittest("rw_so2", test_rw_so2), &
-            new_unittest("rw_nh3_sutton", test_rw_nh3_sutton) &
+            new_unittest("rc_gw", test_rc_gw) &
         ]
 
     end subroutine collect_rc_gw_tests

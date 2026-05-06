@@ -58,9 +58,15 @@ module t_depac_land_use
     type :: depac_land_use
         character(len=40) :: name
         integer :: index = -999
+
+        ! required for NH3 compensation point calculation
         real :: gamma_stom_c_fac = -999.0
         real :: gamma_soil_c_fac = -999.0
+
+        ! soil resistance if parameterisation requires it.
         real :: rsoil = -999.0
+        ! function paths
+
         type(depac_stomatal_params) :: stom_par
         type(depac_rc_r_params) :: rc_rinc
     end type depac_land_use
