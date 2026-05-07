@@ -15,11 +15,13 @@ module t_depac_component
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_config, only: depac_config
    use t_depac_error, only: depac_error
+   use t_depac_land_use, only: depac_land_use
+   
 
    implicit none (type, external)
 
    private
-   public :: depac_component, gw_parameterisation
+   public :: depac_component, gw_parameterisation, gstom_parameterisation
 
 
    
@@ -43,6 +45,7 @@ module t_depac_component
       real :: rsoil_frozen = -999.0
       real :: rsoil_wet = -999.0
       procedure(gw_parameterisation), pointer, nopass :: gw_param => null()
+      procedure(gstom_parameterisation), pointer, nopass :: gstom_param => null()
    end type depac_component
 
    abstract interface
@@ -56,6 +59,18 @@ module t_depac_component
 
          real :: gw
       end function gw_parameterisation
+
+      function gstom_parameterisation(comp, lu_conf, meteo, dp_conf, err) result(gstom)
+         import :: depac_component, depac_land_use, depac_meteorology, depac_config, depac_error
+
+         type(depac_component), intent(in) :: comp
+         type(depac_land_use), intent(in) :: lu_conf
+         type(depac_meteorology), intent(in) :: meteo
+         type(depac_config), intent(in) :: dp_conf
+         type(depac_error), intent(inout) :: err
+
+         real :: gstom
+      end function gstom_parameterisation
    end interface
    
 end module t_depac_component

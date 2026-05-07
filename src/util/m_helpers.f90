@@ -17,13 +17,13 @@ module m_helpers
 contains
 
       ! Add helper functions or subroutines here as needed
-      logical function missing_real(x)
+      pure logical function missing_real(x)
          real, intent(in) :: x
          real, parameter :: EPS = 1.0e-5
          missing_real = (abs(x + 999.) <= EPS)
       end function missing_real
 
-      logical function missing_int(x)
+      pure logical function missing_int(x)
          integer, intent(in) :: x
          missing_int = (x == -999)
       end function missing_int

@@ -17,7 +17,7 @@ module default_depac_config_rivm
    
 
    use m_gw_param, only: gw_default, gw_so2, gw_nh3_sutton
-
+   use m_gstom_param, only: gstom_default, gstom_emberson
 
 
 
@@ -233,7 +233,8 @@ contains
             ipar_snow = 2, &
             rsoil_frozen = 1000.0, &
             rsoil_wet = 10.0, &
-            gw_param = gw_nh3_sutton), &
+            gw_param = gw_nh3_sutton, &
+            gstom_param = gstom_emberson), &
          make_component( &
             name = 'O3', &
             index = COMP_O3, &
@@ -242,7 +243,8 @@ contains
             ipar_snow = 1, &
             rsoil_frozen = 2000.0, &
             rsoil_wet = 2000.0, &
-            gw_param = gw_so2), &
+            gw_param = gw_so2, &
+            gstom_param = gstom_emberson), &
          make_component( &
             name = 'SO2', &
             index = COMP_SO2, &
@@ -250,7 +252,8 @@ contains
             rw_val = -999.0, &
             ipar_snow = 2, &
             rsoil_frozen = 500.0, &
-            rsoil_wet = 10.0), &
+            rsoil_wet = 10.0, &
+            gstom_param = gstom_emberson), &
          make_component( &
             name = 'NO2', &
             index = COMP_NO2, &
@@ -258,7 +261,8 @@ contains
             rw_val = 2000.0, &
             ipar_snow = 1, &
             rsoil_frozen = 2000.0, &
-            rsoil_wet = 2000.0), &
+            rsoil_wet = 2000.0, &
+            gstom_param = gstom_emberson), &
          make_component( &
             name = 'NO', &
             index = COMP_NO, &

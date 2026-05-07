@@ -11,6 +11,10 @@
 !------------------------------------------------------------------------------
 
 module t_depac_land_use
+    use t_depac_meteorology, only: depac_meteorology
+    use t_depac_config, only: depac_config
+    ! use i_gstom_parameterisation, only: gstom_parameterisation
+
     implicit none (type, external)
     public
     !> Type representing stomatal conductance parameters.
@@ -25,6 +29,7 @@ module t_depac_land_use
     !! - vpd_min: Lower VPD limit for stomatal conductance reduction (default -999.0).
     !! Note: The default values (-999.0) indicate missing or undefined data.
     type :: depac_stomatal_params
+        ! procedure(gstom_parameterisation), pointer, nopass :: gstom_param => null() ! gstom parameterisation function pointer for this land use type
         real :: F_min = -999.0
         real :: alpha = -999.0
         real :: Topt = -999.0
@@ -43,6 +48,8 @@ module t_depac_land_use
     type :: depac_rc_r_params
         integer :: b = -999
         integer :: h = -999
+
+        procedure(rinc_parameterisation), pointer, nopass :: rinc_param => null()
     end type depac_rc_r_params
 
     !> Type representing land use parameters for DEPAC calculations.
@@ -65,11 +72,36 @@ module t_depac_land_use
 
         ! soil resistance if parameterisation requires it.
         real :: rsoil = -999.0
+
+        procedure(gsoil_parameterisation), pointer, nopass :: gsoil_param => null() ! gsoil parameterisation function pointer for this land use type
+
         ! function paths
 
         type(depac_stomatal_params) :: stom_par
         type(depac_rc_r_params) :: rc_rinc
     end type depac_land_use
 
-    contains
+    abstract interface
+        pure function rinc_parameterisation(rc_rinc, meteo, dp_conf) result(rinc)
+            import :: depac_rc_r_params, depac_meteorology, depac_config
+
+            type(depac_rc_r_params), intent(in) :: rc_rinc
+            type(depac_meteorology), intent(in) :: meteo
+            type(depac_config), intent(in) :: dp_conf
+
+            real :: rinc
+        end function rinc_parameterisation
+
+        pure function gsoil_parameterisation(lu_conf, meteo, dp_conf) result(gsoil)
+            import :: depac_land_use, depac_meteorology, depac_config
+
+            type(depac_land_use), intent(in) :: lu_conf
+            type(depac_meteorology), intent(in) :: meteo
+            type(depac_config), intent(in) :: dp_conf
+
+            real :: gsoil
+        end function gsoil_parameterisation
+
+    end interface 
+
 end module t_depac_land_use
