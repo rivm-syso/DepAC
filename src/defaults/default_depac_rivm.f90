@@ -20,7 +20,7 @@ module default_depac_config_rivm
    use m_gstom_param, only: gstom_default, gstom_emberson
    use m_comp_point_param, only: comp_point_ammonia, csoil_default
    use m_gsoil_param, only:  rinc_no_resistance, rinc_default, rinc_no_path
-
+   use m_rc_special_param, only: t_rc_tot_nitric_acid, t_rc_tot_nitric_oxide, t_rc_tot_fixed
 
 
    use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
@@ -47,7 +47,7 @@ module default_depac_config_rivm
 
    real, dimension(9, 6) :: default_rsoil_matrix
    type(depac_land_use), dimension(9,6), public :: default_land_use_matrix
-
+   type(depac_component), dimension(9,6), public :: default_component_matrix
    public
 
 contains
@@ -119,7 +119,8 @@ contains
          rw_val = -999.0, &
          ipar_snow = 1, &
          rsoil_frozen = -999.0, &
-         rsoil_wet = -999.0), &
+         rsoil_wet = -999.0, &
+         rc_special = t_rc_tot_nitric_oxide()), &
          make_component( &
          name = 'HNO3', &
          index = COMP_HNO3, &
@@ -127,7 +128,8 @@ contains
          rw_val = -999.0, &
          ipar_snow = -999, &
          rsoil_frozen = -999.0, &
-         rsoil_wet = -999.0) &
+         rsoil_wet = -999.0, &
+         rc_special = t_rc_tot_nitric_acid()) &
          ]
 
       allocate(default_landuse_types(9))
@@ -302,6 +304,18 @@ contains
          do j = 1, 6
             default_land_use_matrix(i, j) = default_landuse_types(i)
             default_land_use_matrix(i, j)%rsoil = default_rsoil_matrix(i, j)
+         end do
+      end do
+
+      ! Initialize the default_component_matrix with the default component types
+      do i = 1, 9
+         do j = 1, 6
+            default_component_matrix(i, j) = default_component_types(j)
+
+            ! we use a fixed total canopy resistance of 2000 s/m for NO on water and wet surfaces
+            if (default_component_matrix(i, j)%index == COMP_NO .and. default_land_use_matrix(i, j)%index == LU_WATER) then
+               default_component_matrix(i, j)%rc_special = t_rc_tot_fixed()
+            end if
          end do
       end do
 

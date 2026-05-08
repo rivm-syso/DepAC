@@ -15,7 +15,7 @@
 !------------------------------------------------------------------------------
 module m_rc_snow
     use t_depac_meteorology, only: depac_meteorology
-    use t_depac_component, only: depac_component
+    use t_depac_component_core, only: depac_component_core
     use t_depac_config, only: depac_config
     use t_depac_output, only: depac_output
     use m_logger, only: log_info, log_error
@@ -23,7 +23,8 @@ module m_rc_snow
     use m_depac_error, only: set_error
 
     implicit none (type, external)
-    public
+    private
+    public :: rc_snow
 contains
     !------------------------------------------------------------------------------
     ! Subroutine: rc_snow
@@ -41,12 +42,10 @@ contains
     !------------------------------------------------------------------------------
     subroutine rc_snow(meteo, comp, dp_conf, dp_out, err)
         type(depac_meteorology), intent(in) :: meteo       ! meteorology
-        type(depac_component), intent(in) :: comp          ! current computed component
+        class(depac_component_core), intent(in) :: comp          ! current computed component
         type(depac_config), intent(in) :: dp_conf    ! depac config
         type(depac_output), intent(inout) :: dp_out  ! output of this run
         type(depac_error), intent(inout) :: err      ! error handling
-
-        call log_info('Entering rc_snow for component: '//trim(comp%name))
 
         ! Choose parameterisation with constant or temperature dependent parameterisation:
         if (comp%ipar_snow == 1) then

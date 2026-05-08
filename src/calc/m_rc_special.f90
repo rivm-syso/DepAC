@@ -39,48 +39,8 @@ module m_rc_special
         logical, intent(out) :: ready               ! readiness flag
         type(depac_error), intent(inout) :: err ! error handling
         ready = .false.
-        select case(comp%index)
-
-        case(COMP_HNO3)
-        ! No separate resistances for HNO3; just one total canopy resistance:
-        if (meteo%t < -5.0 .and. meteo%nwet == 9) then
-            ! T < 5 C and snow:
-            dp_out%rc_tot = 50.
-        else
-            ! all other circumstances:
-            dp_out%rc_tot = 10.0
-        endif
-        ready = .true.
-
-        case(COMP_NO)
-            if (lu%index == LU_WATER) then ! water
-                dp_out%rc_tot = 2000.
-                ready = .true.
-            elseif (meteo%nwet == 1) then ! wet
-                dp_out%rc_tot = 2000.
-                ready = .true.
-
-            elseif (meteo%nwet == 9) then ! snow
-                call log_info("Calculating special rc for NO on snow surface.")
-                call rc_snow(meteo, comp, dp_conf, dp_out, err)
-                ready = .true.
-            endif
-
-        case(COMP_NO2, COMP_O3, COMP_SO2, COMP_NH3)
-        ! snow surface:
-        if (meteo%nwet== 9) then
-            call log_info("Calculating special rc for "//trim(comp%name)//" on snow surface.")
-
-            call rc_snow(meteo, comp, dp_conf, dp_out, err)
-            ready = .true.
-        endif
-
-        case default
-        call set_error(err, ERR_INPUT, &
-          "Component "//trim(lu%name)//" not supported in rc_special.")
-        call log_error("Component "//trim(lu%name)//" not supported in rc_special.")
-        return
-        end select
+        
+        call comp%rc_special%apply(meteo, comp, dp_conf, dp_out, err, ready)
     end subroutine rc_special
 
 end module m_rc_special

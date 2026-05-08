@@ -19,11 +19,12 @@ module t_depac_component
    use t_depac_land_use_core, only: depac_land_use_core
    use t_depac_land_use, only: depac_stomatal_params, depac_land_use
    use t_depac_output, only: depac_output
+
    implicit none (type, external)
 
    private
    public :: depac_component, gw_parameterisation, &
-      gstom_parameterisation, comp_point_parameterisation
+      gstom_parameterisation, comp_point_parameterisation, t_rc_special
 
 
    ! The main component type that includes parameterisation function pointers for gw and gstom.
@@ -31,7 +32,33 @@ module t_depac_component
       procedure(gw_parameterisation), pointer, nopass :: gw_param => null()
       procedure(gstom_parameterisation), pointer, nopass :: gstom_param => null()
       procedure(comp_point_parameterisation), pointer, nopass :: comp_point_param => null()
+      class(t_rc_special), allocatable :: rc_special
    end type depac_component
+
+
+    type, abstract :: t_rc_special
+    contains
+        procedure(rc_special_interface), deferred :: apply
+    end type t_rc_special
+
+    abstract interface
+        subroutine rc_special_interface(this, meteo, comp, dp_conf, dp_out, err, ready)
+            import :: t_rc_special
+            import :: depac_meteorology
+            import :: depac_component_core
+            import :: depac_config
+            import :: depac_output
+            import :: depac_error
+            implicit none (type, external)
+            class(t_rc_special), intent(in) :: this
+            type(depac_meteorology), intent(in) :: meteo
+            class(depac_component_core), intent(in) :: comp
+            type(depac_config), intent(in) :: dp_conf
+            type(depac_output), intent(inout) :: dp_out
+            type(depac_error), intent(inout) :: err
+            logical, intent(inout) :: ready
+        end subroutine rc_special_interface
+    end interface
 
 
    abstract interface

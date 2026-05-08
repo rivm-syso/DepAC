@@ -6,9 +6,9 @@ module m_depac_factory
    use m_gstom_param, only: gstom_default
    use m_gw_param, only: gw_default
    use m_gsoil_param, only: gsoil_default, rinc_no_resistance, rinc_default
-
+   use m_rc_special_param, only: t_rc_tot_fixed
    use t_depac_component, only: depac_component, gw_parameterisation, gstom_parameterisation, &
-      comp_point_parameterisation
+      comp_point_parameterisation, t_rc_special
 
    use m_comp_point_param, only: comp_point_default, csoil_default
 
@@ -19,7 +19,7 @@ module m_depac_factory
 contains
 
    function make_component(name, index, diffc, rw_val, ipar_snow, rsoil_frozen, rsoil_wet, &
-         gw_param, gstom_param, comp_point_param) result(comp)
+         gw_param, gstom_param, comp_point_param, rc_special) result(comp)
       character(len=*), intent(in) :: name
       integer, intent(in) :: index
       real, intent(in) :: diffc
@@ -30,6 +30,7 @@ contains
       procedure(gw_parameterisation), pointer, optional :: gw_param
       procedure(gstom_parameterisation), pointer, optional :: gstom_param
       procedure(comp_point_parameterisation), pointer, optional :: comp_point_param
+      class(t_rc_special), intent(in), optional :: rc_special
 
       type(depac_component) :: comp
 
@@ -57,6 +58,12 @@ contains
          comp%comp_point_param => comp_point_param
       else
          comp%comp_point_param => comp_point_default
+      end if
+
+      if (present(rc_special)) then
+         allocate(comp%rc_special, source=rc_special)
+      else
+         allocate(comp%rc_special, source=t_rc_tot_fixed()) 
       end if
 
    end function make_component
