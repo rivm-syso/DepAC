@@ -44,14 +44,8 @@ contains
         type(depac_output),   intent(inout) :: dp_out    ! depac output
         type(depac_error),    intent(inout) :: err       ! error handling
 
-        ! ! Check if the component has a gstom parameterisation
-        ! if (.not. associated(comp%gstom_param)) then
-        !     call set_error(err, ERR_INPUT, 'gstom_param not associated for component '//trim(comp%name))
-        !     call log_error('gstom_param not associated for component '//trim(comp%name))
-        !     return
-        ! end if
 
-        ! dp_out%gstom = comp%gstom_param(comp, lu_conf, meteo, dp_conf, err)
+        dp_out%gstom = comp%gstom_param%apply(comp, lu_conf%stom_par, meteo, dp_conf)
 
     end subroutine rc_gstom
 

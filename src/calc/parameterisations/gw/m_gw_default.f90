@@ -1,5 +1,7 @@
 module m_gw_default
    use t_depac_component_core, only: depac_component_core
+
+   use t_depac_component, only: t_gw_parameterisation
    use t_depac_config, only: depac_config
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_error, only: depac_error
@@ -8,8 +10,14 @@ module m_gw_default
    implicit none (type, external)
    private
    public :: gw_default
+
+   type, extends(t_gw_parameterisation) :: gw_default
+   contains
+      procedure :: apply => gw_default_apply
+   end type gw_default
 contains
-   function gw_default(meteo, comp, dp_conf, err) result(gw)
+   function gw_default_apply(this,meteo, comp, dp_conf, err) result(gw)
+      class(gw_default), intent(in) :: this
       type(depac_meteorology), intent(in) :: meteo
       class(depac_component_core), intent(in) :: comp
       type(depac_config), intent(in) :: dp_conf
@@ -32,5 +40,5 @@ contains
       endif
 
 
-   end function gw_default
+   end function gw_default_apply
 end module m_gw_default

@@ -1,5 +1,5 @@
 module m_gsoil_default
-   use t_depac_land_use, only: depac_land_use
+   use t_depac_land_use, only: depac_land_use, t_gsoil_parameterisation
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_component_core, only: depac_component_core
    use t_depac_config, only: depac_config
@@ -7,8 +7,14 @@ module m_gsoil_default
    implicit none (type, external)
    private
    public :: gsoil_default
+
+   type, extends(t_gsoil_parameterisation) :: gsoil_default
+   contains
+      procedure :: apply => gsoil_default_apply
+   end type gsoil_default
 contains
-   pure function gsoil_default(lu_conf, comp, meteo, dp_conf) result(gsoil)
+   pure function gsoil_default_apply(this, lu_conf, comp, meteo, dp_conf) result(gsoil)
+      class(gsoil_default), intent(in) :: this
       type(depac_land_use), intent(in)  :: lu_conf   ! current computed land-use type
       class(depac_component_core), intent(in) :: comp     ! current computed component
       type(depac_meteorology), intent(in) :: meteo   ! current computed meteo
@@ -18,7 +24,7 @@ contains
       real :: rsoil_eff
 
 
-      rinc = lu_conf%rc_rinc%rinc_param(lu_conf%rc_rinc, meteo, dp_conf)
+      rinc = lu_conf%rc_rinc%rinc_param%apply(lu_conf%rc_rinc, meteo, dp_conf)
 
       if(missing(rinc)) then
          rsoil_eff = -9999.0
@@ -56,6 +62,6 @@ contains
             ! No deposition path, or missing value:
             gsoil = 0.0
         endif
-   end function gsoil_default
+   end function gsoil_default_apply
 
 end module m_gsoil_default

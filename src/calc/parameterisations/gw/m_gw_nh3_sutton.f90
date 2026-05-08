@@ -3,10 +3,16 @@ module m_gw_nh3_sutton
    use t_depac_config, only: depac_config
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_error, only: depac_error
+   use t_depac_component, only: t_gw_parameterisation
 
    implicit none (type, external)
    private
    public :: gw_nh3_sutton
+
+   type, extends(t_gw_parameterisation) :: gw_nh3_sutton
+   contains
+      procedure :: apply => gw_nh3_sutton_apply
+   end type gw_nh3_sutton
 contains
    !------------------------------------------------------------------------------
    ! Function: gw_nh3_sutton
@@ -21,7 +27,8 @@ contains
    !   conditions, the resistance decreases exponentially with increasing relative
    !   humidity, reflecting enhanced cuticular uptake at higher humidity.
    !------------------------------------------------------------------------------
-   function gw_nh3_sutton(meteo, comp, dp_conf, err) result(gw)
+   function gw_nh3_sutton_apply(this, meteo, comp, dp_conf, err) result(gw)
+      class(gw_nh3_sutton), intent(in) :: this
       type(depac_meteorology), intent(in) :: meteo
       class(depac_component_core), intent(in) :: comp
       type(depac_config), intent(in) :: dp_conf
@@ -50,5 +57,5 @@ contains
          gw = 0.0
       endif
 
-   end function gw_nh3_sutton
+   end function gw_nh3_sutton_apply
 end module m_gw_nh3_sutton

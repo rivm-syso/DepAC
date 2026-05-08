@@ -40,7 +40,7 @@ contains
         real :: cw, cstom, csoil, gamma_stom, gamma_soil, gamma_w, tk, tfac, co_dep_fac
 
 
-        dp_out%ccomp_tot = comp%comp_point_param(meteo, lu_conf, dp_conf, dp_out)
+        dp_out%ccomp_tot = comp%comp_point_param%apply(meteo, lu_conf, dp_conf, dp_out)
 
     end subroutine rc_comp_point
 end module m_comp_points

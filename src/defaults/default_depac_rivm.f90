@@ -18,9 +18,9 @@ module default_depac_config_rivm
 
    use m_gw_param, only: gw_default, gw_so2, gw_nh3_sutton
    use m_gstom_param, only: gstom_default, gstom_emberson
-   use m_comp_point_param, only: comp_point_ammonia, csoil_default
+   use m_comp_point_param, only: comp_point_ammonia, csoil_default, csoil_water
    use m_gsoil_param, only:  rinc_no_resistance, rinc_default, rinc_no_path
-   use m_rc_special_param, only: t_rc_tot_nitric_acid, t_rc_tot_nitric_oxide, t_rc_tot_fixed
+   use m_rc_special_param, only: rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_tot_fixed
 
 
    use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
@@ -80,9 +80,9 @@ contains
          ipar_snow = 2, &
          rsoil_frozen = 1000.0, &
          rsoil_wet = 10.0, &
-         gw_param = gw_nh3_sutton, &
-         gstom_param = gstom_emberson, &
-         comp_point_param = comp_point_ammonia &
+         gw_param = gw_nh3_sutton(), &
+         gstom_param = gstom_emberson(), &
+         comp_point_param = comp_point_ammonia() &
       ), &
          make_component( &
          name = 'O3', &
@@ -92,8 +92,8 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0, &
-         gw_param = gw_so2, &
-         gstom_param = gstom_emberson), &
+         gw_param = gw_so2(), &
+         gstom_param = gstom_emberson()), &
          make_component( &
          name = 'SO2', &
          index = COMP_SO2, &
@@ -102,7 +102,7 @@ contains
          ipar_snow = 2, &
          rsoil_frozen = 500.0, &
          rsoil_wet = 10.0, &
-         gstom_param = gstom_emberson), &
+         gstom_param = gstom_emberson()), &
          make_component( &
          name = 'NO2', &
          index = COMP_NO2, &
@@ -111,7 +111,7 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0, &
-         gstom_param = gstom_emberson), &
+         gstom_param = gstom_emberson()), &
          make_component( &
          name = 'NO', &
          index = COMP_NO, &
@@ -120,7 +120,7 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = -999.0, &
          rsoil_wet = -999.0, &
-         rc_special = t_rc_tot_nitric_oxide()), &
+         rc_special = rc_tot_nitric_oxide()), &
          make_component( &
          name = 'HNO3', &
          index = COMP_HNO3, &
@@ -129,7 +129,7 @@ contains
          ipar_snow = -999, &
          rsoil_frozen = -999.0, &
          rsoil_wet = -999.0, &
-         rc_special = t_rc_tot_nitric_acid()) &
+         rc_special = rc_tot_nitric_acid()) &
          ]
 
       allocate(default_landuse_types(9))
@@ -153,7 +153,7 @@ contains
          vpd_max = 1.3, &
          vpd_min = 3.0), &
          rc_rinc = make_rc_r_params( &
-            rinc_param =  rinc_no_path &
+            rinc_param =  rinc_no_path() &
          )), &
          make_land_use( &
          name = 'arable', &
@@ -241,9 +241,10 @@ contains
          Tmax = -999.0, &
          g_max = -999.0, &
          vpd_max = -999.0, &
-         vpd_min = -999.0), &
+         vpd_min = -999.0, &
+         csoil_param = csoil_water()), &
          rc_rinc = make_rc_r_params( &
-         rinc_param = rinc_no_resistance)), &
+         rinc_param = rinc_no_resistance())), &
          make_land_use( &
          name = 'urban', &
          index = LU_URBAN, &
@@ -260,7 +261,7 @@ contains
          vpd_max = -999.0, &
          vpd_min = -999.0), &
          rc_rinc = make_rc_r_params( &
-         rinc_param = rinc_no_resistance)), &
+         rinc_param = rinc_no_resistance())), &
          make_land_use( &
          name = 'other', &
          index = LU_OTHER, &
@@ -277,7 +278,7 @@ contains
          vpd_max = 1.3, &
          vpd_min = 3.0), &
          rc_rinc = make_rc_r_params( &
-         rinc_param = rinc_no_path &
+         rinc_param = rinc_no_path() &
          )), &
          make_land_use( &
          name = 'desert', &
@@ -295,7 +296,7 @@ contains
          vpd_max = -999.0, &
          vpd_min = -999.0), &
          rc_rinc = make_rc_r_params( &
-            rinc_param = rinc_no_resistance)) &
+            rinc_param = rinc_no_resistance())) &
          ]
 
       ! Initialize the default_land_use_matrix with rsoil values from the matrix
@@ -314,7 +315,7 @@ contains
 
             ! we use a fixed total canopy resistance of 2000 s/m for NO on water and wet surfaces
             if (default_component_matrix(i, j)%index == COMP_NO .and. default_land_use_matrix(i, j)%index == LU_WATER) then
-               default_component_matrix(i, j)%rc_special = t_rc_tot_fixed()
+               default_component_matrix(i, j)%rc_special = rc_tot_fixed()
             end if
          end do
       end do

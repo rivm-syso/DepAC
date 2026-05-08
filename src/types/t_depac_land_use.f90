@@ -18,8 +18,25 @@ module t_depac_land_use
 
    implicit none (type, external)
    private
-   public :: depac_land_use, depac_stomatal_params, depac_rc_r_params, gsoil_parameterisation, &
-      rinc_parameterisation, csoil_parameterisation
+   public :: depac_land_use, depac_stomatal_params, depac_rc_r_params, t_gsoil_parameterisation, &
+      t_rinc_parameterisation, t_csoil_parameterisation
+   
+
+   type, abstract :: t_gsoil_parameterisation
+   contains
+      procedure(i_gsoil_parameterisation), deferred :: apply
+   end type t_gsoil_parameterisation
+
+   type, abstract :: t_rinc_parameterisation
+   contains
+      procedure(i_rinc_parameterisation), deferred :: apply
+   end type t_rinc_parameterisation
+
+   type, abstract :: t_csoil_parameterisation
+   contains
+      procedure(i_csoil_parameterisation), deferred :: apply
+   end type t_csoil_parameterisation
+
    !> Type representing stomatal conductance parameters.
    !! Contains the following fields:
    !! - F_min: Minimum stomatal conductance (typical values 0.01, default -999.0).
@@ -40,8 +57,7 @@ module t_depac_land_use
       real :: g_max = -999.0
       real :: vpd_max = -999.0
       real :: vpd_min = -999.0
-      procedure(csoil_parameterisation), pointer, nopass :: csoil_param => null() ! csoil parameterisation function pointer for soil compensation point calculation
-
+      class(t_csoil_parameterisation), allocatable :: csoil_param 
    end type depac_stomatal_params
 
    !> Type representing parameters for rinc calculation.
@@ -53,55 +69,54 @@ module t_depac_land_use
       real :: b = -999.0
       real :: h = -999.0
 
-      procedure(rinc_parameterisation), pointer, nopass :: rinc_param => null()
+      class(t_rinc_parameterisation), allocatable :: rinc_param
    end type depac_rc_r_params
 
 
-
-
-
    type , extends(depac_land_use_core) :: depac_land_use
-      procedure(gsoil_parameterisation), pointer, nopass :: gsoil_param => null() ! gsoil parameterisation function pointer for this land use type
-
+      class(t_gsoil_parameterisation), allocatable :: gsoil_param
       type(depac_stomatal_params) :: stom_par
       type(depac_rc_r_params) :: rc_rinc
    end type depac_land_use
 
    abstract interface
-      pure function rinc_parameterisation(rc_rinc, meteo, dp_conf) result(rinc)
-
+      pure function i_rinc_parameterisation(this, rc_rinc, meteo, dp_conf) result(rinc)
+         import :: t_rinc_parameterisation
          import :: depac_rc_r_params, depac_meteorology, depac_config
          implicit none (type, external)
-
+         class(t_rinc_parameterisation), intent(in) :: this
          type(depac_rc_r_params), intent(in) :: rc_rinc
          type(depac_meteorology), intent(in) :: meteo
          type(depac_config), intent(in) :: dp_conf
 
          real :: rinc
-      end function rinc_parameterisation
+      end function i_rinc_parameterisation
 
-      pure function gsoil_parameterisation(lu_conf, comp, meteo, dp_conf) result(gsoil)
+      pure function i_gsoil_parameterisation(this, lu_conf, comp, meteo, dp_conf) result(gsoil)
+         import :: t_gsoil_parameterisation
          import :: depac_land_use, depac_component_core, depac_meteorology, depac_config
          implicit none (type, external)
+         class(t_gsoil_parameterisation), intent(in) :: this
          type(depac_land_use), intent(in) :: lu_conf
          class(depac_component_core), intent(in) :: comp
          type(depac_meteorology), intent(in) :: meteo
          type(depac_config), intent(in) :: dp_conf
 
          real :: gsoil
-      end function gsoil_parameterisation
+      end function i_gsoil_parameterisation
 
-      pure function csoil_parameterisation(lu_conf, dp_conf, tfac) result(csoil)
+      pure function i_csoil_parameterisation(this, lu_conf, dp_conf, tfac) result(csoil)
 
-
+         import :: t_csoil_parameterisation
          import :: depac_land_use_core, depac_config
          implicit none (type, external)
+         class(t_csoil_parameterisation), intent(in) :: this
          class(depac_land_use_core), intent(in) :: lu_conf
          type(depac_config), intent(in) :: dp_conf
          real, intent(in) :: tfac
 
          real :: csoil
-      end function csoil_parameterisation
+      end function i_csoil_parameterisation
    end interface
 
 end module t_depac_land_use

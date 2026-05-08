@@ -1,14 +1,14 @@
 module m_depac_factory
    use t_depac_land_use, only: depac_land_use, depac_rc_r_params, depac_stomatal_params, &
-       csoil_parameterisation, gsoil_parameterisation, rinc_parameterisation
+       t_csoil_parameterisation, t_gsoil_parameterisation, t_rinc_parameterisation
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_config, only: depac_config
    use m_gstom_param, only: gstom_default
    use m_gw_param, only: gw_default
    use m_gsoil_param, only: gsoil_default, rinc_no_resistance, rinc_default
-   use m_rc_special_param, only: t_rc_tot_fixed
-   use t_depac_component, only: depac_component, gw_parameterisation, gstom_parameterisation, &
-      comp_point_parameterisation, t_rc_special
+   use m_rc_special_param, only: rc_tot_fixed
+   use t_depac_component, only: depac_component, t_gstom_parameterisation, &
+      t_comp_point_parameterisation, t_rc_special_param, t_gw_parameterisation
 
    use m_comp_point_param, only: comp_point_default, csoil_default
 
@@ -27,10 +27,10 @@ contains
       integer, intent(in) :: ipar_snow
       real, intent(in) :: rsoil_frozen
       real, intent(in) :: rsoil_wet
-      procedure(gw_parameterisation), pointer, optional :: gw_param
-      procedure(gstom_parameterisation), pointer, optional :: gstom_param
-      procedure(comp_point_parameterisation), pointer, optional :: comp_point_param
-      class(t_rc_special), intent(in), optional :: rc_special
+      class(t_gw_parameterisation), intent(in), optional :: gw_param
+      class(t_gstom_parameterisation), intent(in), optional :: gstom_param
+      class(t_comp_point_parameterisation), intent(in), optional :: comp_point_param
+      class(t_rc_special_param), intent(in), optional :: rc_special
 
       type(depac_component) :: comp
 
@@ -43,27 +43,28 @@ contains
       comp%rsoil_wet = rsoil_wet
 
       if (present(gw_param)) then
-         comp%gw_param => gw_param
+         allocate(comp%gw_param, source=gw_param)
       else
-         comp%gw_param => gw_default
+         allocate(comp%gw_param, source=gw_default())
       end if
 
       if (present(gstom_param)) then
-         comp%gstom_param => gstom_param
+         allocate(comp%gstom_param, source=gstom_param)
+         
       else
-         comp%gstom_param => gstom_default
+         allocate(comp%gstom_param, source=gstom_default())
       end if
 
       if (present(comp_point_param)) then
-         comp%comp_point_param => comp_point_param
+         allocate(comp%comp_point_param, source=comp_point_param)
       else
-         comp%comp_point_param => comp_point_default
+         allocate(comp%comp_point_param, source=comp_point_default())
       end if
 
       if (present(rc_special)) then
          allocate(comp%rc_special, source=rc_special)
       else
-         allocate(comp%rc_special, source=t_rc_tot_fixed()) 
+         allocate(comp%rc_special, source=rc_tot_fixed()) 
       end if
 
    end function make_component
@@ -75,7 +76,7 @@ contains
       real, intent(in) :: gamma_stom_c_fac
       real, intent(in) :: gamma_soil_c_fac
       real, intent(in) :: rsoil
-      procedure(gsoil_parameterisation), pointer, optional :: gsoil_param
+      class(t_gsoil_parameterisation), intent(in), optional :: gsoil_param
       type(depac_stomatal_params), intent(in), optional :: stom_par
       type(depac_rc_r_params), intent(in), optional :: rc_rinc
       type(depac_land_use) :: land_use
@@ -87,9 +88,9 @@ contains
       land_use%rsoil = rsoil
 
       if (present(gsoil_param)) then
-         land_use%gsoil_param => gsoil_param
+         allocate(land_use%gsoil_param, source=gsoil_param)
       else
-         land_use%gsoil_param => gsoil_default
+         allocate(land_use%gsoil_param, source=gsoil_default())
       end if
 
       if (present(stom_par)) then
@@ -100,7 +101,8 @@ contains
          land_use%rc_rinc = rc_rinc
       else
          ! by default we assume no in canopy resistance (no b and h needed)
-         land_use%rc_rinc%rinc_param => rinc_no_resistance
+         allocate(land_use%rc_rinc%rinc_param, source=rinc_no_resistance())
+
          land_use%rc_rinc%b = -999
          land_use%rc_rinc%h = -999
       end if
@@ -109,7 +111,7 @@ contains
    function make_rc_r_params(b, h, rinc_param) result(rc_r_params)
       real, intent(in), optional :: b
       real, intent(in), optional :: h
-      procedure(rinc_parameterisation), pointer, optional :: rinc_param
+      class(t_rinc_parameterisation), intent(in), optional :: rinc_param
       type(depac_rc_r_params) :: rc_r_params
 
       if (present(b)) then
@@ -122,10 +124,9 @@ contains
 
 
       if (present(rinc_param)) then
-         rc_r_params%rinc_param => rinc_param
+         allocate(rc_r_params%rinc_param, source=rinc_param)
       else
-         ! when making with a b and h we assume the default rinc parameterisation
-         rc_r_params%rinc_param => rinc_default
+         allocate(rc_r_params%rinc_param, source=rinc_default())
       end if
 
    end function make_rc_r_params
@@ -140,7 +141,7 @@ contains
       real, intent(in) :: g_max
       real, intent(in) :: vpd_max
       real, intent(in) :: vpd_min
-      procedure(csoil_parameterisation), pointer, optional :: csoil_param
+      class(t_csoil_parameterisation), intent(in), optional :: csoil_param
 
       type(depac_stomatal_params) :: stom_par
 
@@ -154,10 +155,9 @@ contains
       stom_par%vpd_min = vpd_min
 
       if (present(csoil_param)) then
-         stom_par%csoil_param => csoil_param
+         allocate(stom_par%csoil_param, source=csoil_param)
       else
-         ! when making with stomatal parameters we assume the default csoil parameterisation for soil compensation point calculation
-         stom_par%csoil_param => csoil_default
+         allocate(stom_par%csoil_param, source=csoil_default())
       end if
 
    end function make_stom_params

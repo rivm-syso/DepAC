@@ -1,6 +1,7 @@
 module m_comp_point_ammonia
    use t_depac_component_core, only: depac_component_core
-   use t_depac_land_use, only: depac_land_use
+   use t_depac_component, only: t_comp_point_parameterisation
+   use t_depac_land_use, only: depac_land_use, t_csoil_parameterisation
    use t_depac_land_use_core, only: depac_land_use_core
    use t_depac_config, only: depac_config
    use t_depac_meteorology, only: depac_meteorology
@@ -10,8 +11,24 @@ module m_comp_point_ammonia
    implicit none (type, external)
    private
    public :: comp_point_ammonia, csoil_default, csoil_water
+
+   type, extends(t_comp_point_parameterisation) :: comp_point_ammonia
+   contains
+      procedure :: apply => comp_point_ammonia_apply
+   end type comp_point_ammonia
+
+   type, extends(t_csoil_parameterisation) :: csoil_default
+   contains
+      procedure :: apply => csoil_default_apply
+   end type csoil_default
+
+   type, extends(t_csoil_parameterisation) :: csoil_water
+   contains
+      procedure :: apply => csoil_water_apply
+   end type csoil_water
 contains
-   pure function comp_point_ammonia(meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
+   pure function comp_point_ammonia_apply(this, meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
+      class(comp_point_ammonia), intent(in) :: this
       type(depac_meteorology), intent(in) :: meteo
       type(depac_land_use), intent(in) :: lu_conf
       type(depac_config), intent(in) :: dp_conf
@@ -53,7 +70,7 @@ contains
       endif
 
       ! Soil compensation point:
-      csoil = lu_conf%stom_par%csoil_param(lu_conf, dp_conf, tfac)
+      csoil = lu_conf%stom_par%csoil_param%apply(lu_conf, dp_conf, tfac)
 
 
 
@@ -67,10 +84,11 @@ contains
          ccomp_tot = 0.0
       endif
 
-   end function comp_point_ammonia
+   end function comp_point_ammonia_apply
 
 
-   pure function csoil_default(lu_conf, dp_conf, tfac) result(csoil)
+   pure function csoil_default_apply(this, lu_conf, dp_conf, tfac) result(csoil)
+      class(csoil_default), intent(in) :: this
       class(depac_land_use_core), intent(in) :: lu_conf
       type(depac_config), intent(in) :: dp_conf
       real, intent(in) :: tfac
@@ -79,9 +97,10 @@ contains
 
       csoil = 0.0
 
-   end function csoil_default
+   end function csoil_default_apply
 
-   pure function csoil_water(lu_conf, dp_conf, tfac) result(csoil)
+   pure function csoil_water_apply(this, lu_conf, dp_conf, tfac) result(csoil)
+      class(csoil_water), intent(in) :: this
       class(depac_land_use_core), intent(in) :: lu_conf
       type(depac_config), intent(in) :: dp_conf
       real, intent(in) :: tfac
@@ -96,7 +115,7 @@ contains
 
       csoil = gamma_soil * tfac
 
-   end function csoil_water
+   end function csoil_water_apply
 
 
 end module m_comp_point_ammonia

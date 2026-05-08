@@ -3,13 +3,19 @@ module m_gw_so2
    use t_depac_config, only: depac_config
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_error, only: depac_error
+   use t_depac_component, only: t_gw_parameterisation
 
    implicit none (type, external)
    private
    public :: gw_so2
+   type, extends(t_gw_parameterisation) :: gw_so2
+   contains
+      procedure :: apply => gw_so2_apply
+   end type gw_so2
 contains
 
-   function gw_so2(meteo, comp, dp_conf, err)  result(gw)
+   function gw_so2_apply(this, meteo, comp, dp_conf, err)  result(gw)
+      class(gw_so2), intent(in) :: this
       type(depac_meteorology), intent(in) :: meteo
       class(depac_component_core), intent(in) :: comp
       type(depac_config), intent(in) :: dp_conf
@@ -49,5 +55,5 @@ contains
          gw = 0.0
       endif
 
-   end function gw_so2
+   end function gw_so2_apply
 end module m_gw_so2

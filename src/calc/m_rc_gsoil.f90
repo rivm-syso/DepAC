@@ -40,7 +40,7 @@ module m_rc_gsoil
         real :: rinc           ! in canopy resistance  (s/m)
         real :: rsoil_eff      ! effective soil resistance (s/m)
 
-        dp_out%gsoil_eff = lu_conf%gsoil_param(lu_conf, comp, meteo, dp_conf)
+        dp_out%gsoil_eff = lu_conf%gsoil_param%apply(lu_conf, comp, meteo, dp_conf)
     end subroutine rc_gsoil
 
 end module m_rc_gsoil

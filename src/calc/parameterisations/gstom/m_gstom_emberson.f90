@@ -5,13 +5,19 @@ module m_gstom_emberson
    use t_depac_config, only: depac_config
    use t_depac_output, only: depac_output
    use t_depac_land_use, only: depac_stomatal_params
+   use t_depac_component, only: t_gstom_parameterisation
    implicit none (type, external)
 
    private
    public :: gstom_emberson, rc_get_vpd, rc_gstom_emb, par_dir_diff
 
+   type, extends(t_gstom_parameterisation) :: gstom_emberson
+   contains
+      procedure :: apply => gstom_emberson_apply
+   end type gstom_emberson
 contains
-   pure function gstom_emberson(comp, stom_par, meteo, dp_conf) result(gstom)
+   pure function gstom_emberson_apply(this, comp, stom_par, meteo, dp_conf) result(gstom)
+      class(gstom_emberson), intent(in) :: this
       class(depac_component_core), intent(in) :: comp
       type(depac_stomatal_params), intent(in) :: stom_par
       type(depac_meteorology), intent(in) :: meteo
@@ -33,7 +39,7 @@ contains
          gstom = 0.0
       end if
 
-   end function gstom_emberson
+   end function gstom_emberson_apply
 
    pure function rc_get_vpd(meteo) result(vpd)
       type(depac_meteorology), intent(in) :: meteo     ! meteorology

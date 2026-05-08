@@ -33,15 +33,8 @@ contains
       type(depac_output), intent(inout) :: dp_out
       type(depac_error), intent(inout) :: err
 
-      ! calculate the external leaf resistance (gw) for the current component and meteorological conditions
-      ! we use the parameterisation comp%gw_param
-      if(.not. associated(comp%gw_param)) then
-         call set_error(err, ERR_INPUT, 'gw_param not associated for component '//trim(comp%name))
-         call log_error('gw_param not associated for component '//trim(comp%name))
-         return
-      endif
-
-      dp_out%gw = comp%gw_param(meteo, comp, dp_conf, err)
+      
+      dp_out%gw = comp%gw_param%apply(meteo, comp, dp_conf, err)
 
    end subroutine rc_gw
 
