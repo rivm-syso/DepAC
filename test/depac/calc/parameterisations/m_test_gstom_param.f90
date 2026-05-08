@@ -1,6 +1,7 @@
 module m_test_gstom_param
     use testdrive, only : new_unittest, unittest_type, error_type, check
     use t_depac_component_core, only: depac_component_core
+    use t_depac_component, only: t_gstom_parameterisation
     use t_depac_land_use, only: depac_stomatal_params
     use t_depac_meteorology, only: depac_meteorology
     use t_depac_config, only: depac_config
@@ -28,10 +29,13 @@ contains
         type(depac_meteorology) :: meteo
         type(depac_config) :: dp_conf
 
+        class(t_gstom_parameterisation), allocatable :: gstom_f
         real :: gstom
 
+        allocate(gstom_f, source=gstom_default())
 
-        gstom = gstom_default(comp, stomatal_params, meteo, dp_conf)
+
+        gstom = gstom_f%apply(comp, stomatal_params, meteo, dp_conf)
 
         call check(error, gstom, 0.0, message="gstom_default failed", thr=1.0e-5)
         if (allocated(error)) return
@@ -64,6 +68,7 @@ contains
     subroutine test_gstom_emberson_vpd(error)
         type(error_type), allocatable, intent(out) :: error
         type(depac_meteorology) :: meteo
+        
         real :: vpd
 
         meteo%t = 20.0
