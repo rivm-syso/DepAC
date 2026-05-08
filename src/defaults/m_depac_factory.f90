@@ -50,7 +50,7 @@ contains
 
       if (present(gstom_param)) then
          allocate(comp%gstom_param, source=gstom_param)
-         
+
       else
          allocate(comp%gstom_param, source=gstom_default())
       end if
@@ -64,7 +64,7 @@ contains
       if (present(rc_special)) then
          allocate(comp%rc_special, source=rc_special)
       else
-         allocate(comp%rc_special, source=rc_tot_fixed()) 
+         allocate(comp%rc_special, source=rc_tot_fixed())
       end if
 
    end function make_component

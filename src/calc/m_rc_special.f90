@@ -39,7 +39,7 @@ module m_rc_special
         logical, intent(out) :: ready               ! readiness flag
         type(depac_error), intent(inout) :: err ! error handling
         ready = .false.
-        
+
         call comp%rc_special%apply(meteo, comp, dp_conf, dp_out, err, ready)
     end subroutine rc_special
 

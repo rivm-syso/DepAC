@@ -12,7 +12,7 @@ module m_special_default
     public :: rc_special_default
 
 
-   
+
     type, extends(t_rc_special_param) :: rc_special_default
     contains
         procedure :: apply => rc_special_default_apply

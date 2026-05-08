@@ -103,7 +103,8 @@ module t_depac_component
          real :: gstom
       end function i_gstom_parameterisation
 
-      pure function i_comp_point_parameterisation(this, meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
+      pure function i_comp_point_parameterisation(this, meteo, lu_conf, &
+          dp_conf, dp_out) result(ccomp_tot)
          import :: t_comp_point_parameterisation
          import :: depac_meteorology, depac_land_use, depac_config, depac_output
          implicit none (type, external)

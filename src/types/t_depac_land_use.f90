@@ -20,7 +20,7 @@ module t_depac_land_use
    private
    public :: depac_land_use, depac_stomatal_params, depac_rc_r_params, t_gsoil_parameterisation, &
       t_rinc_parameterisation, t_csoil_parameterisation
-   
+
 
    type, abstract :: t_gsoil_parameterisation
    contains
@@ -57,7 +57,7 @@ module t_depac_land_use
       real :: g_max = -999.0
       real :: vpd_max = -999.0
       real :: vpd_min = -999.0
-      class(t_csoil_parameterisation), allocatable :: csoil_param 
+      class(t_csoil_parameterisation), allocatable :: csoil_param
    end type depac_stomatal_params
 
    !> Type representing parameters for rinc calculation.

@@ -11,7 +11,7 @@ module m_rc_tot_fixed
     private
     public :: rc_tot_fixed
 
-   
+
     type, extends(t_rc_special_param) :: rc_tot_fixed
         real :: rc_tot_fixed = 2000.0
     contains

@@ -33,7 +33,7 @@ contains
       type(depac_output), intent(inout) :: dp_out
       type(depac_error), intent(inout) :: err
 
-      
+
       dp_out%gw = comp%gw_param%apply(meteo, comp, dp_conf, err)
 
    end subroutine rc_gw
