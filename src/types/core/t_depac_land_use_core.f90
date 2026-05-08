@@ -1,5 +1,6 @@
 module t_depac_land_use_core
     implicit none (type, external)
+    private
     public :: depac_land_use_core
 
     !> Type representing land use parameters for DEPAC calculations.

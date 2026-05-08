@@ -6,6 +6,7 @@ module m_gw_default
    use m_helpers, only: missing
 
    implicit none (type, external)
+   private
    public :: gw_default
 contains
    function gw_default(meteo, comp, dp_conf, err) result(gw)

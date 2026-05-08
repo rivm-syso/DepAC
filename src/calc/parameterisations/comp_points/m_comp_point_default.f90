@@ -7,6 +7,7 @@ module m_comp_point_default
    use t_depac_output, only: depac_output
 
    implicit none (type, external)
+   private
    public :: comp_point_default
 contains
    pure function comp_point_default(meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)

@@ -1,5 +1,6 @@
 module t_depac_component_core
     implicit none (type, external)
+    private
     public :: depac_component_core
 
     !> Type representing a chemical component for DEPAC calculations.

@@ -26,7 +26,7 @@ module m_test_rc_gstom
         testsuite = [testsuite, &
             new_unittest("rc_gstom", test_rc_gstom) &
         ]
-        
+
 
     end subroutine collect_rc_gstom_tests
 

@@ -32,7 +32,7 @@ contains
 
 
         gstom = gstom_default(comp, stomatal_params, meteo, dp_conf)
-        
+
         call check(error, gstom, 0.0, message="gstom_default failed", thr=1.0e-5)
         if (allocated(error)) return
 
@@ -156,7 +156,7 @@ contains
             message="rc_gstom_emb with low glrad and lai failed", thr=1.0e-5)
         if (allocated(error)) return
 
-        
+
 
     end subroutine test_gstom_emberson_rc_gstom_emb
 end module m_test_gstom_param

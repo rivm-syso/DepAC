@@ -4,7 +4,10 @@ module m_gstom_default
     use t_depac_meteorology, only: depac_meteorology
     use t_depac_config, only: depac_config
     use t_depac_output, only: depac_output
-    
+    implicit none (type, external)
+    private
+    public :: gstom_default
+
 contains
  pure function gstom_default(comp, stom_par, meteo, dp_conf) result(gstom)
       class(depac_component_core), intent(in) :: comp

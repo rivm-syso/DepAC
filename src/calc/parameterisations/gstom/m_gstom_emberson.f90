@@ -5,6 +5,7 @@ module m_gstom_emberson
    use t_depac_config, only: depac_config
    use t_depac_output, only: depac_output
    use t_depac_land_use, only: depac_stomatal_params
+   implicit none (type, external)
 
    private
    public :: gstom_emberson, rc_get_vpd, rc_gstom_emb, par_dir_diff

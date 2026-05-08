@@ -8,7 +8,7 @@ module m_test_comp_point_param
    use t_depac_config, only: depac_config
    use t_depac_output, only: depac_output
 
-   implicit none
+   implicit none (type, external)
    private
    public :: collect_comp_point_param_tests
 
@@ -18,7 +18,7 @@ contains
    subroutine collect_comp_point_param_tests(testsuite)
       type(unittest_type), allocatable, intent(inout) :: testsuite(:)
       type(unittest_type), allocatable :: append_testsuites(:)
-      
+
 
       append_testsuites = [ &
          new_unittest("comp_point_ammonia", test_comp_point_ammonia), &
@@ -26,7 +26,7 @@ contains
          new_unittest("csoil_default", test_csoil_default), &
          new_unittest("csoil_water", test_csoil_water) &
       ]
-     
+
       testsuite = [testsuite, append_testsuites]
 
    end subroutine collect_comp_point_param_tests
@@ -174,6 +174,6 @@ contains
        if (allocated(error)) return
 
    end subroutine test_csoil_water
-    
+
 
 end module m_test_comp_point_param

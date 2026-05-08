@@ -8,14 +8,15 @@ module m_comp_point_ammonia
    use t_depac_output, only: depac_output
 
    implicit none (type, external)
-   public :: comp_point_ammonia
+   private
+   public :: comp_point_ammonia, csoil_default, csoil_water
 contains
    pure function comp_point_ammonia(meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
       type(depac_meteorology), intent(in) :: meteo
       type(depac_land_use), intent(in) :: lu_conf
       type(depac_config), intent(in) :: dp_conf
       type(depac_output), intent(in) :: dp_out
-      
+
       real :: cw, cstom, csoil, gamma_stom, gamma_soil, gamma_w, tk, tfac, co_dep_fac
       real :: ccomp_tot
 
@@ -56,7 +57,7 @@ contains
 
 
 
-      
+
       ! Total compensation point is weighed average of separate compensation points:
       if (dp_out%gc_tot > 0.0) then
          ccomp_tot = (dp_out%gw/dp_out%gc_tot)*cw + &
@@ -92,7 +93,7 @@ contains
       else
          gamma_soil = abs(lu_conf%gamma_soil_c_fac) * dp_conf%comp_point%c_ave_nh3
       endif
-      
+
       csoil = gamma_soil * tfac
 
    end function csoil_water

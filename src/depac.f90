@@ -73,7 +73,7 @@ module depac
             default_landuse_types, default_component_types, &
             default_land_use_matrix, depac_location, &
             init_default_depac_config_rivm, &
-             
+
             COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
             clear_error, &
             LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &

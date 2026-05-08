@@ -18,15 +18,15 @@ module m_test_comp_points
     public :: collect_comp_points_tests
     contains
 
-    
+
     subroutine collect_comp_points_tests(testsuite)
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
-        ! test the compensation point parameterisations 
+        ! test the compensation point parameterisations
         ! call collect_comp_point_param_tests(testsuite)
 
 
-        
+
         testsuite = [testsuite, &
             new_unittest("rc_comp_point", test_rc_comp_point) &
         ]

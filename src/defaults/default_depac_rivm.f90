@@ -43,9 +43,9 @@ module default_depac_config_rivm
 
    ! Default land use types with associated parameters used by RIVM
 
-   
 
 
+   real, dimension(9, 6) :: default_rsoil_matrix
    type(depac_land_use), dimension(9,6), public :: default_land_use_matrix
 
    public
@@ -56,7 +56,7 @@ contains
       integer :: i, j
 
       ! Matrix of rsoil values for each land use and component type
-      real, dimension(9, 6) :: default_rsoil_matrix = reshape([ &
+      default_rsoil_matrix = reshape([ &
       ! NH3,   O3,   SO2,   NO2,   NO,  HNO3
          100.0, 1000.0, 1000.0, 1000.0, -999.0, -999.0, &   ! grass
          100.0,  200.0, 1000.0, 1000.0, -999.0, -999.0, &   ! arable
@@ -297,7 +297,7 @@ contains
          ]
 
       ! Initialize the default_land_use_matrix with rsoil values from the matrix
-      
+
       do i = 1, 9
          do j = 1, 6
             default_land_use_matrix(i, j) = default_landuse_types(i)

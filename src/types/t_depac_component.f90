@@ -22,7 +22,8 @@ module t_depac_component
    implicit none (type, external)
 
    private
-   public :: depac_component, gw_parameterisation, gstom_parameterisation, comp_point_parameterisation
+   public :: depac_component, gw_parameterisation, &
+      gstom_parameterisation, comp_point_parameterisation
 
 
    ! The main component type that includes parameterisation function pointers for gw and gstom.
@@ -36,6 +37,7 @@ module t_depac_component
    abstract interface
       function gw_parameterisation(meteo, comp, dp_conf, err) result(gw)
          import :: depac_meteorology, depac_component_core, depac_config, depac_error
+         implicit none (type, external)
 
          type(depac_meteorology), intent(in) :: meteo
          class(depac_component_core), intent(in) :: comp
@@ -48,7 +50,7 @@ module t_depac_component
 
       pure function gstom_parameterisation(comp, stom_par, meteo, dp_conf) result(gstom)
          import :: depac_component_core, depac_stomatal_params, depac_meteorology, depac_config
-
+         implicit none (type, external)
          class(depac_component_core), intent(in) :: comp
          type(depac_stomatal_params), intent(in) :: stom_par
          type(depac_meteorology), intent(in) :: meteo
@@ -59,7 +61,7 @@ module t_depac_component
 
       pure function comp_point_parameterisation(meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
          import :: depac_meteorology, depac_land_use, depac_config, depac_output
-
+         implicit none (type, external)
          type(depac_meteorology), intent(in) :: meteo
          type(depac_land_use), intent(in) :: lu_conf
          type(depac_config), intent(in) :: dp_conf

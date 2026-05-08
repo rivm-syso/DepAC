@@ -1,12 +1,14 @@
 module m_depac_factory
-   use t_depac_land_use, only: depac_land_use, depac_rc_r_params, depac_stomatal_params, csoil_parameterisation, gsoil_parameterisation, rinc_parameterisation
+   use t_depac_land_use, only: depac_land_use, depac_rc_r_params, depac_stomatal_params, &
+       csoil_parameterisation, gsoil_parameterisation, rinc_parameterisation
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_config, only: depac_config
    use m_gstom_param, only: gstom_default
    use m_gw_param, only: gw_default
    use m_gsoil_param, only: gsoil_default, rinc_no_resistance, rinc_default
 
-   use t_depac_component, only: depac_component, gw_parameterisation, gstom_parameterisation, comp_point_parameterisation
+   use t_depac_component, only: depac_component, gw_parameterisation, gstom_parameterisation, &
+      comp_point_parameterisation
 
    use m_comp_point_param, only: comp_point_default, csoil_default
 
@@ -16,7 +18,8 @@ module m_depac_factory
    public :: make_component, make_land_use, make_rc_r_params, make_stom_params
 contains
 
-   function make_component(name, index, diffc, rw_val, ipar_snow, rsoil_frozen, rsoil_wet, gw_param, gstom_param, comp_point_param) result(comp)
+   function make_component(name, index, diffc, rw_val, ipar_snow, rsoil_frozen, rsoil_wet, &
+         gw_param, gstom_param, comp_point_param) result(comp)
       character(len=*), intent(in) :: name
       integer, intent(in) :: index
       real, intent(in) :: diffc
@@ -58,7 +61,8 @@ contains
 
    end function make_component
 
-   function make_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, gsoil_param, stom_par, rc_rinc) result(land_use)
+   function make_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, &
+         gsoil_param, stom_par, rc_rinc) result(land_use)
       character(len=*), intent(in) :: name
       integer, intent(in) :: index
       real, intent(in) :: gamma_stom_c_fac
@@ -119,11 +123,12 @@ contains
 
    end function make_rc_r_params
 
-   function make_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, vpd_max, vpd_min, csoil_param) result(stom_par)
+   function make_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, &
+          vpd_max, vpd_min, csoil_param) result(stom_par)
       real, intent(in) :: F_min
       real, intent(in) :: alpha
       real, intent(in) :: Topt
-      real, intent(in) :: Tmin   
+      real, intent(in) :: Tmin
       real, intent(in) :: Tmax
       real, intent(in) :: g_max
       real, intent(in) :: vpd_max
@@ -147,7 +152,7 @@ contains
          ! when making with stomatal parameters we assume the default csoil parameterisation for soil compensation point calculation
          stom_par%csoil_param => csoil_default
       end if
-      
+
    end function make_stom_params
 
 end module m_depac_factory

@@ -5,6 +5,7 @@ module m_gw_nh3_sutton
    use t_depac_error, only: depac_error
 
    implicit none (type, external)
+   private
    public :: gw_nh3_sutton
 contains
    !------------------------------------------------------------------------------
