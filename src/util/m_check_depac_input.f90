@@ -45,20 +45,24 @@ contains
         ! now we check if all parameterisations are set
 
         if (.not. allocated(comp%gw_param)) then
-            call set_error(dp_err, ERR_INPUT, 'gw_param is not allocated for component '//trim(comp%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'gw_param is not allocated for component '//trim(comp%name))
             return
         end if
 
         if (.not. allocated(comp%gstom_param)) then
-            call set_error(dp_err, ERR_INPUT, 'gstom_param is not allocated for component '//trim(comp%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'gstom_param is not allocated for component '//trim(comp%name))
             return
         end if
         if (.not. allocated(comp%comp_point_param)) then
-            call set_error(dp_err, ERR_INPUT, 'comp_point_param is not allocated for component '//trim(comp%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'comp_point_param is not allocated for component '//trim(comp%name))
             return
         end if
         if (.not. allocated(comp%rc_special)) then
-            call set_error(dp_err, ERR_INPUT, 'rc_special is not allocated for component '//trim(comp%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'rc_special is not allocated for component '//trim(comp%name))
             return
         end if
 
@@ -77,17 +81,20 @@ contains
         end if
 
         if(.not. allocated(lu%gsoil_param)) then
-            call set_error(dp_err, ERR_INPUT, 'gsoil_param is not allocated for land use '//trim(lu%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'gsoil_param is not allocated for land use '//trim(lu%name))
             return
         end if
 
         if(.not. allocated(lu%rc_rinc%rinc_param)) then
-            call set_error(dp_err, ERR_INPUT, 'rc_rinc_param is not allocated for land use '//trim(lu%name))
+            call set_error(dp_err, ERR_INPUT,&
+                 'rc_rinc_param is not allocated for land use '//trim(lu%name))
             return
         end if
 
         if(.not. allocated(lu%stom_par%csoil_param)) then
-            call set_error(dp_err, ERR_INPUT, 'csoil_param is not allocated for land use '//trim(lu%name))
+            call set_error(dp_err, ERR_INPUT,&
+             'csoil_param is not allocated for land use '//trim(lu%name))
             return
         end if
 

@@ -103,7 +103,8 @@ contains
       allocate(rc_special_f, source=rc_tot_fixed())
       call rc_special_f%apply(meteo, comp, dp_conf, dp_out, err, ready)
 
-      call check(error, dp_out%rc_tot, 2000.0, message="rc_tot_fixed did not set rc_tot to 2000.0", thr=1.0e-5)
+      call check(error, dp_out%rc_tot, 2000.0, &
+         message="rc_tot_fixed did not set rc_tot to 2000.0", thr=1.0e-5)
       if (allocated(error)) return
 
 
@@ -115,7 +116,8 @@ contains
       allocate(rc_special_f, source=rc_tot_fixed(rc_tot_fixed=1500.0))
 
       call rc_special_f%apply(meteo, comp, dp_conf, dp_out, err, ready)
-      call check(error, dp_out%rc_tot, 1500.0, message="rc_tot_fixed did not set rc_tot to 1500.0", thr=1.0e-5)
+      call check(error, dp_out%rc_tot, 1500.0, &
+         message="rc_tot_fixed did not set rc_tot to 1500.0", thr=1.0e-5)
       if (allocated(error)) return
 
 

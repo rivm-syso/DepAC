@@ -21,7 +21,8 @@ module m_test_depac
    use m_rc_special_param, only: rc_special_default
 
    ! default configuration
-   use default_depac_config_rivm, only: default_land_use_matrix, default_component_matrix, init_default_depac_config_rivm
+   use default_depac_config_rivm, only: default_land_use_matrix, &
+    default_component_matrix, init_default_depac_config_rivm
 
    implicit none (type, external)
    private
@@ -49,7 +50,7 @@ contains
       logical :: ready
       integer :: i, j
 
-      real, dimension(6,9) :: expected_rc_eff = reshape([ &
+      real, dimension(6,9), parameter :: expected_rc_eff = reshape([ &
          119.335388, 47.0838165, 73.2956467, 60.1540413, -9999.00000, -999.000000, &
          123.168701, 51.9625587, 61.1918983, 68.3531799, 428.000000, -999.000000, &
          123.168701, 51.9625587, 77.3465195, 68.3531799, 1028.00000, -999.000000, &
@@ -61,7 +62,7 @@ contains
          5.85804029E-13, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, -999.000000 &
          ], [6,9])
 
-      real, dimension(6,9) :: expected_rc_tot = reshape([ &
+      real, dimension(6,9), parameter :: expected_rc_tot = reshape([ &
          10.3729048, 47.0838203, 73.2956467, 60.1540413, -9999.00000, 10.0000000, &
          10.6206102, 51.9625587, 61.1918983, 68.3531799, 428.000000, 10.0000000, &
          10.6206102, 51.9625587, 77.3465195, 68.3531799, 1028.00000, 10.0000000, &
@@ -108,26 +109,23 @@ contains
             comp = default_component_matrix(i,j)
             call clear_error(dp_err)
             call depac_calc(comp, lu, meteo, dp_conf, dp_out, dp_err)
-            expected_rc_tot(j,i) = dp_out%rc_tot
-            expected_rc_eff(j,i) = dp_out%rc_eff
 
             if(dp_err%code /= ERR_NONE) then
-               print *, "Error for component ", comp%name, " and land use ", lu%name, ": ", dp_err%message
                return
             end if
             call check(error, dp_out%rc_eff, expected_rc_eff(j,i), &
-               message="depac_calc did not return expected rc_eff for component "//trim(comp%name)// &
+               message="depac_calc did not return expected rc_eff for component "&
+               //trim(comp%name)// &
                " and land use "//trim(lu%name), thr=1.0e-5)
             if (allocated(error)) then
-               print *, "Calculated rc_eff: ", dp_out%rc_eff, " Expected rc_eff: ", expected_rc_eff(j,i)
                return
             end if
 
             call check(error, dp_out%rc_tot, expected_rc_tot(j,i), &
-               message="depac_calc did not return expected rc_tot for component "//trim(comp%name)// &
+               message="depac_calc did not return expected rc_tot for component "&
+               //trim(comp%name)// &
                " and land use "//trim(lu%name), thr=1.0e-5)
             if (allocated(error)) then
-               print *, "Calculated rc_tot: ", dp_out%rc_tot, " Expected rc_tot: ", expected_rc_tot(j,i)
                return
             end if
          end do

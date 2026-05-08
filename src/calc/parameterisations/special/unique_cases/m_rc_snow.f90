@@ -60,7 +60,7 @@ contains
             endif
         else
             print *, comp%name, comp%ipar_snow
-            
+
             call set_error(err, ERR_INPUT, &
                 'Programming error in rc_snow: unknown value of ipar_snow: '//trim(comp%name))
             call log_error('Programming error in rc_snow: unknown value of ipar_snow: ' &

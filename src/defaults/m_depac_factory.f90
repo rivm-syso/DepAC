@@ -84,7 +84,7 @@ contains
       land_use%name = name
       land_use%gamma_stom_c_fac = gamma_stom_c_fac
       land_use%gamma_soil_c_fac = gamma_soil_c_fac
-      
+
       if (present(index)) then
          land_use%index = index
       end if
