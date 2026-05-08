@@ -1,5 +1,5 @@
 module m_gstom_default
-    use t_depac_component, only: depac_component
+    use t_depac_component_core, only: depac_component_core
     use t_depac_land_use, only: depac_stomatal_params
     use t_depac_meteorology, only: depac_meteorology
     use t_depac_config, only: depac_config
@@ -7,7 +7,7 @@ module m_gstom_default
     
 contains
  pure function gstom_default(comp, stom_par, meteo, dp_conf) result(gstom)
-      type(depac_component), intent(in) :: comp
+      class(depac_component_core), intent(in) :: comp
       type(depac_stomatal_params), intent(in) :: stom_par
       type(depac_meteorology), intent(in) :: meteo
       type(depac_config), intent(in) :: dp_conf

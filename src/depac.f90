@@ -47,7 +47,7 @@ module depac
     check_meteorology_input
 
   use default_depac_config_rivm, only: default_landuse_types, default_component_types, &
-    default_rsoil_matrix, obtain_config
+      default_land_use_matrix, init_default_depac_config_rivm
   use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
     LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
     LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
@@ -71,9 +71,11 @@ module depac
             depac_meteorology, depac_config, depac_output, depac_error, &
             has_error, VERSION, BUILD_DATE, depac_calc_partial, depac_calc_finish, &
             default_landuse_types, default_component_types, &
-            default_rsoil_matrix, depac_location, &
+            default_land_use_matrix, depac_location, &
+            init_default_depac_config_rivm, &
+             
             COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
-            obtain_config,clear_error, &
+            clear_error, &
             LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
             LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
 

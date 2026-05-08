@@ -1,5 +1,5 @@
 module m_gstom_emberson
-   use t_depac_component, only: depac_component
+   use t_depac_component_core, only: depac_component_core
    use t_depac_land_use, only: depac_land_use
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_config, only: depac_config
@@ -7,11 +7,11 @@ module m_gstom_emberson
    use t_depac_land_use, only: depac_stomatal_params
 
    private
-   public :: gstom_emberson
+   public :: gstom_emberson, rc_get_vpd, rc_gstom_emb, par_dir_diff
 
 contains
    pure function gstom_emberson(comp, stom_par, meteo, dp_conf) result(gstom)
-      type(depac_component), intent(in) :: comp
+      class(depac_component_core), intent(in) :: comp
       type(depac_stomatal_params), intent(in) :: stom_par
       type(depac_meteorology), intent(in) :: meteo
       type(depac_config), intent(in) :: dp_conf

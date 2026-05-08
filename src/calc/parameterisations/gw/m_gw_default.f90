@@ -1,5 +1,5 @@
 module m_gw_default
-   use t_depac_component, only: depac_component
+   use t_depac_component_core, only: depac_component_core
    use t_depac_config, only: depac_config
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_error, only: depac_error
@@ -10,7 +10,7 @@ module m_gw_default
 contains
    function gw_default(meteo, comp, dp_conf, err) result(gw)
       type(depac_meteorology), intent(in) :: meteo
-      type(depac_component), intent(in) :: comp
+      class(depac_component_core), intent(in) :: comp
       type(depac_config), intent(in) :: dp_conf
       type(depac_error), intent(inout) :: err
       real :: gw

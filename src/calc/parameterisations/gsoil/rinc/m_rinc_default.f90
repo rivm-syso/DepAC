@@ -14,6 +14,7 @@ contains
       real :: rinc
 
         if (meteo%ust > 0.0) then
+            
             rinc = rc_rinc%b * rc_rinc%h * dp_conf%sai / meteo%ust
         else
             rinc = 1000.0

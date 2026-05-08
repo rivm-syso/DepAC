@@ -37,72 +37,10 @@ contains
         type(depac_output), intent(inout) :: dp_out ! output of this run
         type(depac_error), intent(inout) :: err  ! error handling
 
-
         real :: cw, cstom, csoil, gamma_stom, gamma_soil, gamma_w, tk, tfac, co_dep_fac
 
-        select case(comp%index)
-        case(COMP_NO, COMP_NO2, COMP_O3, COMP_SO2)
-            ! no compensation points:
-            dp_out%ccomp_tot  = 0.0
 
-        case(COMP_NH3)
-            tk = meteo%tsurf + 273.15
-            tfac = (2.75e15/tk)*exp(-1.04e4/tk)
+        dp_out%ccomp_tot = comp%comp_point_param(meteo, lu_conf, dp_conf, dp_out)
 
-            ! Stomatal compensation point:
-            if (dp_conf%has_leaves .and. dp_conf%comp_point%c_ave_nh3 > 0.) then
-                gamma_stom = lu_conf%gamma_stom_c_fac * dp_conf%comp_point%c_ave_nh3 * &
-                     4.7 * exp(-0.071*meteo%t)
-
-                cstom = max(0.0, gamma_stom*tfac)
-            else
-                cstom = 0.0
-            endif
-
-            ! External leaf compensation point:
-            if (dp_conf%has_vegetation .and. &
-                        dp_conf%comp_point%c_ave_nh3 > 0. .and. &
-                        dp_conf%comp_point%c_ave_so2 > 0.) then
-
-                gamma_w = -850. + 1840. * dp_conf%comp_point%c_nh3 * exp(-0.11*meteo%t)
-                co_dep_fac = 1.12 - 1.32 * ((dp_conf%comp_point%c_ave_so2/64.) / &
-                            (dp_conf%comp_point%c_ave_nh3/17.))
-                co_dep_fac = max(0.0, co_dep_fac)
-                gamma_w = co_dep_fac * gamma_w
-                cw = max(0.0, gamma_w*tfac)
-            elseif (dp_conf%has_vegetation) then
-                gamma_w = -850. + 1840. * dp_conf%comp_point%c_nh3 * exp(-0.11*meteo%t)
-                cw = max(0.0, gamma_w*tfac)
-            else
-                cw = 0.0
-            endif
-
-            ! Soil compensation point:
-            if (lu_conf%index == LU_WATER) then
-                if (lu_conf%gamma_soil_c_fac > 0) then
-                    gamma_soil = lu_conf%gamma_soil_c_fac * 1.0
-                else
-                    gamma_soil = abs(lu_conf%gamma_soil_c_fac) * dp_conf%comp_point%c_ave_nh3
-                endif
-                csoil = gamma_soil * tfac
-            else
-                csoil = 0.0
-            endif
-
-            ! Total compensation point is weighed average of separate compensation points:
-            if (dp_out%gc_tot > 0.0) then
-                dp_out%ccomp_tot = (dp_out%gw/dp_out%gc_tot)*cw + &
-                    (dp_out%gstom/dp_out%gc_tot)*cstom + &
-                    (dp_out%gsoil_eff/dp_out%gc_tot)*csoil
-            else
-                dp_out%ccomp_tot = 0.0
-            endif
-
-        case default
-            call set_error(err, ERR_INPUT, 'Component '//trim(comp%name) &
-                        //' not supported in rc_comp_point')
-            call log_error('Component '//trim(comp%name)//' not supported in rc_comp_point')
-            return
-        end select
     end subroutine rc_comp_point
 end module m_comp_points

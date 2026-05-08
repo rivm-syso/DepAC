@@ -27,8 +27,6 @@ module m_depac_calc
       check_land_use_input, &
       check_depac_config, &
       check_meteorology_input
-   use default_depac_config_rivm, only: default_landuse_types, default_component_types, &
-      default_rsoil_matrix
    use m_helpers, only: missing
 
    ! Calculation modules

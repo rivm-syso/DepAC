@@ -15,62 +15,60 @@ module t_depac_component
    use t_depac_meteorology, only: depac_meteorology
    use t_depac_config, only: depac_config
    use t_depac_error, only: depac_error
-   use t_depac_land_use, only: depac_land_use
-   
-
+   use t_depac_component_core, only: depac_component_core
+   use t_depac_land_use_core, only: depac_land_use_core
+   use t_depac_land_use, only: depac_stomatal_params, depac_land_use
+   use t_depac_output, only: depac_output
    implicit none (type, external)
 
    private
-   public :: depac_component, gw_parameterisation, gstom_parameterisation
+   public :: depac_component, gw_parameterisation, gstom_parameterisation, comp_point_parameterisation
 
 
-   
-!> Type representing a chemical component for DEPAC calculations.
-   !! Contains the following fields:
-   !! - name: Name of the component (character(len=20)), e.g. "NH3", "O3", etc.
-   !! - diffc: Diffusion coefficient for gstom parametrisation.
-   !!      Dimensionless
-   !! - rw_val: Constant rw value (default -999.0). (s/m)
-   !! - ipar_snow: Snow resistance parametrisation (1=constant, 2=temperature dependent).
-   !! - rsoil_frozen: Frozen soil resistance (default -999.0).
-   !! - rsoil_wet: Wet soil resistance (default -999.0).
-   !! Note: The default values (-999.0 or -999) indicate missing or undefined data.
-   ! First define the type
-   type :: depac_component
-      character(len=20) :: name
-      integer :: index = -999
-      real :: diffc = -999.0
-      real :: rw_val = -999.0
-      integer :: ipar_snow = -999
-      real :: rsoil_frozen = -999.0
-      real :: rsoil_wet = -999.0
+   ! The main component type that includes parameterisation function pointers for gw and gstom.
+   type, extends(depac_component_core) :: depac_component
       procedure(gw_parameterisation), pointer, nopass :: gw_param => null()
       procedure(gstom_parameterisation), pointer, nopass :: gstom_param => null()
+      procedure(comp_point_parameterisation), pointer, nopass :: comp_point_param => null()
    end type depac_component
+
 
    abstract interface
       function gw_parameterisation(meteo, comp, dp_conf, err) result(gw)
-         import :: depac_meteorology, depac_component, depac_config, depac_error
+         import :: depac_meteorology, depac_component_core, depac_config, depac_error
 
          type(depac_meteorology), intent(in) :: meteo
-         type(depac_component), intent(in) :: comp
+         class(depac_component_core), intent(in) :: comp
          type(depac_config), intent(in) :: dp_conf
          type(depac_error), intent(inout) :: err
 
          real :: gw
       end function gw_parameterisation
 
-      function gstom_parameterisation(comp, lu_conf, meteo, dp_conf, err) result(gstom)
-         import :: depac_component, depac_land_use, depac_meteorology, depac_config, depac_error
 
-         type(depac_component), intent(in) :: comp
-         type(depac_land_use), intent(in) :: lu_conf
+      pure function gstom_parameterisation(comp, stom_par, meteo, dp_conf) result(gstom)
+         import :: depac_component_core, depac_stomatal_params, depac_meteorology, depac_config
+
+         class(depac_component_core), intent(in) :: comp
+         type(depac_stomatal_params), intent(in) :: stom_par
          type(depac_meteorology), intent(in) :: meteo
          type(depac_config), intent(in) :: dp_conf
-         type(depac_error), intent(inout) :: err
 
          real :: gstom
       end function gstom_parameterisation
+
+      pure function comp_point_parameterisation(meteo, lu_conf, dp_conf, dp_out) result(ccomp_tot)
+         import :: depac_meteorology, depac_land_use, depac_config, depac_output
+
+         type(depac_meteorology), intent(in) :: meteo
+         type(depac_land_use), intent(in) :: lu_conf
+         type(depac_config), intent(in) :: dp_conf
+         type(depac_output), intent(in) :: dp_out
+
+         real :: ccomp_tot
+      end function comp_point_parameterisation
+
+
    end interface
-   
+
 end module t_depac_component
