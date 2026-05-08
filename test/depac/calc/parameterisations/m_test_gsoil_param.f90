@@ -1,6 +1,7 @@
 module m_test_gsoil_param
     use testdrive, only : new_unittest, unittest_type, error_type, check
-    use t_depac_land_use, only: depac_land_use, depac_rc_r_params, t_gsoil_parameterisation, t_rinc_parameterisation
+    use t_depac_land_use, only: depac_land_use, depac_rc_r_params, &
+        t_gsoil_parameterisation, t_rinc_parameterisation
     use t_depac_meteorology, only: depac_meteorology
     use t_depac_config, only: depac_config
     use t_depac_component, only: depac_component

@@ -32,7 +32,7 @@ contains
       class(t_gw_parameterisation), allocatable :: gw_f
       real:: gw
       comp%rw_val = -999.0
-      
+
 
       allocate(gw_f, source=gw_default())
       gw = gw_f%apply(meteo, comp, dp_conf, dp_err)

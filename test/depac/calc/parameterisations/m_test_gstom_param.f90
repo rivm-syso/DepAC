@@ -68,7 +68,7 @@ contains
     subroutine test_gstom_emberson_vpd(error)
         type(error_type), allocatable, intent(out) :: error
         type(depac_meteorology) :: meteo
-        
+
         real :: vpd
 
         meteo%t = 20.0
