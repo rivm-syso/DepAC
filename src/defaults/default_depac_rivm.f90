@@ -312,11 +312,11 @@ contains
       do i = 1, 9
          do j = 1, 6
             default_component_matrix(i, j) = default_component_types(j)
-
             ! we use a fixed total canopy resistance of 2000 s/m for NO on water and wet surfaces
             if (default_component_matrix(i, j)%index == COMP_NO .and. &
                default_land_use_matrix(i, j)%index == LU_WATER) then
-               default_component_matrix(i, j)%rc_special = rc_tot_fixed()
+               deallocate(default_component_matrix(i, j)%rc_special)
+               allocate(default_component_matrix(i, j)%rc_special, source=rc_tot_fixed())
             end if
          end do
       end do

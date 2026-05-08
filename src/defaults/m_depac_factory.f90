@@ -6,7 +6,7 @@ module m_depac_factory
    use m_gstom_param, only: gstom_default
    use m_gw_param, only: gw_default
    use m_gsoil_param, only: gsoil_default, rinc_no_resistance, rinc_default
-   use m_rc_special_param, only: rc_tot_fixed
+   use m_rc_special_param, only: rc_special_default
    use t_depac_component, only: depac_component, t_gstom_parameterisation, &
       t_comp_point_parameterisation, t_rc_special_param, t_gw_parameterisation
 
@@ -64,7 +64,7 @@ contains
       if (present(rc_special)) then
          allocate(comp%rc_special, source=rc_special)
       else
-         allocate(comp%rc_special, source=rc_tot_fixed())
+         allocate(comp%rc_special, source=rc_special_default())
       end if
 
    end function make_component
@@ -72,20 +72,26 @@ contains
    function make_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, &
          gsoil_param, stom_par, rc_rinc) result(land_use)
       character(len=*), intent(in) :: name
-      integer, intent(in) :: index
+      integer, intent(in), optional :: index
       real, intent(in) :: gamma_stom_c_fac
       real, intent(in) :: gamma_soil_c_fac
-      real, intent(in) :: rsoil
+      real, intent(in), optional :: rsoil
       class(t_gsoil_parameterisation), intent(in), optional :: gsoil_param
       type(depac_stomatal_params), intent(in), optional :: stom_par
       type(depac_rc_r_params), intent(in), optional :: rc_rinc
       type(depac_land_use) :: land_use
 
       land_use%name = name
-      land_use%index = index
       land_use%gamma_stom_c_fac = gamma_stom_c_fac
       land_use%gamma_soil_c_fac = gamma_soil_c_fac
-      land_use%rsoil = rsoil
+      
+      if (present(index)) then
+         land_use%index = index
+      end if
+
+      if (present(rsoil)) then
+         land_use%rsoil = rsoil
+      end if
 
       if (present(gsoil_param)) then
          allocate(land_use%gsoil_param, source=gsoil_param)

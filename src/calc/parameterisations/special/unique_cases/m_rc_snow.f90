@@ -59,6 +59,8 @@ contains
                 dp_out%rc_tot = 70.*(2.-meteo%t)
             endif
         else
+            print *, comp%name, comp%ipar_snow
+            
             call set_error(err, ERR_INPUT, &
                 'Programming error in rc_snow: unknown value of ipar_snow: '//trim(comp%name))
             call log_error('Programming error in rc_snow: unknown value of ipar_snow: ' &

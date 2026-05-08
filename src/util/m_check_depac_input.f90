@@ -36,35 +36,32 @@ contains
             return
         end if
 
-        if(comp%index <= 0) then
-            call set_error(dp_err, ERR_INPUT, &
-                'Component index is missing or invalid for component '//trim(comp%name))
+
+
+
+
+
+
+        ! now we check if all parameterisations are set
+
+        if (.not. allocated(comp%gw_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gw_param is not allocated for component '//trim(comp%name))
             return
         end if
 
-        if(missing(comp%diffc)) then
-            call set_error(dp_err, ERR_INPUT, 'diffc is missing for component '//trim(comp%name))
+        if (.not. allocated(comp%gstom_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gstom_param is not allocated for component '//trim(comp%name))
+            return
+        end if
+        if (.not. allocated(comp%comp_point_param)) then
+            call set_error(dp_err, ERR_INPUT, 'comp_point_param is not allocated for component '//trim(comp%name))
+            return
+        end if
+        if (.not. allocated(comp%rc_special)) then
+            call set_error(dp_err, ERR_INPUT, 'rc_special is not allocated for component '//trim(comp%name))
             return
         end if
 
-        if(missing(comp%ipar_snow)) then
-            call set_error(dp_err, ERR_INPUT,&
-             'ipar_snow is missing for component '//trim(comp%name))
-            return
-        end if
-
-
-        if (missing(comp%rsoil_frozen)) then
-            call set_error(dp_err, ERR_INPUT,&
-             'rsoil_frozen is missing for component '//trim(comp%name))
-            return
-        end if
-
-        if (missing(comp%rsoil_wet)) then
-            call set_error(dp_err, ERR_INPUT,&
-                 'rsoil_wet is missing for component '//trim(comp%name))
-            return
-        end if
 
 
 
@@ -78,11 +75,23 @@ contains
             call set_error(dp_err, ERR_INPUT, 'Land use name is empty.')
             return
         end if
-        if(lu%index <= 0) then
-            call set_error(dp_err, ERR_INPUT, &
-            'Land use index is missing or invalid for land use '//trim(lu%name))
+
+        if(.not. allocated(lu%gsoil_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gsoil_param is not allocated for land use '//trim(lu%name))
             return
         end if
+
+        if(.not. allocated(lu%rc_rinc%rinc_param)) then
+            call set_error(dp_err, ERR_INPUT, 'rc_rinc_param is not allocated for land use '//trim(lu%name))
+            return
+        end if
+
+        if(.not. allocated(lu%stom_par%csoil_param)) then
+            call set_error(dp_err, ERR_INPUT, 'csoil_param is not allocated for land use '//trim(lu%name))
+            return
+        end if
+
+         ! now we check if all parameterisations are set
 
         ! all other parameters can be missing (-999.0) as
         ! they may not be needed for all components and are checked elsewhere

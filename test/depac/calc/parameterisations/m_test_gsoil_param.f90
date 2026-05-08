@@ -128,7 +128,6 @@ contains
 
         rinc = rc_rinc%b * rc_rinc%h * dp_conf%sai
 
-        print *, "Calculated rinc: ", rinc
 
         rinc = rinc_f%apply(rc_rinc, meteo, dp_conf)
 

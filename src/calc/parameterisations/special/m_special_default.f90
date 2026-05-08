@@ -1,4 +1,4 @@
-module m_special_default
+module m_rc_special_default
     use t_depac_meteorology, only: depac_meteorology
     use t_depac_output, only: depac_output
     use t_depac_error, only: depac_error
@@ -36,4 +36,4 @@ contains
 
     end subroutine rc_special_default_apply
 
-end module m_special_default
+end module m_rc_special_default

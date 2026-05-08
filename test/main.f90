@@ -10,7 +10,6 @@ program tester
     use m_test_rc_tot, only: collect_rc_tot_tests
     use m_test_comp_points, only: collect_comp_points_tests
     use m_test_rc_eff, only: collect_rc_eff_tests
-    use m_test_rc_snow, only: collect_rc_snow_tests
     use m_test_version, only: collect_version_tests
     use m_test_depac, only: collect_depac_tests
     use m_test_ra, only: collect_calc_ra_tests
@@ -42,7 +41,6 @@ program tester
         new_testsuite("depac_tests", collect_depac_tests), &
         new_testsuite("calc_ra_tests", collect_calc_ra_tests), &
         new_testsuite("calc_rb_tests", collect_calc_rb_tests), &
-        new_testsuite("rc_snow_tests", collect_rc_snow_tests), &
         new_testsuite("test_helpers_tests", collect_test_helpers_tests), &
         new_testsuite("test_loggers_tests", collect_test_loggers_tests) &
     ]

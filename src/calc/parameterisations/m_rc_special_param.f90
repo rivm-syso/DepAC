@@ -2,7 +2,7 @@ module m_rc_special_param
     use m_rc_tot_fixed, only: rc_tot_fixed
     use m_rc_tot_nitric_acid, only: rc_tot_nitric_acid
     use m_rc_tot_nitric_oxide, only: rc_tot_nitric_oxide
-    use m_special_default, only: rc_special_default
+    use m_rc_special_default, only: rc_special_default
 
     implicit none (type, external)
     private

@@ -7,6 +7,7 @@ module m_test_rc_special
     use t_depac_output, only: depac_output
     use t_depac_error, only: depac_error, ERR_INPUT
     use m_logger, only: set_log_level, LOG_LEVEL_NONE
+    use m_test_rc_special_param, only: collect_rc_special_param_tests
     use m_helpers, only: missing
     use m_rc_special, only: rc_special
     use default_indices, only: COMP_HNO3, COMP_O3, COMP_NO, LU_WATER
@@ -18,7 +19,8 @@ module m_test_rc_special
     subroutine collect_rc_special_tests(testsuite)
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
-        testsuite = [ &
+        call collect_rc_special_param_tests(testsuite)
+        testsuite = [testsuite, &
             new_unittest("rc_special", test_rc_special) &
         ]
 
