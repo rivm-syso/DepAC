@@ -12,7 +12,7 @@ module m_test_depac
    use m_version, only: VERSION, BUILD_DATE
 
    use t_depac_config_core, only: depac_config_core
-   
+
    use c_params, only: gw_nh3_sutton
    ! parameterisation
    use m_comp_point_param, only: comp_point_default, csoil_default
@@ -71,7 +71,7 @@ contains
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, 10.0000000 &
          ], [6,9])
 
-      
+
       setup%config%lai = 7.0
       setup%config%sai = 6.0
       setup%config%rssnow = 2000.0
@@ -431,17 +431,17 @@ contains
       ! Check the depac output
 
       call init_default_depac_config_rivm()
-      
+
       tmp_config = setup%config
       setup = default_depac_setup(1,1)
       setup%config = tmp_config
 
-      
+
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
          message="depac returned error when all inputs were set correctly for output check")
       if (allocated(error)) return
-      
+
 
       call check(error, ctx%output%version, VERSION, &
          message="depac version output incorrect")
@@ -472,7 +472,7 @@ contains
       call check(error, ctx%output%gc_tot, 9.64050069E-02, &
          message="depac gc_tot output incorrect", thr=1.0e-6)
       if (allocated(error)) return
-      
+
 
       call check(error, ctx%output%rc_tot, 10.3729048, &
          message="depac rc_tot output incorrect", thr=1.0e-6)
@@ -484,7 +484,7 @@ contains
 
 
       ! test another case for 3,3 SO2, permanent crops, which has different parameterisations
-      
+
       setup = default_depac_setup(3,3)
       setup%config = tmp_config
 

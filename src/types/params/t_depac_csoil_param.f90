@@ -17,9 +17,9 @@ module t_depac_csoil_param
             class(*), intent(in) :: setup ! only allow depac_setup, but prevent circular dependency
             type(depac_context), intent(in) :: ctx
             real, intent(in) :: tfac
-            
+
             real :: csoil
         end function i_csoil_parameterisation
     end interface
-    
+
 end module t_depac_csoil_param

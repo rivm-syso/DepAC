@@ -26,7 +26,7 @@ contains
         type(depac_setup), intent(in) :: setup
         type(depac_context), intent(inout)  :: ctx     ! current computed context
 
-        
+
         ctx%output%ccomp_tot = setup%comp_point_param%apply(setup, ctx)
     end subroutine rc_comp_point
 end module m_comp_points

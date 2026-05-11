@@ -10,7 +10,7 @@ module m_depac_factory
 
    use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
       rc_special_default, rinc_default, csoil_default
- 
+
 
    implicit none (type, external)
    private
@@ -18,8 +18,8 @@ module m_depac_factory
 contains
 
    function make_setup(component, land_use, &
-         gsoil_param, csoil_param, rinc_param, &
-         gw_param, gstom_param, comp_point_param, rc_special_param) result(setup)
+      gsoil_param, csoil_param, rinc_param, &
+      gw_param, gstom_param, comp_point_param, rc_special_param) result(setup)
       type(depac_component), intent(in) :: component
       type(depac_land_use), intent(in) :: land_use
       class(depac_gsoil_param), intent(in), optional :: gsoil_param
@@ -66,7 +66,7 @@ contains
       else
          allocate(setup%rc_special_param, source=rc_special_default())
       end if
-      
+
 
       if (present(csoil_param)) then
          allocate(setup%csoil_param, source=csoil_param)
@@ -82,7 +82,8 @@ contains
 
    end function make_setup
 
-   function make_component(name, index, diffc, rw_val, ipar_snow, rsoil_frozen, rsoil_wet) result(comp)
+   function make_component(name, index, diffc, rw_val, ipar_snow, &
+      rsoil_frozen, rsoil_wet) result(comp)
       character(len=*), intent(in) :: name
       integer, intent(in) :: index
       real, intent(in) :: diffc
@@ -104,7 +105,7 @@ contains
    end function make_component
 
    function make_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, &
-         stom_par, rc_rinc) result(land_use)
+      stom_par, rc_rinc) result(land_use)
       character(len=*), intent(in) :: name
       integer, intent(in), optional :: index
       real, intent(in) :: gamma_stom_c_fac
@@ -157,7 +158,7 @@ contains
    end function make_rc_r_params
 
    function make_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, &
-          vpd_max, vpd_min) result(stom_par)
+      vpd_max, vpd_min) result(stom_par)
       real, intent(in) :: F_min
       real, intent(in) :: alpha
       real, intent(in) :: Topt

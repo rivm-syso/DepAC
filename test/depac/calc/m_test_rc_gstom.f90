@@ -2,7 +2,7 @@ module m_test_rc_gstom
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
     use m_test_gstom_param, only: collect_gstom_param_tests
-    
+
     implicit none (type, external)
     private
     public :: collect_rc_gstom_tests

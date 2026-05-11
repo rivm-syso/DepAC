@@ -9,7 +9,7 @@ module t_depac_context
     type :: depac_context
         logical :: has_leaves = .false.
         logical :: has_vegetation = .false.
-        
+
         type(depac_meteorology_core) :: meteo
         type(depac_output_core) :: output
         type(depac_error_core) :: error

@@ -31,7 +31,7 @@ contains
     subroutine rc_eff(setup, ctx)
         type(depac_setup), intent(in) :: setup
         type(depac_context), intent(inout) :: ctx
-        
+
         ! Use associate to simplify access to setup and context variables
         associate (cfg => setup%config, out => ctx%output)
             if (cfg%comp_point%c_nh3 /= out%ccomp_tot) then

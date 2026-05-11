@@ -1,8 +1,8 @@
 module m_test_rc_gw
     use testdrive, only : new_unittest, unittest_type, error_type, check
-    
+
     use m_test_gw_param, only: collect_gw_param_tests
-    
+
 
     implicit none (type, external)
     private

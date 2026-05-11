@@ -13,14 +13,16 @@ module default_depac_config_rivm
    use t_depac_setup, only: depac_setup
 
    use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
-      rc_special_default, rinc_default, rinc_no_path, rinc_no_resistance, csoil_default, csoil_water, &
+      rc_special_default, rinc_default, rinc_no_path, rinc_no_resistance,&
+       csoil_default, csoil_water, &
        gw_nh3_sutton, gw_so2, gstom_emberson, comp_point_ammonia, rc_tot_nitric_acid, &
        rc_tot_nitric_oxide, rc_tot_fixed
 
    use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
       LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
       LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
-   use m_depac_factory, only: make_component, make_land_use, make_setup, make_stom_params, make_rc_r_params
+   use m_depac_factory, only: make_component, make_land_use, make_setup, &
+      make_stom_params, make_rc_r_params
 
 
    implicit none (type, external)
@@ -37,7 +39,7 @@ module default_depac_config_rivm
    type(depac_setup), dimension(:,:), allocatable, public :: default_depac_setup
 
 
-   
+
 
    public
 
@@ -45,25 +47,25 @@ contains
 
    subroutine init_default_depac_config_rivm()
       integer :: i, j
-      logical, dimension(6,9) :: use_gw_nh3_sutton = .false.
-      logical, dimension(6,9) :: use_gw_so2 = .false.
+      logical, dimension(6,9), save :: use_gw_nh3_sutton = .false.
+      logical, dimension(6,9), save :: use_gw_so2 = .false.
 
-      logical, dimension(6,9) :: use_gstom_emberson = .false.
-      logical, dimension(6,9) :: use_comp_point_ammonia = .false.
-      
-      logical, dimension(6,9) :: use_rc_tot_nitric_acid = .false.
-      logical, dimension(6,9) :: use_rc_tot_nitric_oxide = .false.
-      logical, dimension(6,9) :: use_rc_tot_fixed = .false.
+      logical, dimension(6,9), save :: use_gstom_emberson = .false.
+      logical, dimension(6,9), save :: use_comp_point_ammonia = .false.
 
-      logical, dimension(6,9) :: use_rinc_no_resistance = .false.
-      logical, dimension(6,9) :: use_rinc_no_path = .false.
-      
-      real, dimension(9, 6) :: default_rsoil_matrix
+      logical, dimension(6,9), save :: use_rc_tot_nitric_acid = .false.
+      logical, dimension(6,9), save :: use_rc_tot_nitric_oxide = .false.
+      logical, dimension(6,9), save :: use_rc_tot_fixed = .false.
+
+      logical, dimension(6,9), save :: use_rinc_no_resistance = .false.
+      logical, dimension(6,9), save :: use_rinc_no_path = .false.
+
+      real, dimension(9, 6), save :: default_rsoil_matrix
 
 
       use_gw_nh3_sutton(COMP_NH3,:) = .true.
       use_gw_so2(COMP_SO2,:) = .true.
-      
+
       use_gstom_emberson(COMP_NH3, :) = .true.
       use_gstom_emberson(COMP_O3, :) = .true.
       use_gstom_emberson(COMP_SO2, :) = .true.
@@ -71,7 +73,7 @@ contains
 
       use_comp_point_ammonia(COMP_NH3, :) = .true.
 
-      
+
       use_rc_tot_nitric_acid(COMP_HNO3, :) = .true.
       use_rc_tot_nitric_oxide(COMP_NO, :) = .true.
 
@@ -340,7 +342,7 @@ contains
             )
 
             default_depac_setup(i, j)%land_use%rsoil = default_rsoil_matrix(i, j)
-            
+
             if(use_gw_nh3_sutton(j, i)) then
                deallocate(default_depac_setup(i, j)%gw_param)
                allocate(default_depac_setup(i, j)%gw_param, source=gw_nh3_sutton())

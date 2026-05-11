@@ -30,7 +30,7 @@ contains
     subroutine rc_gstom(setup, ctx)
         type(depac_setup), intent(in) :: setup
         type(depac_context), intent(inout) :: ctx
-        
+
         ctx%output%gstom = setup%gstom_param%apply(setup, ctx)
 
     end subroutine rc_gstom

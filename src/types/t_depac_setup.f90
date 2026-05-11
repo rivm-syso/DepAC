@@ -11,9 +11,9 @@ module t_depac_setup
    implicit none (type, external)
    private
    public :: depac_setup
-   
+
    type :: depac_setup
-      
+
       type(depac_config_core) :: config
       type(depac_land_use) :: land_use
       type(depac_component) :: component

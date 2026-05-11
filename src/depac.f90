@@ -42,7 +42,7 @@ module depac
 
   use m_ra, only: depac_calc_ra,  depac_calc_ra_obs_h
   use m_rb, only: depac_calc_rb_hicks
-  
+
   implicit none (type, external)
 
 

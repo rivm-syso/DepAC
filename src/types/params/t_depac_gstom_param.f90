@@ -16,7 +16,7 @@ module t_depac_gstom_param
             class(depac_gstom_param), intent(in) :: this
             class(*), intent(in) :: setup ! only allow depac_setup, but prevent circular dependency
             type(depac_context), intent(in) :: ctx
-            
+
             real :: gstom
         end function i_gstom_parameterisation
     end interface

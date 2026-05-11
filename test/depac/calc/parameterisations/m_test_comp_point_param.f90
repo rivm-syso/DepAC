@@ -42,7 +42,7 @@ contains
       ! Test the default component point parameterisation for all components and land uses
       ! using the default configuration. This checks that the parameterisation runs without
       ! errors and produces reasonable outputs (e.g. non-negative concentrations).
-   
+
 
       ctx%meteo%tsurf = 21.0
       ctx%meteo%t = 21.0

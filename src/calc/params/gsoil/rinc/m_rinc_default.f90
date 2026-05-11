@@ -17,7 +17,7 @@ contains
       type(depac_context), intent(in) :: ctx
 
       real :: rinc
-     
+
       select type (setup)
        type is (depac_setup)
          associate(meteo => ctx%meteo, dp_conf => setup%config, rc_rinc => setup%land_use%rc_rinc)

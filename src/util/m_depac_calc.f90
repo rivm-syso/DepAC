@@ -108,7 +108,7 @@ contains
          call rc_gstom(setup, ctx) ! Stomatal resistance
          if (has_error(ctx%error)) return
 
-         
+
       end if
 
       ! Always set version and build date
