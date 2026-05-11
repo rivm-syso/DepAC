@@ -9,14 +9,14 @@
 !------------------------------------------------------------------------------
 
 module m_depac_error
-    use t_depac_error, only: depac_error, ERR_NONE
+    use t_depac_error_core, only: depac_error_core, ERR_NONE
     implicit none (type, external)
     public
 
     contains
 
     subroutine set_error(err, code, message)
-        type(depac_error), intent(inout) :: err
+        type(depac_error_core), intent(inout) :: err
         integer, intent(in) :: code
         character(len=*), intent(in) :: message
 
@@ -25,14 +25,14 @@ module m_depac_error
     end subroutine set_error
 
     subroutine clear_error(err)
-        type(depac_error), intent(inout) :: err
+        type(depac_error_core), intent(inout) :: err
 
         err%code = ERR_NONE
         err%message = ''
     end subroutine clear_error
 
     function has_error(err) result(result)
-        type(depac_error), intent(in) :: err
+        type(depac_error_core), intent(in) :: err
         logical :: result
 
         result = (err%code /= ERR_NONE)

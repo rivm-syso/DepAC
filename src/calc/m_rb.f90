@@ -8,10 +8,7 @@
  ! Created:     November 13, 2025
  !-------------------------------------------------------------------------------
 module m_rb
-   use t_depac_meteorology, only: depac_meteorology
-   use t_depac_component, only: depac_component
-   use t_depac_config, only: depac_config
-   use m_logger, only: log_debug
+   use t_depac_context, only: depac_context
    implicit none (type, external)
 
    public
@@ -27,29 +24,29 @@ contains
    !   Hicks parametrization based on a simple u star formula.
    ! with diffusion coefficient adjustment.
    !--------------------------------------------------------------------------
-   function depac_calc_rb_hicks(meteo, comp) result(rb)
-      type(depac_meteorology), intent(in) :: meteo
-      type(depac_component), intent(in) :: comp
+   function depac_calc_rb_hicks(ctx, ust) result(rb)
+      type(depac_context), intent(in) :: ctx
+      real, intent(in) :: ust
       real :: rb
       real, parameter :: thk = 0.20e-4   ! thermal diffusivity of dry air 20 C
 
 
-        if (meteo%ust <= 0.0) then
+        if (ust <= 0.0) then
              rb = -999.0
              call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for rb.')
              return
         end if
 
-        if (comp%diffc <= 0.0) then
+        if (ctx%comp%diffc <= 0.0) then
              rb = -999.0
              call log_debug('Invalid diffusion coefficient (diffc <= 0). Returning -999.0 for rb.')
              return
         end if
 
 
-      rb = 5.0 / meteo%ust
+      rb = 5.0 / ust
 
-      rb = rb*(thk/comp%diffc)**.67
+      rb = rb*(thk/ctx%comp%diffc)**.67
 
    end function depac_calc_rb_hicks
 

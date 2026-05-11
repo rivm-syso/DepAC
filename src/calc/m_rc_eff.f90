@@ -12,9 +12,8 @@
 !------------------------------------------------------------------------------
 module m_rc_eff
 
-    use t_depac_output, only: depac_output
-    use t_depac_error, only: depac_error
-    use t_depac_config, only: depac_config
+    use t_depac_setup, only: depac_setup
+    use t_depac_context, only: depac_context
     implicit none (type, external)
     public
 contains
@@ -29,17 +28,19 @@ contains
     ! rc_tot is the total canopy resistance
     ! comp_point is the compensation point of the component
     ! ccomp_tot is the total compensation point
-    subroutine rc_eff(dp_out, dp_conf, err)
-        type(depac_output), intent(inout) :: dp_out  ! output of this run
-        type(depac_config), intent(in) :: dp_conf    ! configuration data
-        type(depac_error), intent(inout) :: err      ! error handling
-
-        if (dp_conf%comp_point%c_nh3 /= dp_out%ccomp_tot) then
-            dp_out%rc_eff = ((dp_conf%ra_obs + dp_conf%rb) * dp_out%ccomp_tot + &
-                dp_out%rc_tot * dp_conf%comp_point%c_nh3) / &
-                (dp_conf%comp_point%c_nh3 - dp_out%ccomp_tot)
-        else
-            dp_out%rc_eff = -9999.0 ! no flux, resistance undefined
-        end if
+    subroutine rc_eff(setup, ctx)
+        type(depac_setup), intent(in) :: setup
+        type(depac_context), intent(inout) :: ctx
+        
+        ! Use associate to simplify access to setup and context variables
+        associate (cfg => setup%config, out => ctx%output)
+            if (cfg%comp_point%c_nh3 /= out%ccomp_tot) then
+                out%rc_eff = ((cfg%ra_obs + cfg%rb) * out%ccomp_tot + &
+                    out%rc_tot * cfg%comp_point%c_nh3) / &
+                    (cfg%comp_point%c_nh3 - out%ccomp_tot)
+            else
+                out%rc_eff = -9999.0 ! no flux, resistance undefined
+            end if
+        end associate
     end subroutine rc_eff
 end module m_rc_eff
