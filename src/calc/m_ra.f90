@@ -13,6 +13,7 @@
 !------------------------------------------------------------------------------
 module m_ra
     use m_logger, only: log_debug
+    use c_depac_core, only: depac_meteorology_core
     implicit none (type, external)
     public
 contains
@@ -24,24 +25,23 @@ contains
     !   The formula used is ra = ws10 / ust^2, where ws10 is the wind speed at
     !   10 meters and ust is the friction velocity.
     ! --------------------------------------------------------------------------
-    function depac_calc_ra(ws10, ust) result(ra)
-        real, intent(in) :: ws10
-        real, intent(in) :: ust
+    function depac_calc_ra(meteo) result(ra)
+        type(depac_meteorology_core), intent(in) :: meteo
         real :: ra
 
-        if (ust <= 0.0) then
+        if (meteo%ust <= 0.0) then
             ra = -999.0
             call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for ra.')
             return
         end if
 
-        if (ws10 < 0.0) then
+        if (meteo%ws10 < 0.0) then
             ra = -999.0
             call log_debug('Invalid wind speed at 10m (ws10 < 0). Returning -999.0 for ra.')
             return
         end if
 
-        ra = ws10 / ust**2
+        ra = meteo%ws10 / meteo%ust**2
 
     end function depac_calc_ra
 
@@ -58,7 +58,7 @@ contains
     !   temperature profile. Empirical fit by Holtslag and De Bruin (1987).
     ! --------------------------------------------------------------------------
     function depac_calc_ra_obs_h(meteo, obs_h) result(ra)
-        type(depac_meteorology), intent(in) :: meteo
+        type(depac_meteorology_core), intent(in) :: meteo
         real, intent(in) :: obs_h
         real :: ra
         ! Local variables

@@ -15,13 +15,11 @@
 !------------------------------------------------------------------------------
 module m_rc_tot
 
-    use t_depac_setup, only: depac_setup
     use t_depac_context, only: depac_context
     implicit none (type, external)
     public
 contains
-    subroutine rc_tot(setup, ctx)
-        type(depac_setup), intent(in) :: setup
+    subroutine rc_tot(ctx)
         type(depac_context), intent(inout) :: ctx
         ! Total conductance:
         ctx%output%gc_tot = ctx%output%gstom + ctx%output%gsoil_eff + ctx%output%gw

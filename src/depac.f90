@@ -39,6 +39,9 @@ module depac
   use t_depac_context, only: depac_context
 
   use m_depac_calc, only: depac_calc, depac_calc_partial, depac_calc_finish
+
+  use m_ra, only: depac_calc_ra,  depac_calc_ra_obs_h
+  use m_rb, only: depac_calc_rb_hicks
   
   implicit none (type, external)
 

@@ -122,7 +122,7 @@ contains
          !--------------------------------------------------------------
          ! Compute total canopy resistance and conductance
          !--------------------------------------------------------------
-         call rc_tot(setup, ctx) ! Total canopy resistance
+         call rc_tot(ctx) ! Total canopy resistance
          if (has_error(ctx%error)) return
 
          !--------------------------------------------------------------

@@ -1,7 +1,6 @@
 module m_test_helpers
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-    use t_depac_meteorology, only: depac_meteorology
     use m_helpers, only: fpsih, missing
 
 

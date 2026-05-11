@@ -3,7 +3,6 @@ module m_test_rc_gsoil
 
 
    use m_test_gsoil_param, only: collect_gsoil_param_tests
-   use m_logger, only: set_log_level, LOG_LEVEL_NONE
 
    implicit none (type, external)
    private
