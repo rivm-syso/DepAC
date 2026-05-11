@@ -1,13 +1,11 @@
 module m_test_comp_point_param
    use testdrive, only : new_unittest, unittest_type, error_type, check
 
-   use m_comp_point_param, only: comp_point_ammonia, comp_point_default, csoil_default, csoil_water
-
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
 
-   use c_params, only: comp_point_ammonia, csoil_default, csoil_water, comp_point_default
-   use c_depac_params, only: depac_comp_point_param, depac_csoil_param
+   use m_depac_params, only: comp_point_ammonia, csoil_default, csoil_water, comp_point_default
+   use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param
 
 
 

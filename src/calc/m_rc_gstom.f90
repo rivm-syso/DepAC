@@ -18,13 +18,6 @@ contains
     !------------------------------------------------------------------------------
     ! Subroutine: rc_gstom
     ! Purpose   : Compute stomatal conductance for a given component
-    ! Arguments :
-    !   comp      - component type (chemical species)
-    !   lu_conf   - land use configuration
-    !   meteo     - meteorological data
-    !   dp_conf   - DepAC configuration
-    !   dp_out    - output structure
-    !   err       - error handling
     ! Notes     : Implements component-specific logic and vegetation checks.
     !------------------------------------------------------------------------------
     subroutine rc_gstom(setup, ctx)

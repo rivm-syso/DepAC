@@ -21,6 +21,8 @@ contains
 
     ! --------------------------------------------------------------------------
     ! Function:   depac_calc_ra
+    ! Created:    November 14 2025
+    ! Updated:    May 11 2026
     ! Description:
     !   Calculates aerodynamic resistance (ra) using meteorological data.
     !   The formula used is ra = ws10 / ust^2, where ws10 is the wind speed at
@@ -48,6 +50,8 @@ contains
 
     ! --------------------------------------------------------------------------
     ! Function:   depac_calc_ra_obs_h
+    ! Created:    November 14 2025
+    ! Updated:    May 11 2026
     ! Description:
     !   Calculates aerodynamic resistance (Ra) at a specified observation height
     !   using meteorological data. The formula used is:

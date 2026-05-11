@@ -1,5 +1,5 @@
 module m_gstom_emberson
-   use c_depac_params, only: depac_gstom_param
+   use c_depac_param_types, only: depac_gstom_param
    use c_depac_core, only: depac_meteorology_core
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context

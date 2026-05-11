@@ -6,11 +6,7 @@
 ! Created:    November 14 2025
 ! Updated:    November 20 2025
 ! Description:
-!   This module provides routines for calculating external leaf resistance
-!   (gw) for atmospheric deposition modeling components. The main subroutine,
-!   rc_gw, computes conductance for NO, NO2, O3, SO2, and NH3, using
-!   meteorological, component, and configuration parameters. Includes
-!   parameterizations for SO2 and NH3 based on literature and RIVM defaults.
+!   Calculation of the external leaf conductance (gw) 
 !------------------------------------------------------------------------------
 module m_rc_gw
    use t_depac_setup, only: depac_setup

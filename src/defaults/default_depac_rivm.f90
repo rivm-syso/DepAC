@@ -12,36 +12,47 @@ module default_depac_config_rivm
    use t_depac_land_use, only: depac_land_use
    use t_depac_setup, only: depac_setup
 
-   use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
+   use m_depac_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
       rc_special_default, rinc_default, rinc_no_path, rinc_no_resistance,&
        csoil_default, csoil_water, &
        gw_nh3_sutton, gw_so2, gstom_emberson, comp_point_ammonia, rc_tot_nitric_acid, &
        rc_tot_nitric_oxide, rc_tot_fixed
 
-   use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
-      LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
-      LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
    use m_depac_factory, only: make_component, make_land_use, make_setup, &
       make_stom_params, make_rc_r_params
 
 
    implicit none (type, external)
 
-   ! SEE default_indices.f90 for indices of land use and component types
-   ! These are used here in the default configuration and can be used by
-   ! users to refer to these types in their input.
+   ! Defined component indices for easier reference
+    enum, bind(c)
+      enumerator :: RIVM_COMP_NH3 = 1
+      enumerator :: RIVM_COMP_O3 = 2
+      enumerator :: RIVM_COMP_SO2 = 3
+      enumerator :: RIVM_COMP_NO2 = 4
+      enumerator :: RIVM_COMP_NO = 5
+      enumerator :: RIVM_COMP_HNO3 = 6
+   end enum
 
+   ! Defined land use indices for easier reference
+   enum, bind(c)
+      enumerator :: RIVM_LU_GRASS = 1
+      enumerator :: RIVM_LU_ARABLE = 2
+      enumerator :: RIVM_LU_PERMANENT_CROPS = 3
+      enumerator :: RIVM_LU_CONIFEROUS_FOREST = 4
+      enumerator :: RIVM_LU_DECIDUOUS_FOREST = 5
+      enumerator :: RIVM_LU_WATER = 6
+      enumerator :: RIVM_LU_URBAN = 7
+      enumerator :: RIVM_LU_OTHER = 8
+      enumerator :: RIVM_LU_DESERT = 9
+   end enum
 
+   type(depac_component), dimension(:), allocatable :: default_components
+   type(depac_land_use), dimension(:), allocatable :: default_land_uses
+   type(depac_setup), dimension(:,:), allocatable :: default_depac_setup
 
-
-   type(depac_component), dimension(:), allocatable, public :: default_components
-   type(depac_land_use), dimension(:), allocatable, public :: default_land_uses
-   type(depac_setup), dimension(:,:), allocatable, public :: default_depac_setup
-
-
-
-
-   public
+   private
+   public :: init_default_depac_config_rivm, finalize_default_depac_config_rivm, default_depac_setup
 
 contains
 
@@ -63,28 +74,28 @@ contains
       real, dimension(9, 6), save :: default_rsoil_matrix
 
 
-      use_gw_nh3_sutton(COMP_NH3,:) = .true.
-      use_gw_so2(COMP_SO2,:) = .true.
+      use_gw_nh3_sutton(RIVM_COMP_NH3,:) = .true.
+      use_gw_so2(RIVM_COMP_SO2,:) = .true.
 
-      use_gstom_emberson(COMP_NH3, :) = .true.
-      use_gstom_emberson(COMP_O3, :) = .true.
-      use_gstom_emberson(COMP_SO2, :) = .true.
-      use_gstom_emberson(COMP_NO2, :) = .true.
+      use_gstom_emberson(RIVM_COMP_NH3, :) = .true.
+      use_gstom_emberson(RIVM_COMP_O3, :) = .true.
+      use_gstom_emberson(RIVM_COMP_SO2, :) = .true.
+      use_gstom_emberson(RIVM_COMP_NO2, :) = .true.
 
-      use_comp_point_ammonia(COMP_NH3, :) = .true.
+      use_comp_point_ammonia(RIVM_COMP_NH3, :) = .true.
 
 
-      use_rc_tot_nitric_acid(COMP_HNO3, :) = .true.
-      use_rc_tot_nitric_oxide(COMP_NO, :) = .true.
+      use_rc_tot_nitric_acid(RIVM_COMP_HNO3, :) = .true.
+      use_rc_tot_nitric_oxide(RIVM_COMP_NO, :) = .true.
 
-      use_rc_tot_fixed(COMP_NO, LU_WATER) = .true.
+      use_rc_tot_fixed(RIVM_COMP_NO, RIVM_LU_WATER) = .true.
 
-      use_rinc_no_resistance(:, LU_WATER) = .true.
-      use_rinc_no_resistance(:, LU_URBAN) = .true.
-      use_rinc_no_resistance(:, LU_DESERT) = .true.
+      use_rinc_no_resistance(:, RIVM_LU_WATER) = .true.
+      use_rinc_no_resistance(:, RIVM_LU_URBAN) = .true.
+      use_rinc_no_resistance(:, RIVM_LU_DESERT) = .true.
 
-      use_rinc_no_path(:, LU_OTHER) = .true.
-      use_rinc_no_path(:, LU_GRASS) = .true.
+      use_rinc_no_path(:, RIVM_LU_OTHER) = .true.
+      use_rinc_no_path(:, RIVM_LU_GRASS) = .true.
 
 
 
@@ -112,7 +123,7 @@ contains
       default_components = [ &
          make_component( &
          name = 'NH3', &
-         index = COMP_NH3, &
+         index = RIVM_COMP_NH3, &
          diffc = 0.21e-4, &
          rw_val = -999.0, &
          ipar_snow = 2, &
@@ -120,7 +131,7 @@ contains
          rsoil_wet = 10.0), &
          make_component( &
          name = 'O3', &
-         index = COMP_O3, &
+         index = RIVM_COMP_O3, &
          diffc = 0.13e-4, &
          rw_val = 1000.0, &
          ipar_snow = 1, &
@@ -128,7 +139,7 @@ contains
          rsoil_wet = 2000.0), &
          make_component( &
          name = 'SO2', &
-         index = COMP_SO2, &
+         index = RIVM_COMP_SO2, &
          diffc = 0.11e-4, &
          rw_val = -999.0, &
          ipar_snow = 2, &
@@ -136,7 +147,7 @@ contains
          rsoil_wet = 10.0), &
          make_component( &
          name = 'NO2', &
-         index = COMP_NO2, &
+         index = RIVM_COMP_NO2, &
          diffc = 0.13e-4, &
          rw_val = 2000.0, &
          ipar_snow = 1, &
@@ -144,7 +155,7 @@ contains
          rsoil_wet = 2000.0), &
          make_component( &
          name = 'NO', &
-         index = COMP_NO, &
+         index = RIVM_COMP_NO, &
          diffc = 0.16e-4, &
          rw_val = -999.0, &
          ipar_snow = 1, &
@@ -152,7 +163,7 @@ contains
          rsoil_wet = -999.0), &
          make_component( &
          name = 'HNO3', &
-         index = COMP_HNO3, &
+         index = RIVM_COMP_HNO3, &
          diffc = -999.0, &
          rw_val = -999.0, &
          ipar_snow = -999, &
@@ -167,7 +178,7 @@ contains
       default_land_uses = [ &
          make_land_use( &
          name = 'grass', &
-         index = LU_GRASS, &
+         index = RIVM_LU_GRASS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -182,7 +193,7 @@ contains
          vpd_min = 3.0)), &
          make_land_use( &
          name = 'arable', &
-         index = LU_ARABLE, &
+         index = RIVM_LU_ARABLE, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -200,7 +211,7 @@ contains
          h = 1.0)), &
          make_land_use( &
          name = 'permanent_crops', &
-         index = LU_PERMANENT_CROPS, &
+         index = RIVM_LU_PERMANENT_CROPS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -218,7 +229,7 @@ contains
          h = 1.0)), &
          make_land_use( &
          name = 'coniferous_forest', &
-         index = LU_CONIFEROUS_FOREST, &
+         index = RIVM_LU_CONIFEROUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -236,7 +247,7 @@ contains
          h = 20.0)), &
          make_land_use( &
          name = 'deciduous_forest', &
-         index = LU_DECIDUOUS_FOREST, &
+         index = RIVM_LU_DECIDUOUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -254,7 +265,7 @@ contains
          h = 20.0)), &
          make_land_use( &
          name = 'water', &
-         index = LU_WATER, &
+         index = RIVM_LU_WATER, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = 430.0, &
          rsoil = -999.0, &
@@ -269,7 +280,7 @@ contains
          vpd_min = -999.0)), &
          make_land_use( &
          name = 'urban', &
-         index = LU_URBAN, &
+         index = RIVM_LU_URBAN, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -284,7 +295,7 @@ contains
          vpd_min = -999.0)), &
          make_land_use( &
          name = 'other', &
-         index = LU_OTHER, &
+         index = RIVM_LU_OTHER, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -299,7 +310,7 @@ contains
          vpd_min = 3.0)), &
          make_land_use( &
          name = 'desert', &
-         index = LU_DESERT, &
+         index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -314,7 +325,7 @@ contains
          vpd_min = -999.0)), &
          make_land_use( &
          name = 'desert', &
-         index = LU_DESERT, &
+         index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
@@ -332,10 +343,9 @@ contains
       allocate(default_depac_setup(9, 6))
 
 
-
-
       do i = 1, 9
          do j = 1, 6
+
             default_depac_setup(i, j) = make_setup( &
                component = default_components(j), &
                land_use = default_land_uses(i) &
@@ -392,7 +402,17 @@ contains
 
    end subroutine init_default_depac_config_rivm
 
-
+   subroutine finalize_default_depac_config_rivm()
+      if (allocated(default_components)) then
+         deallocate(default_components)
+      end if
+      if (allocated(default_land_uses)) then
+         deallocate(default_land_uses)
+      end if
+      if (allocated(default_depac_setup)) then
+         deallocate(default_depac_setup)
+      end if
+   end subroutine finalize_default_depac_config_rivm
 
 end module default_depac_config_rivm
 

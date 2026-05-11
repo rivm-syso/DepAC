@@ -1,3 +1,9 @@
+
+! Author:     Marte Voorneveld
+! Created:    2025-11-28
+! Updated:    2026-05-11
+! Description:
+!   This module defines core derived types for the DepAC atmospheric deposition model.
 module c_depac_core
     use t_depac_component_core, only: depac_component_core
     use t_depac_config_core, only: depac_config_core

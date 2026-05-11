@@ -5,10 +5,10 @@ module m_depac_factory
 
    use t_depac_land_use, only: depac_stomatal_params, depac_rc_r_params
 
-   use c_depac_params, only: depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
+   use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
       depac_gstom_param, depac_gw_param, depac_rc_special_param, depac_rinc_param
 
-   use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
+   use m_depac_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
       rc_special_default, rinc_default, csoil_default
 
 

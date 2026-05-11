@@ -4,7 +4,7 @@
 !             Addo van Pul, Jan Willem Erisman,
 !             Ferd Sauter, Margreet van Zanten, Roy Wichink Kruit
 ! Created:    November 14 2025
-! Updated:    November 20 2025
+! Updated:    May 11 2026
 ! Description:
 !   This module provides routines for calculating special resistance values
 !   (rc_special) for atmospheric deposition modeling components. The main

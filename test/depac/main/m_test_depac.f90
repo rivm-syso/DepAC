@@ -13,16 +13,13 @@ module m_test_depac
 
    use t_depac_config_core, only: depac_config_core
 
-   use c_params, only: gw_nh3_sutton
-   ! parameterisation
-   use m_comp_point_param, only: comp_point_default, csoil_default
-   use m_gw_param, only: gw_default
-   use m_gstom_param, only: gstom_default
-   use m_gsoil_param, only: gsoil_default, rinc_no_path
-   use m_rc_special_param, only: rc_special_default
+   use m_depac_params, only: gw_nh3_sutton,comp_point_default, csoil_default, gw_default,&
+       gstom_default, gsoil_default, rinc_no_path, rc_special_default
+  
 
    ! default configuration
-   use default_depac_config_rivm, only: init_default_depac_config_rivm, default_depac_setup
+   use default_depac_config_rivm, only: init_default_depac_config_rivm,&
+    finalize_default_depac_config_rivm, default_depac_setup
 
    implicit none (type, external)
    private
@@ -71,7 +68,7 @@ contains
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, 10.0000000 &
          ], [6,9])
 
-
+      call init_default_depac_config_rivm()
       setup%config%lai = 7.0
       setup%config%sai = 6.0
       setup%config%rssnow = 2000.0
@@ -131,6 +128,7 @@ contains
          end do
       end do
 
+      call finalize_default_depac_config_rivm()
    end subroutine test_depac_calc
 
    subroutine test_missing_input(error)
@@ -171,18 +169,15 @@ contains
       ctx%meteo%nwet = 0
 
 
-
       allocate(setup%gw_param, source=gw_default())
       allocate(setup%gstom_param, source=gstom_default())
       allocate(setup%comp_point_param, source=comp_point_default())
       allocate(setup%rc_special_param, source=rc_special_default())
-
       allocate(setup%gsoil_param, source=gsoil_default())
       allocate(setup%rinc_param, source=rinc_no_path())
       allocate(setup%csoil_param, source=csoil_default())
 
 
-      ! no error check for all parameters set correctly
 
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
@@ -508,6 +503,7 @@ contains
          message="depac rc_eff output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
 
+      call finalize_default_depac_config_rivm()
 
    end subroutine test_missing_input
 

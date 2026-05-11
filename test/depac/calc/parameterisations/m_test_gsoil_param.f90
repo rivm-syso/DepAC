@@ -1,13 +1,11 @@
 module m_test_gsoil_param
    use testdrive, only : new_unittest, unittest_type, error_type, check
 
-   use m_gsoil_param, only: gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance
-
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
 
-   use c_params, only: gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance
-   use c_depac_params, only: depac_gsoil_param, depac_rinc_param
+   use m_depac_params, only: gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance
+   use c_depac_param_types, only: depac_gsoil_param, depac_rinc_param
 
 
    implicit none (type, external)

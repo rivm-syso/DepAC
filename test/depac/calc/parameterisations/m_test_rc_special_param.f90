@@ -1,12 +1,12 @@
 module m_test_rc_special_param
       use testdrive, only : new_unittest, unittest_type, error_type, check
 
-   use c_params, only: rc_tot_fixed, rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_special_default
+   use m_depac_params, only: rc_tot_fixed, rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_special_default
 
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
 
-   use c_depac_params, only: depac_rc_special_param
+   use c_depac_param_types, only: depac_rc_special_param
 
    use t_depac_error_core, only: ERR_INPUT
 

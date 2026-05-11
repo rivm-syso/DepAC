@@ -38,3 +38,4 @@ Refer to the following sections for installation instructions, usage examples, a
 
 - [RIVM Default Parameter Values](RIVM_defaults.md)
 - [Example Usage](examples.md)
+- [Parameterizations](parameterisations.md)

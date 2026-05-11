@@ -1,12 +1,12 @@
 module m_test_gw_param
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-   use c_params, only: gw_default, gw_so2, gw_nh3_sutton
+   use m_depac_params, only: gw_default, gw_so2, gw_nh3_sutton
 
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
 
-   use c_depac_params, only: depac_gw_param
+   use c_depac_param_types, only: depac_gw_param
 
 
    implicit none (type, external)

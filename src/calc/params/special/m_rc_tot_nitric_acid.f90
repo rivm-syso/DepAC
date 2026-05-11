@@ -1,5 +1,5 @@
 module m_rc_tot_nitric_acid
-   use c_depac_params, only: depac_rc_special_param
+   use c_depac_param_types, only: depac_rc_special_param
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
    ! nitric acid parameterisation

@@ -3,7 +3,7 @@ module t_depac_setup
    use t_depac_land_use, only: depac_land_use
    use t_depac_component, only: depac_component
 
-   use c_depac_params, only: depac_comp_point_param, depac_csoil_param, &
+   use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param, &
       depac_gsoil_param, &
       depac_gstom_param, depac_gw_param, depac_rc_special_param, &
       depac_rinc_param
