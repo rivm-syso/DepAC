@@ -14,6 +14,7 @@
 module m_ra
     use m_logger, only: log_debug
     use c_depac_core, only: depac_meteorology_core
+    use m_helpers, only: fpsih
     implicit none (type, external)
     public
 contains

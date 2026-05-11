@@ -14,13 +14,19 @@ module m_rinc_no_path
 contains
    pure function rinc_no_path_apply(this, setup, ctx) result(rinc)
       class(rinc_no_path), intent(in) :: this
-      type(depac_setup), intent(in) :: setup
+      class(*), intent(in) :: setup
       type(depac_context), intent(in) :: ctx
 
       real :: rinc
 
-      rinc = -999.0
-
+      select type (setup)
+       type is (depac_setup)
+         ! This parameterisation returns a very high rinc value to effectively block soil moisture transport.
+         rinc = 1.0e6
+       class default
+         ! If the setup is not of type depac_setup, return missing value
+         rinc = -999.0
+      end select
    end function rinc_no_path_apply
 
 end module m_rinc_no_path

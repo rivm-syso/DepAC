@@ -13,11 +13,18 @@ module m_rinc_no_resistance
 contains
    pure function rinc_no_resistance_apply(this, setup, ctx) result(rinc)
       class(rinc_no_resistance), intent(in) :: this
-      type(depac_setup), intent(in) :: setup
+      class(*), intent(in) :: setup
       type(depac_context), intent(in) :: ctx
       real :: rinc
 
-      rinc = 0.0
+      select type (setup)
+       type is (depac_setup)
+         ! This parameterisation returns zero rinc value to effectively remove soil moisture resistance.
+         rinc = 0.0
+       class default
+         ! If the setup is not of type depac_setup, return missing value
+         rinc = -999.0
+      end select
    end function rinc_no_resistance_apply
 
 end module m_rinc_no_resistance

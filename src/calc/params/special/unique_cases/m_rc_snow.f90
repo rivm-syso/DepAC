@@ -48,7 +48,7 @@ contains
 
          select case (ipar_snow)
           case (1)
-            rc_tot = dp_conf%rssnow
+            rc_tot = setup%config%rssnow
           case (2)
             if (t < -1.) then
                rc_tot = 500.
@@ -59,9 +59,11 @@ contains
             endif
           case default
             call set_error(ctx%error, ERR_INPUT, &
-               'Programming error in rc_snow: unknown value of ipar_snow: '//trim(comp%name))
+               'Programming error in rc_snow: unknown value of ipar_snow: '&
+               //trim(setup%component%name))
+
             call log_error('Programming error in rc_snow: unknown value of ipar_snow: ' &
-               //trim(comp%name))
+               //trim(setup%component%name))
             return
          end select
       end associate

@@ -15,7 +15,7 @@ module t_depac_land_use
 
    implicit none (type, external)
    private
-   public :: depac_land_use
+   public :: depac_land_use, depac_stomatal_params, depac_rc_r_params
 
 
    !> Type representing stomatal conductance parameters.

@@ -23,46 +23,20 @@ module m_check_depac_input
    public
 contains
 
-!    subroutine check_component_input(setup, ctx)
-!       type(depac_setup), intent(in) :: setup
-!       type(depac_context), intent(inout) :: ctx
+   subroutine check_component_input(setup, ctx)
+      type(depac_setup), intent(in) :: setup
+      type(depac_context), intent(inout) :: ctx
 
-!       associate(comp => setup%component, dp_err => ctx%error)
-!          ! make sure name is set
-!          if (trim(comp%name) == '') then
-!             call set_error(dp_err, ERR_INPUT, 'Component name is empty.')
-!             return
-!          end if
-
-
-!          ! now we check if all parameterisations are set
-
-!          if (.not. allocated(comp%gw_param)) then
-!             call set_error(dp_err, ERR_INPUT,&
-!                'gw_param is not allocated for component '//trim(comp%name))
-!             return
-!          end if
-
-!          if (.not. allocated(comp%gstom_param)) then
-!             call set_error(dp_err, ERR_INPUT,&
-!                'gstom_param is not allocated for component '//trim(comp%name))
-!             return
-!          end if
-!          if (.not. allocated(comp%comp_point_param)) then
-!             call set_error(dp_err, ERR_INPUT,&
-!                'comp_point_param is not allocated for component '//trim(comp%name))
-!             return
-!          end if
-!          if (.not. allocated(comp%rc_special)) then
-!             call set_error(dp_err, ERR_INPUT,&
-!                'rc_special is not allocated for component '//trim(comp%name))
-!             return
-!          end if
-
-!       end associate
+      associate(comp => setup%component, dp_err => ctx%error)
+         ! make sure name is set
+         if (trim(comp%name) == '') then
+            call set_error(dp_err, ERR_INPUT, 'Component name is empty.')
+            return
+         end if
+      end associate
 
 
-!    end subroutine check_component_input
+   end subroutine check_component_input
 
    subroutine check_land_use_input(setup, ctx)
       type(depac_setup), intent(in) :: setup

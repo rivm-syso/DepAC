@@ -2,6 +2,7 @@ module m_test_rc_eff
     use testdrive, only : new_unittest, unittest_type, error_type, check
     use t_depac_context, only: depac_context
     use t_depac_setup, only: depac_setup
+    use m_rc_eff, only: rc_eff
 
     use m_logger, only: set_log_level, LOG_LEVEL_NONE
     implicit none (type, external)

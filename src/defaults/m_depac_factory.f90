@@ -3,13 +3,18 @@ module m_depac_factory
    use t_depac_component, only: depac_component
    use t_depac_land_use, only: depac_land_use
 
+   use t_depac_land_use, only: depac_stomatal_params, depac_rc_r_params
+
+   use c_depac_params, only: depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
+      depac_gstom_param, depac_gw_param, depac_rc_special_param, depac_rinc_param
+
    use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
-      rc_special_default
+      rc_special_default, rinc_default, csoil_default
  
 
    implicit none (type, external)
    private
-   public :: make_component, make_land_use, make_rc_r_params, make_stom_params
+   public :: make_component, make_land_use, make_rc_r_params, make_stom_params, make_setup
 contains
 
    function make_setup(component, land_use, &
@@ -17,13 +22,13 @@ contains
          gw_param, gstom_param, comp_point_param, rc_special_param) result(setup)
       type(depac_component), intent(in) :: component
       type(depac_land_use), intent(in) :: land_use
-      class(t_gsoil_parameterisation), intent(in), optional :: gsoil_param
-      class(t_csoil_parameterisation), intent(in), optional :: csoil_param
-      class(t_rinc_parameterisation), intent(in), optional :: rinc_param
-      class(t_gw_parameterisation), intent(in), optional :: gw_param
-      class(t_gstom_parameterisation), intent(in), optional :: gstom_param
-      class(t_comp_point_parameterisation), intent(in), optional :: comp_point_param
-      class(t_rc_special_param), intent(in), optional :: rc_special_param
+      class(depac_gsoil_param), intent(in), optional :: gsoil_param
+      class(depac_csoil_param), intent(in), optional :: csoil_param
+      class(depac_rinc_param), intent(in), optional :: rinc_param
+      class(depac_gw_param), intent(in), optional :: gw_param
+      class(depac_gstom_param), intent(in), optional :: gstom_param
+      class(depac_comp_point_param), intent(in), optional :: comp_point_param
+      class(depac_rc_special_param), intent(in), optional :: rc_special_param
       type(depac_setup) :: setup
 
       setup%component = component
@@ -62,16 +67,17 @@ contains
          allocate(setup%rc_special_param, source=rc_special_default())
       end if
       
-      if (present(gsoil_param)) then
-         allocate(land_use%gsoil_param, source=gsoil_param)
-      else
-         allocate(land_use%gsoil_param, source=gsoil_default())
-      end if
 
       if (present(csoil_param)) then
-         allocate(stom_par%csoil_param, source=csoil_param)
+         allocate(setup%csoil_param, source=csoil_param)
       else
-         allocate(stom_par%csoil_param, source=csoil_default())
+         allocate(setup%csoil_param, source=csoil_default())
+      end if
+
+      if (present(rinc_param)) then
+         allocate(setup%rinc_param, source=rinc_param)
+      else
+         allocate(setup%rinc_param, source=rinc_default())
       end if
 
    end function make_setup
@@ -133,10 +139,9 @@ contains
       end if
    end function make_land_use
 
-   function make_rc_r_params(b, h, rinc_param) result(rc_r_params)
+   function make_rc_r_params(b, h) result(rc_r_params)
       real, intent(in), optional :: b
       real, intent(in), optional :: h
-      class(t_rinc_parameterisation), intent(in), optional :: rinc_param
       type(depac_rc_r_params) :: rc_r_params
 
       if (present(b)) then
@@ -148,16 +153,11 @@ contains
       end if
 
 
-      if (present(rinc_param)) then
-         allocate(rc_r_params%rinc_param, source=rinc_param)
-      else
-         allocate(rc_r_params%rinc_param, source=rinc_default())
-      end if
 
    end function make_rc_r_params
 
    function make_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, &
-          vpd_max, vpd_min, csoil_param) result(stom_par)
+          vpd_max, vpd_min) result(stom_par)
       real, intent(in) :: F_min
       real, intent(in) :: alpha
       real, intent(in) :: Topt
@@ -166,7 +166,6 @@ contains
       real, intent(in) :: g_max
       real, intent(in) :: vpd_max
       real, intent(in) :: vpd_min
-      class(t_csoil_parameterisation), intent(in), optional :: csoil_param
 
       type(depac_stomatal_params) :: stom_par
 

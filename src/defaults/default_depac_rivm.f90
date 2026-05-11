@@ -12,24 +12,15 @@ module default_depac_config_rivm
    use t_depac_land_use, only: depac_land_use
    use t_depac_setup, only: depac_setup
 
-   ! use t_depac_component, only: depac_component
-   ! use t_depac_land_use, only: depac_land_use, depac_stomatal_params, depac_rc_r_params
-   ! use t_depac_error, only: ERR_INPUT, depac_error
-   ! use m_depac_error, only: set_error
-   ! use m_logger, only: log_error
+   use c_params, only: gsoil_default, gw_default, gstom_default, comp_point_default, &
+      rc_special_default, rinc_default, rinc_no_path, rinc_no_resistance, csoil_default, csoil_water, &
+       gw_nh3_sutton, gw_so2, gstom_emberson, comp_point_ammonia, rc_tot_nitric_acid, &
+       rc_tot_nitric_oxide, rc_tot_fixed
 
-
-   ! use m_gw_param, only: gw_default, gw_so2, gw_nh3_sutton
-   ! use m_gstom_param, only: gstom_default, gstom_emberson
-   ! use m_comp_point_param, only: comp_point_ammonia, csoil_default, csoil_water
-   ! use m_gsoil_param, only:  rinc_no_resistance, rinc_default, rinc_no_path
-   ! use m_rc_special_param, only: rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_tot_fixed
-
-
-   ! use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
-   !    LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
-   !    LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
-   ! use m_depac_factory, only: make_component, make_land_use, make_stom_params, make_rc_r_params
+   use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
+      LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
+      LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
+   use m_depac_factory, only: make_component, make_land_use, make_setup, make_stom_params, make_rc_r_params
 
 
    implicit none (type, external)
@@ -66,6 +57,8 @@ contains
 
       logical, dimension(6,9) :: use_rinc_no_resistance = .false.
       logical, dimension(6,9) :: use_rinc_no_path = .false.
+      
+      real, dimension(9, 6) :: default_rsoil_matrix
 
 
       use_gw_nh3_sutton(COMP_NH3,:) = .true.
@@ -327,7 +320,7 @@ contains
          Tmax = -999.0, &
          g_max = -999.0, &
          vpd_max = -999.0, &
-         vpd_min = -999.0)), &
+         vpd_min = -999.0)) &
          ]
 
       allocate(default_depac_setup(9, 6))
@@ -337,54 +330,56 @@ contains
 
       do i = 1, 9
          do j = 1, 6
-            default_depac_setup(i, j) = make_setup(
+            default_depac_setup(i, j) = make_setup( &
                component = default_components(j), &
                land_use = default_land_uses(i) &
             )
+
+            default_depac_setup(i, j)%land_use%rsoil = default_rsoil_matrix(i, j)
             
             if(use_gw_nh3_sutton(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%gw_param)
-               allocate(default_depac_setup(i, j)%component%gw_param, source=gw_nh3_sutton())
+               deallocate(default_depac_setup(i, j)%gw_param)
+               allocate(default_depac_setup(i, j)%gw_param, source=gw_nh3_sutton())
             end if
 
             if(use_gw_so2(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%gw_param)
-               allocate(default_depac_setup(i, j)%component%gw_param, source=gw_so2())
+               deallocate(default_depac_setup(i, j)%gw_param)
+               allocate(default_depac_setup(i, j)%gw_param, source=gw_so2())
             end if
 
             if(use_gstom_emberson(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%gstom_param)
-               allocate(default_depac_setup(i, j)%component%gstom_param, source=gstom_emberson())
+               deallocate(default_depac_setup(i, j)%gstom_param)
+               allocate(default_depac_setup(i, j)%gstom_param, source=gstom_emberson())
             end if
 
             if(use_comp_point_ammonia(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%comp_point_param)
-               allocate(default_depac_setup(i, j)%component%comp_point_param, source=comp_point_ammonia())
+               deallocate(default_depac_setup(i, j)%comp_point_param)
+               allocate(default_depac_setup(i, j)%comp_point_param, source=comp_point_ammonia())
             end if
 
             if(use_rc_tot_nitric_acid(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%rc_special)
-               allocate(default_depac_setup(i, j)%component%rc_special, source=rc_tot_nitric_acid())
+               deallocate(default_depac_setup(i, j)%rc_special_param)
+               allocate(default_depac_setup(i, j)%rc_special_param, source=rc_tot_nitric_acid())
             end if
 
             if(use_rc_tot_nitric_oxide(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%rc_special)
-               allocate(default_depac_setup(i, j)%component%rc_special, source=rc_tot_nitric_oxide())
+               deallocate(default_depac_setup(i, j)%rc_special_param)
+               allocate(default_depac_setup(i, j)%rc_special_param, source=rc_tot_nitric_oxide())
             end if
 
             if(use_rc_tot_fixed(j, i)) then
-               deallocate(default_depac_setup(i, j)%component%rc_special)
-               allocate(default_depac_setup(i, j)%component%rc_special, source=rc_tot_fixed())
+               deallocate(default_depac_setup(i, j)%rc_special_param)
+               allocate(default_depac_setup(i, j)%rc_special_param, source=rc_tot_fixed())
             end if
 
             if(use_rinc_no_resistance(j, i)) then
-               deallocate(default_depac_setup(i, j)%land_use%rc_rinc%rinc_param)
-               allocate(default_depac_setup(i, j)%land_use%rc_rinc%rinc_param, source=rinc_no_resistance())
+               deallocate(default_depac_setup(i, j)%rinc_param)
+               allocate(default_depac_setup(i, j)%rinc_param, source=rinc_no_resistance())
             end if
 
             if(use_rinc_no_path(j, i)) then
-               deallocate(default_depac_setup(i, j)%land_use%rc_rinc%rinc_param)
-               allocate(default_depac_setup(i, j)%land_use%rc_rinc%rinc_param, source=rinc_no_path())
+               deallocate(default_depac_setup(i, j)%rinc_param)
+               allocate(default_depac_setup(i, j)%rinc_param, source=rinc_no_path())
             end if
          end do
       end do

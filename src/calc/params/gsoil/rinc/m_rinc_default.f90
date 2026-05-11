@@ -13,19 +13,24 @@ module m_rinc_default
 contains
    pure function rinc_default_apply(this, setup, ctx) result(rinc)
       class(rinc_default), intent(in) :: this
-      type(depac_setup), intent(in) :: setup
+      class(*), intent(in) :: setup
       type(depac_context), intent(in) :: ctx
 
       real :: rinc
      
-      associate(meteo => ctx%meteo, dp_conf => setup%config, rc_rinc => setup%land_use%rc_rinc)
-        if (meteo%ust > 0.0) then
-
-            rinc = rc_rinc%b * rc_rinc%h * dp_conf%sai / meteo%ust
-        else
-            rinc = 1000.0
-        endif
-      end associate
+      select type (setup)
+       type is (depac_setup)
+         associate(meteo => ctx%meteo, dp_conf => setup%config, rc_rinc => setup%land_use%rc_rinc)
+            if (meteo%ust > 0.0) then
+               rinc = rc_rinc%b * rc_rinc%h * dp_conf%sai / meteo%ust
+            else
+               rinc = 1000.0
+            endif
+         end associate
+       class default
+         ! If the setup is not of type depac_setup, return missing value
+         rinc = -999.0
+      end select
    end function rinc_default_apply
 
 end module m_rinc_default

@@ -29,14 +29,14 @@ module m_test_rc_tot
         ctx%output%gsoil_eff = 3.0
         ctx%output%gw = 4.0
 
-        call rc_tot(ctx, error)
+        call rc_tot(ctx)
         call check(error, ctx%output%rc_tot, 0.111111112,&
              message="rc_tot normal case failed", thr=1.0e-5)
         if (allocated(error)) return
 
         ! gw negative case
         ctx%output%gw = -1.0
-        call rc_tot(ctx, error)
+        call rc_tot(ctx)
         call check(error, ctx%output%rc_tot, -9999.0, &
             message="rc_tot negative gw case failed", thr=1.0e-5)
         if (allocated(error)) return
@@ -45,7 +45,7 @@ module m_test_rc_tot
         ctx%output%gstom = -5.0
         ctx%output%gw = 1.0
         ctx%output%gsoil_eff = 1.0
-        call rc_tot(ctx, error)
+        call rc_tot(ctx)
         call check(error, ctx%output%rc_tot, -9999.0, &
             message="rc_tot negative gc_tot case failed", thr=1.0e-5)
         if (allocated(error)) return

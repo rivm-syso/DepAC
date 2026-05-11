@@ -9,35 +9,42 @@ module m_gstom_emberson
    private
    public :: gstom_emberson, rc_get_vpd, rc_gstom_emb, par_dir_diff
 
-   type, extends(t_gstom_parameterisation) :: gstom_emberson
+   type, extends(depac_gstom_param) :: gstom_emberson
    contains
       procedure :: apply => gstom_emberson_apply
    end type gstom_emberson
 contains
    pure function gstom_emberson_apply(this, setup, ctx) result(gstom)
       class(gstom_emberson), intent(in) :: this
-      type(depac_setup), intent(in) :: setup
+      class(*), intent(in) :: setup
       type(depac_context), intent(in) :: ctx
       real :: gstom
       real :: vpd
 
-      associate(config => setup%config, meteo => ctx%meteo,&
-         comp => setup%component)
+      select type (setup)
+       type is (depac_setup)
 
-         if (ctx%has_vegetation) then
-            if (meteo%glrad > 0.0) then
-               vpd = rc_get_vpd(meteo)
+         associate(config => setup%config, meteo => ctx%meteo,&
+            comp => setup%component)
 
-               ! Scale by component diffusion coefficient
-               gstom = rc_gstom_emb(setup, ctx, vpd, config) * comp%diffc / &
-                  config%dO3
+            if (ctx%has_vegetation) then
+               if (meteo%glrad > 0.0) then
+                  vpd = rc_get_vpd(meteo)
+
+                  ! Scale by component diffusion coefficient
+                  gstom = rc_gstom_emb(setup, ctx, vpd) * comp%diffc / &
+                     config%dO3
+               else
+                  gstom = 0.0
+               end if
             else
                gstom = 0.0
             end if
-         else
-            gstom = 0.0
-         end if
-      end associate
+         end associate
+       class default
+         ! If the setup is not of type depac_setup, return missing value
+         gstom = -999.0
+      end select
    end function gstom_emberson_apply
 
    pure function rc_get_vpd(meteo) result(vpd)
@@ -120,7 +127,7 @@ contains
 
       real :: sinphi
 
-      associate(stom_par  => setup%land_use%stomatal_params, dp_conf => setup%config, meteo => ctx%meteo)
+      associate(stom_par  => setup%land_use%stom_par, dp_conf => setup%config, meteo => ctx%meteo)
 
          ! Check whether vegetation is present:
          if (ctx%has_vegetation) THEN
