@@ -23,6 +23,8 @@ contains
         type(depac_context), intent(inout) :: ctx
         ! Total conductance:
         ctx%output%gc_tot = ctx%output%gstom + ctx%output%gsoil_eff + ctx%output%gw
+
+
         ! Total resistance (note: gw can be negative, but no total emission allowed here):
         if (ctx%output%gc_tot <= 0.0 .or. ctx%output%gw < 0.0) then
             ctx%output%rc_tot = -9999.0

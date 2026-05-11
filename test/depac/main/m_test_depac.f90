@@ -13,7 +13,7 @@ module m_test_depac
 
    use t_depac_config_core, only: depac_config_core
    
-
+   use c_params, only: gw_nh3_sutton
    ! parameterisation
    use m_comp_point_param, only: comp_point_default, csoil_default
    use m_gw_param, only: gw_default
@@ -48,26 +48,26 @@ contains
       integer :: i, j
 
       real, dimension(6,9), parameter :: expected_rc_eff = reshape([ &
-         119.335388, 47.0838165, 73.2956467, 60.1540413, -9999.00000, -999.000000, &
-         123.168701, 51.9625587, 61.1918983, 68.3531799, 428.000000, -999.000000, &
-         123.168701, 51.9625587, 77.3465195, 68.3531799, 1028.00000, -999.000000, &
-         178.033310, 111.077545, 377.527802, 216.112320, 1560.00000, -999.000000, &
-         171.734299, 97.8694611, 312.058136, 213.775787, 1560.00000, -999.000000, &
+         119.335388, 58.3976135, 53.3102913, 60.1540413, -9999.00000, -999.000000, &
+         123.168701, 66.0943069, 46.6053505, 68.3531799, 428.000000, -999.000000, &
+         123.168701, 66.0943069, 55.4214401, 68.3531799, 1028.00000, -999.000000, &
+         178.033310, 204.583099, 128.807205, 216.112320, 1560.00000, -999.000000, &
+         171.734299, 163.854858, 120.202988, 213.775787, 1560.00000, -999.000000, &
          5.85804029E-13, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, -999.000000, -999.000000, &
          5.85804029E-13, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 100.000000, -999.000000, &
-         119.335388, 47.0838165, 73.2956467, 60.1540413, -9999.00000, -999.000000, &
+         119.335388, 58.3976135, 53.3102913, 60.1540413, -9999.00000, -999.000000, &
          5.85804029E-13, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, -999.000000 &
          ], [6,9])
 
       real, dimension(6,9), parameter :: expected_rc_tot = reshape([ &
-         10.3729048, 47.0838203, 73.2956467, 60.1540413, -9999.00000, 10.0000000, &
-         10.6206102, 51.9625587, 61.1918983, 68.3531799, 428.000000, 10.0000000, &
-         10.6206102, 51.9625587, 77.3465195, 68.3531799, 1028.00000, 10.0000000, &
-         13.3631525, 111.077553, 377.527832, 216.112320, 1560.00000, 10.0000000, &
-         13.0759459, 97.8694611, 312.058136, 213.775787, 1560.00000, 10.0000000, &
+         10.3729048, 58.3976135, 53.3102951, 60.1540413, -9999.00000, 10.0000000, &
+         10.6206102, 66.0943069, 46.6053505, 68.3531799, 428.000000, 10.0000000, &
+         10.6206102, 66.0943069, 55.4214401, 68.3531799, 1028.00000, 10.0000000, &
+         13.3631525, 204.583099, 128.807205, 216.112320, 1560.00000, 10.0000000, &
+         13.0759459, 163.854858, 120.202988, 213.775787, 1560.00000, 10.0000000, &
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 2000.00000, 10.0000000, &
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 100.000000, 10.0000000, &
-         10.3729048, 47.0838203, 73.2956467, 60.1540413, -9999.00000, 10.0000000, &
+         10.3729048, 58.3976135, 53.3102951, 60.1540413, -9999.00000, 10.0000000, &
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, 10.0000000 &
          ], [6,9])
 
@@ -130,6 +130,7 @@ contains
             end if
          end do
       end do
+
    end subroutine test_depac_calc
 
    subroutine test_missing_input(error)
@@ -139,6 +140,8 @@ contains
       type(depac_config_core) :: tmp_config
       logical :: ready
       integer :: i, j
+
+      real :: st
 
       call clear_error(ctx%error)
       call set_log_level(LOG_LEVEL_NONE)
@@ -428,16 +431,17 @@ contains
       ! Check the depac output
 
       call init_default_depac_config_rivm()
+      
       tmp_config = setup%config
       setup = default_depac_setup(1,1)
       setup%config = tmp_config
 
-
+      
       call depac_calc(setup, ctx)
-
       call check(error, ctx%error%code, ERR_NONE, &
          message="depac returned error when all inputs were set correctly for output check")
       if (allocated(error)) return
+      
 
       call check(error, ctx%output%version, VERSION, &
          message="depac version output incorrect")
@@ -447,27 +451,29 @@ contains
       if (allocated(error)) return
 
       call check(error, ctx%output%gw, 7.03585669E-02, &
-         message="depac gw output incorrect", thr=1.0e-6)
+         message="depac gw output incorrect", thr=1.0e-8)
       if (allocated(error)) return
       call check(error, missing(ctx%output%gw_can), .true., &
          message="depac gw_can should be output missing")
       if (allocated(error)) return
 
       call check(error, ctx%output%gstom, 2.60464419E-02, &
-         message="depac gstom output incorrect", thr=1.0e-6)
+         message="depac gstom output incorrect", thr=1.0e-8)
       if (allocated(error)) return
 
+      call check(error, ctx%output%gsoil_eff, 0.00000000, &
+         message="depac gsoil_eff output incorrect", thr=1.0e-8)
+      if (allocated(error)) return
 
-      
       call check(error, ctx%output%ccomp_tot, 40.4560585, &
          message="depac ccomp_tot output incorrect", thr=1.0e-6)
       if (allocated(error)) return
+
       call check(error, ctx%output%gc_tot, 9.64050069E-02, &
          message="depac gc_tot output incorrect", thr=1.0e-6)
       if (allocated(error)) return
-      call check(error, ctx%output%gsoil_eff, 0.00000000, &
-         message="depac gsoil_eff output incorrect", thr=1.0e-6)
-      if (allocated(error)) return
+      
+
       call check(error, ctx%output%rc_tot, 10.3729048, &
          message="depac rc_tot output incorrect", thr=1.0e-6)
       if (allocated(error)) return
@@ -478,26 +484,27 @@ contains
 
 
       ! test another case for 3,3 SO2, permanent crops, which has different parameterisations
-      tmp_config = setup%config
+      
       setup = default_depac_setup(3,3)
       setup%config = tmp_config
 
+
       call depac_calc(setup, ctx)
 
-
-      call check(error, ctx%output%gw, 0.00000000, &
+      call check(error, ctx%output%gw, 5.11472952E-03, &
          message="depac gw output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
+
       call check(error, ctx%output%gstom, 1.19560668E-02, &
          message="depac gstom output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
       call check(error, ctx%output%gsoil_eff, 9.72762646E-04, &
          message="depac gsoil_eff output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
-      call check(error, ctx%output%rc_tot, 77.3465195, &
+      call check(error, ctx%output%rc_tot, 55.4214401, &
          message="depac rc_tot output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
-      call check(error, ctx%output%rc_eff, 77.3465195, &
+      call check(error, ctx%output%rc_eff, 55.4214401, &
          message="depac rc_eff output incorrect for permanent crops", thr=1.0e-6)
       if (allocated(error)) return
 

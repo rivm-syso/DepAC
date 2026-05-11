@@ -45,7 +45,14 @@ contains
 
 
       ! initialeze with no deposition path
+      ctx%output%gw = -999.0
+      ctx%output%gw_can = -999.0
+      ctx%output%gstom = -999.0
+      ctx%output%ccomp_tot = -999.0
+      ctx%output%gc_tot = -999.0
+      ctx%output%gsoil_eff = -999.0
       ctx%output%rc_tot = -999.0
+      ctx%output%rc_eff = -999.0
       !------------------------------------------------------------------
       ! Input validation checks (only disable for performance runs!)
       !------------------------------------------------------------------
@@ -64,6 +71,7 @@ contains
          call check_component_input(setup, ctx)
          if (has_error(ctx%error)) return
       end if
+
 
       !------------------------------------------------------------------
       ! Clear any previous error and set log level
@@ -93,12 +101,14 @@ contains
          call rc_gw(setup, ctx)      ! Ground/wet resistance
          if (has_error(ctx%error)) return
 
+
          !--------------------------------------------------------------
          ! Compute stomatal Conductance
          !--------------------------------------------------------------
          call rc_gstom(setup, ctx) ! Stomatal resistance
          if (has_error(ctx%error)) return
 
+         
       end if
 
       ! Always set version and build date
@@ -140,6 +150,7 @@ contains
             call rc_comp_point(setup, ctx)
 
             if (has_error(ctx%error)) return
+
 
             !----------------------------------------------------------
             ! Optional: Effective resistance calculation based on
