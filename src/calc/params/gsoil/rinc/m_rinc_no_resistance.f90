@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rinc_no_resistance
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Returns 0.0 for soil moisture resistance (rinc), effectively removing
+!   this resistance component from dry deposition calculations. This module
+!   extends depac_rinc_param and represents a scenario where soil moisture
+!   does not limit surface conductance.
+!------------------------------------------------------------------------------
+
 module m_rinc_no_resistance
    use c_depac_param_types, only: depac_rinc_param
    use t_depac_setup, only: depac_setup

@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_gw_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Default/placeholder parameterization that returns 0.0 for external leaf
+!   conductance (gw). This module extends depac_gw_param and serves as a
+!   fallback option for components where specific gw parameterizations are
+!   not available or not applicable.
+!------------------------------------------------------------------------------
+
 module m_gw_default
    use c_depac_param_types, only: depac_gw_param
    use t_depac_setup, only: depac_setup

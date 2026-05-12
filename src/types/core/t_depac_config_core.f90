@@ -1,13 +1,13 @@
 !------------------------------------------------------------------------------
-! Module:     t_depac_config
+! Module:     t_depac_config_core
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-14
-! Updated:    2026-02-27
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines configuration variables and constants for the DepAC
-!   atmospheric deposition model. It includes diffusion coefficients,
-!   resistance constants, and logical options for calculation modes and
-!   model behavior.
+!   Defines configuration constants, diffusion coefficients, and compensation
+!   point type for DEPAC model. The depac_config_core and depac_compensation_point
+!   types provide model configuration and component-specific parameters.
+!------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
 module t_depac_config_core
     use m_logger, only: LOG_LEVEL_WARN

@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_rinc_param
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines abstract base type for leaf internal resistance parameterisations.
+!   The depac_rinc_param type provides interface for soil moisture resistance
+!   calculations affecting surface conductance.
+!------------------------------------------------------------------------------
+
 module t_depac_rinc_param
     use t_depac_context, only: depac_context
     implicit none (type, external)

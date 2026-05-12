@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_gw_param
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines abstract base type for leaf/canopy conductance parameterisations.
+!   The depac_gw_param type provides interface for component and land use-specific
+!   quasi-laminar boundary layer conductance calculations.
+!------------------------------------------------------------------------------
+
 module t_depac_gw_param
     use t_depac_context, only: depac_context
     implicit none (type, external)

@@ -19,6 +19,7 @@ module m_check_depac_input
    use t_depac_context, only: depac_context
    use t_depac_setup, only: depac_setup
    use t_depac_error_core, only: ERR_INPUT
+   
    implicit none (type, external)
    public
 contains
@@ -47,27 +48,48 @@ contains
             call set_error(dp_err, ERR_INPUT, 'Land use name is empty.')
             return
          end if
-
-        !  if(.not. allocated(lu%gsoil_param)) then
-        !     call set_error(dp_err, ERR_INPUT,&
-        !        'gsoil_param is not allocated for land use '//trim(lu%name))
-        !     return
-        !  end if
-
-        !  if(.not. allocated(lu%rc_rinc%rinc_param)) then
-        !     call set_error(dp_err, ERR_INPUT,&
-        !        'rc_rinc_param is not allocated for land use '//trim(lu%name))
-        !     return
-        !  end if
-
-        !  if(.not. allocated(lu%stom_par%csoil_param)) then
-        !     call set_error(dp_err, ERR_INPUT,&
-        !        'csoil_param is not allocated for land use '//trim(lu%name))
-        !     return
         !  end if
 
       end associate
    end subroutine check_land_use_input
+
+   subroutine check_depac_parameterizations(setup, ctx)
+      type(depac_setup), intent(in) :: setup
+      type(depac_context), intent(inout) :: ctx
+
+      associate(dp_err => ctx%error)
+         if(.not. allocated(setup%gsoil_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gsoil_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%csoil_param)) then
+            call set_error(dp_err, ERR_INPUT, 'csoil_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%rinc_param)) then
+            call set_error(dp_err, ERR_INPUT, 'rinc_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%gw_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gw_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%gstom_param)) then
+            call set_error(dp_err, ERR_INPUT, 'gstom_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%comp_point_param)) then
+            call set_error(dp_err, ERR_INPUT, 'comp_point_param is not allocated in depac_config.')
+            return
+         end if
+         if(.not. allocated(setup%rc_special_param)) then
+            call set_error(dp_err, ERR_INPUT, 'rc_special_param is not allocated in depac_config.')
+            return
+         end if
+
+      end associate
+      
+   end subroutine check_depac_parameterizations
 
    subroutine check_depac_config(setup, ctx)
       type(depac_setup), intent(in) :: setup

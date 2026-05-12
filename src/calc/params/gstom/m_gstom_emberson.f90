@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_gstom_emberson
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates stomatal conductance (gstom) using the Emberson parameterization
+!   based on vapor pressure deficit (VPD) and photosynthetic active radiation
+!   (PAR). This module extends depac_gstom_param and provides a mechanistic
+!   approach to stomatal conductance modeling for dry deposition calculations.
+!------------------------------------------------------------------------------
+
 module m_gstom_emberson
    use c_depac_param_types, only: depac_gstom_param
    use c_depac_core, only: depac_meteorology_core

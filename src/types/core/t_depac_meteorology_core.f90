@@ -1,14 +1,13 @@
 !------------------------------------------------------------------------------
-! Module:     t_depac_meteorology
+! Module:     t_depac_meteorology_core
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-14
-! Updated:    2026-02-27
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines derived types for meteorological parameters used in
-!   atmospheric deposition modeling. It includes the 'meteorology' type,
-!   which stores weather and surface variables such as temperature, humidity,
-!   wind speed, radiation, and calculated parameters relevant for model input
-!   and simulation.
+!   Defines meteorological parameters type containing weather variables
+!   (temperature, humidity, radiation, wind speed, pressure, wetness indicator).
+!   The depac_meteorology_core type provides input meteorological data for
+!   atmospheric deposition calculations.
 !------------------------------------------------------------------------------
 module t_depac_meteorology_core
     implicit none (type, external)

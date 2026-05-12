@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_gw_nh3_sutton
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates external leaf resistance (rw) for ammonia (NH3) using
+!   the Sutton & Fowler (1993) parameterization based on relative humidity
+!   and temperature. This module extends depac_gw_param and is essential for
+!   modeling NH3 dry deposition through the quasi-laminar boundary layer.
+!------------------------------------------------------------------------------
+
 module m_gw_nh3_sutton
    use c_depac_param_types, only: depac_gw_param
    use t_depac_setup, only: depac_setup

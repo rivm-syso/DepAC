@@ -1,8 +1,13 @@
 !------------------------------------------------------------------------------
 ! Module:     t_depac_component
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-28
-! Updated:    2026-02-27
+! Created:    November 28, 2025
+! Modified:   May 12, 2026
+! Description:
+!   Defines derived type for atmospheric deposition modeling components
+!   (chemical species) and their properties. The depac_component type extends
+!   depac_component_core with additional parameters for deposition calculations.
+!------------------------------------------------------------------------------
 ! Description:
 !   This module defines derived types for atmospheric deposition modeling
 !   components. It includes the 'lu_rsoil' type for land use-specific soil

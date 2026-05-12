@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rinc_no_path
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Returns -999.0 (missing value) for soil moisture resistance (rinc),
+!   effectively blocking soil moisture transport and eliminating the soil
+!   pathway. This module extends depac_rinc_param and is used when the soil
+!   is not accessible for deposition.
+!------------------------------------------------------------------------------
+
 module m_rinc_no_path
    use c_depac_param_types, only: depac_rinc_param
    use t_depac_setup, only: depac_setup

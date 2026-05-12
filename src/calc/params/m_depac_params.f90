@@ -1,5 +1,16 @@
-! This module collects all parameterization implementations for the DepAC model.
-! Each parameterization is implemented in its own module, and this module provides a single point of
+!------------------------------------------------------------------------------
+! Module:     m_depac_params
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Central collection and re-export point for all parameterization
+!   implementations used in the DepAC model. This module aggregates and
+!   exposes gsoil, rinc, gstom, gw, compensation point, and rc_special
+!   parameterizations, providing a single point of access for all model
+!   parameters and their implementations.
+!------------------------------------------------------------------------------
+
 module m_depac_params
     ! Gsoil
     use m_gsoil_default, only: gsoil_default

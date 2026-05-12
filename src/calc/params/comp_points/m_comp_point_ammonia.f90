@@ -1,3 +1,18 @@
+!------------------------------------------------------------------------------
+! Module:     m_comp_point_ammonia
+! Author:     Marte Voorneveld, Addo van Pul, Jan Willem Erisman,
+!                       Ferd Sauter, Margreet van Zanten, Roy Wichink Kruit
+! Created:   May 11, 2026
+! Modified:  May 12, 2026
+! Description:
+!   This module provides routines for calculating compensation points for
+!   atmospheric deposition modeling components, especially NH3. The main
+!   subroutine, comp_point_ammonia_apply, computes compensation points for stomatal,
+!   external leaf, and soil pathways, using meteorological, land use, and
+!   component-specific parameters. The results are used in dry deposition
+!   calculations and model output.
+!------------------------------------------------------------------------------
+
 module m_comp_point_ammonia
    use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param
    use t_depac_setup, only: depac_setup
@@ -23,7 +38,7 @@ module m_comp_point_ammonia
    end type csoil_water
 contains
 
-
+   ! Compensation point parameterisation for ammonia
    pure function comp_point_ammonia_apply(this, setup, ctx) result(ccomp_tot)
       class(comp_point_ammonia), intent(in) :: this
       class(*), intent(in) :: setup
@@ -93,7 +108,7 @@ contains
 
    end function comp_point_ammonia_apply
 
-
+   ! Default soil compensation point parameterisation: returns 0.0 for all conditions
    pure function csoil_default_apply(this, setup, ctx, tfac) result(csoil)
       class(csoil_default), intent(in) :: this
       class(*), intent(in) :: setup
@@ -112,7 +127,8 @@ contains
       end select
 
    end function csoil_default_apply
-
+   ! Water compensation point parameterisation: soil compensation point is calculated
+   ! based on water compensation point factor and average ammonia concentration.
    pure function csoil_water_apply(this, setup, ctx, tfac) result(csoil)
       class(csoil_water), intent(in) :: this
       class(*), intent(in) :: setup

@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     m_rc_tot_nitric_oxide
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates total canopy resistance (rc_tot) for nitric oxide (NO),
+!   using a fixed value for normal conditions or delegating to rc_snow
+!   parameterization for snow-covered surfaces. This module extends
+!   depac_rc_special_param and handles NO-specific deposition scenarios.
+!------------------------------------------------------------------------------
 module m_rc_tot_nitric_oxide
     use c_depac_param_types, only: depac_rc_special_param
     use t_depac_setup, only: depac_setup

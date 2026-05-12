@@ -1,13 +1,13 @@
 !------------------------------------------------------------------------------
 ! Module:     t_depac_land_use
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-13
-! Updated:    2026-02-27
+! Created:    November 13, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines derived types for land use parameters used in
-!   atmospheric deposition modeling. It includes types for stomatal parameters,
-!   resistance parameters, and the main land use type containing all relevant
-!   properties.
+!   Defines derived types for land use parameters including stomatal parameters
+!   and resistance values. The depac_land_use type extends depac_land_use_core
+!   and includes stomatal and canopy resistance parameterisation information.
+!------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
 
 module t_depac_land_use

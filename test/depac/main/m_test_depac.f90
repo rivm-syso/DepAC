@@ -14,12 +14,12 @@ module m_test_depac
    use t_depac_config_core, only: depac_config_core
 
    use m_depac_params, only: gw_nh3_sutton,comp_point_default, csoil_default, gw_default,&
-       gstom_default, gsoil_default, rinc_no_path, rc_special_default
+      gstom_default, gsoil_default, rinc_no_path, rc_special_default
 
 
    ! default configuration
    use default_depac_config_rivm, only: init_default_depac_config_rivm,&
-    finalize_default_depac_config_rivm, default_depac_setup
+      finalize_default_depac_config_rivm, default_depac_setup
 
    implicit none (type, external)
    private
@@ -44,6 +44,7 @@ contains
       logical :: ready
       integer :: i, j
 
+      
       real, dimension(6,9), parameter :: expected_rc_eff = reshape([ &
          119.335388, 58.3976135, 53.3102913, 60.1540413, -9999.00000, -999.000000, &
          123.168701, 66.0943069, 46.6053505, 68.3531799, 428.000000, -999.000000, &
@@ -68,7 +69,9 @@ contains
          8.87899983E-14, 1.43430027E-13, 1.69508193E-13, 1.43430027E-13, 999.999939, 10.0000000 &
          ], [6,9])
 
+
       call init_default_depac_config_rivm()
+      call set_log_level(LOG_LEVEL_NONE)
       setup%config%lai = 7.0
       setup%config%sai = 6.0
       setup%config%rssnow = 2000.0
@@ -218,7 +221,7 @@ contains
 
 
       ! ! --------- Test missing depac_config input ---------
-
+      call set_log_level(LOG_LEVEL_NONE)
       !missing lai:
       setup%config%lai = -999.0
       call depac_calc(setup, ctx)
@@ -227,7 +230,7 @@ contains
 
       if (allocated(error)) return
       call clear_error(ctx%error)
-
+      call set_log_level(LOG_LEVEL_NONE)
       setup%config%lai = 7.0
       ! missing sai:
       setup%config%sai = -999.0
@@ -421,7 +424,65 @@ contains
       call clear_error(ctx%error)
       setup%config%rb = 50.0
 
+      deallocate(setup%gsoil_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing gsoil_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%gsoil_param, source=gsoil_default())
 
+      deallocate(setup%csoil_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing csoil_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%csoil_param, source=csoil_default())
+
+      deallocate(setup%rinc_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing rinc_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%rinc_param, source=rinc_no_path())
+
+      deallocate(setup%gw_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing gw_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%gw_param, source=gw_default())
+
+      deallocate(setup%gstom_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing gstom_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%gstom_param, source=gstom_default())
+
+      deallocate(setup%comp_point_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing comp_point_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%comp_point_param, source=comp_point_default())
+
+      deallocate(setup%rc_special_param)
+      call depac_calc(setup, ctx)
+      call check(error, ctx%error%code, ERR_INPUT, &
+         message="depac missing rc_special_param did not return error")
+      if (allocated(error)) return
+      call clear_error(ctx%error)
+      allocate(setup%rc_special_param, source=rc_special_default())
+
+
+
+      
 
       ! Check the depac output
 

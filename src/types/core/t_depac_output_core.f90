@@ -1,13 +1,14 @@
 !------------------------------------------------------------------------------
-! Module:     t_depac_output
+! Module:     t_depac_output_core
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-14
-! Updated:    2026-02-27
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines the output type for the DepAC atmospheric deposition
-!   model. All values in depac_output are calculated results, including
-!   resistances, conductances, and compensation points.
+!   Defines output type containing calculated DEPAC results (resistances,
+!   conductances, compensation points, and version information). The
+!   depac_output_core type stores all model output for a single calculation.
 !------------------------------------------------------------------------------
+
 module t_depac_output_core
     implicit none (type, external)
     public

@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_setup
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines the main setup type containing configuration, land use, component,
+!   and all parameterisation types. The depac_setup type represents a complete
+!   model configuration for atmospheric deposition calculations.
+!------------------------------------------------------------------------------
+
 module t_depac_setup
    use t_depac_config_core, only: depac_config_core
    use t_depac_land_use, only: depac_land_use

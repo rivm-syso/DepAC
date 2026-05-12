@@ -1,3 +1,13 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_land_use_core
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines core land use parameters type with name, index, compensation point
+!   factors, and soil resistance. The depac_land_use_core type serves as the
+!   base type for extended land use parameter definitions.
+!------------------------------------------------------------------------------
 module t_depac_land_use_core
     implicit none (type, external)
     private

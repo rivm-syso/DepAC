@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rc_special_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Default special case parameterization for total canopy resistance (rc_tot).
+!   Handles general resistance calculations, with special treatment for snow
+!   surfaces by delegating to the rc_snow module. This module extends
+!   depac_rc_special_param and serves as the standard rc_tot implementation.
+!------------------------------------------------------------------------------
+
 module m_rc_special_default
    use c_depac_param_types, only: depac_rc_special_param
    use t_depac_setup, only: depac_setup

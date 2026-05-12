@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_rc_special_param
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines abstract base type for special canopy resistance parameterisations.
+!   The depac_rc_special_param type provides interface for component-specific
+!   resistance calculations used in dry deposition modeling.
+!------------------------------------------------------------------------------
+
 module t_depac_rc_special_param
     use t_depac_context, only: depac_context
     implicit none (type, external)

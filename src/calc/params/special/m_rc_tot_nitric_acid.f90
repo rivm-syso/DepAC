@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rc_tot_nitric_acid
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates total canopy resistance (rc_tot) for nitric acid (HNO3) based
+!   on temperature and surface wetness conditions. This module extends
+!   depac_rc_special_param and implements HNO3-specific deposition pathways
+!   with distinct resistance values for wet and dry conditions.
+!------------------------------------------------------------------------------
+
 module m_rc_tot_nitric_acid
    use c_depac_param_types, only: depac_rc_special_param
    use t_depac_setup, only: depac_setup

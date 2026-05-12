@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_gstom_param
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines abstract base type for stomatal conductance parameterisations.
+!   The depac_gstom_param type provides interface for land use-specific
+!   stomatal conductance calculations.
+!------------------------------------------------------------------------------
+
 module t_depac_gstom_param
     use t_depac_context, only: depac_context
     implicit none (type, external)

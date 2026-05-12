@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_gw_so2
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates external leaf conductance (gw) for SO2 based on relative
+!   humidity and temperature. This parameterization extends depac_gw_param
+!   and is used to compute the quasi-laminar boundary layer conductance
+!   for sulfur dioxide deposition.
+!------------------------------------------------------------------------------
+
 module m_gw_so2
    use c_depac_param_types, only: depac_gw_param
    use t_depac_setup, only: depac_setup

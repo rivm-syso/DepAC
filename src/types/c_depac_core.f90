@@ -1,9 +1,27 @@
 
-! Author:     Marte Voorneveld
-! Created:    2025-11-28
-! Updated:    2026-05-11
+!------------------------------------------------------------------------------
+! Module:     c_depac_core
+! Author:     Marte Voorneveld, RIVM
+! Created:    November 28, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines core derived types for the DepAC atmospheric deposition model.
+!   Collector module that imports and exports core derived types for the DepAC
+!   atmospheric deposition model. Provides convenient access to fundamental
+!   types including components, configuration, error handling, land use,
+!   meteorology, and output structures.
+!------------------------------------------------------------------------------
+
+!------------------------------------------------------------------------------
+! Module:     c_depac_core
+! Author:     Marte Voorneveld, RIVM
+! Created:    November 28, 2025
+! Modified:   May 12, 2026
+! Description:
+!   Collector module that imports and exports core derived types for the DepAC
+!   atmospheric deposition model. Provides convenient access to fundamental
+!   types including components, configuration, error handling, land use,
+!   meteorology, and output structures.
+!------------------------------------------------------------------------------
 module c_depac_core
     use t_depac_component_core, only: depac_component_core
     use t_depac_config_core, only: depac_config_core

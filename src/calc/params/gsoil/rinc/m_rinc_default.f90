@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rinc_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates soil moisture resistance (rinc) based on friction velocity
+!   and land use configuration parameters. This module extends depac_rinc_param
+!   and provides the standard parameterization for modeling the effect of soil
+!   moisture on surface conductance in dry deposition calculations.
+!------------------------------------------------------------------------------
+
 module m_rinc_default
    use c_depac_param_types, only: depac_rinc_param
    use t_depac_setup, only: depac_setup

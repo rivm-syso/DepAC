@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_comp_point_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Default/placeholder parameterization that returns 0.0 for compensation
+!   point of all components. This module extends depac_comp_point_param and
+!   serves as a fallback option for components where specific compensation
+!   point parameterizations are not available or not applicable.
+!------------------------------------------------------------------------------
+
 module m_comp_point_default
    use c_depac_param_types, only: depac_comp_point_param
    use t_depac_setup, only: depac_setup
@@ -12,6 +24,7 @@ module m_comp_point_default
    end type comp_point_default
 
 contains
+   ! Default compensation point parameterisation: returns 0.0 for all components and conditions
    pure function comp_point_default_apply(this, setup, ctx) result(ccomp_tot)
       class(comp_point_default), intent(in) :: this
       class(*), intent(in) :: setup

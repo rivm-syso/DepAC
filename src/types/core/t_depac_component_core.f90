@@ -1,3 +1,13 @@
+!------------------------------------------------------------------------------
+! Module:     t_depac_component_core
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Defines core chemical component type with name, index, diffusion coefficient,
+!   and snow/soil resistance parameters. The depac_component_core type serves as
+!   the base type for extended component parameter definitions.
+!------------------------------------------------------------------------------
 module t_depac_component_core
     implicit none (type, external)
     private

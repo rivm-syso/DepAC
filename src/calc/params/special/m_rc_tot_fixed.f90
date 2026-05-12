@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_rc_tot_fixed
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Returns a fixed constant value (2000.0 s/m by default) for total canopy
+!   resistance (rc_tot). This module extends depac_rc_special_param and
+!   provides a simple parameterization option for components where a constant
+!   resistance value is appropriate.
+!------------------------------------------------------------------------------
+
 module m_rc_tot_fixed
    use c_depac_param_types, only: depac_rc_special_param
    use t_depac_setup, only: depac_setup

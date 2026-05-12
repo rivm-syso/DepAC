@@ -1,3 +1,15 @@
+!------------------------------------------------------------------------------
+! Module:     m_gsoil_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Calculates soil conductance (gsoil) by computing effective soil resistance
+!   considering frozen/wet soil conditions and soil moisture effects through
+!   rain interception resistance (rinc). This module extends depac_gsoil_param
+!   and is essential for modeling pollutant deposition to soil surfaces.
+!------------------------------------------------------------------------------
+
 module m_gsoil_default
    use c_depac_param_types, only: depac_gsoil_param
    use t_depac_setup, only: depac_setup

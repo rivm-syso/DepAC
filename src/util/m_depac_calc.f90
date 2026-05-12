@@ -21,7 +21,8 @@ module m_depac_calc
       check_land_use_input, &
       check_depac_config, &
       check_meteorology_input, &
-      check_component_input
+      check_component_input, &
+      check_depac_parameterizations
    use m_helpers, only: missing
 
    ! Calculation modules
@@ -69,6 +70,9 @@ contains
          if (has_error(ctx%error)) return
 
          call check_component_input(setup, ctx)
+         if (has_error(ctx%error)) return
+
+         call check_depac_parameterizations(setup, ctx)
          if (has_error(ctx%error)) return
       end if
 

@@ -1,3 +1,14 @@
+!------------------------------------------------------------------------------
+! Module:     m_gstom_default
+! Author:     Marte Voorneveld, RIVM
+! Created:    May 12, 2026
+! Modified:   May 12, 2026
+! Description:
+!   Default/placeholder parameterization that returns 0.0 for stomatal
+!   conductance (gstom). This module extends depac_gstom_param and serves
+!   as a fallback option for land use types where specific stomatal
+!   parameterizations are not available or not applicable.
+!------------------------------------------------------------------------------
 module m_gstom_default
     use c_depac_param_types, only: depac_gstom_param
     use t_depac_setup, only: depac_setup
