@@ -1,3 +1,13 @@
+!-------------------------------------------------------------------------------
+! File:        m_test_rc_special_param.f90
+! Module:      m_test_rc_special_param
+! Purpose:     Unit tests for special resistance (rc_tot) parameterizations
+!              Tests default rc_snow, fixed values, nitric acid, and nitric oxide
+!              special rc_tot calculations
+! Author:      Marte Voorneveld, RIVM
+! Created:     May 12, 2026
+!-------------------------------------------------------------------------------
+
 module m_test_rc_special_param
       use testdrive, only : new_unittest, unittest_type, error_type, check
 
@@ -16,6 +26,15 @@ module m_test_rc_special_param
    private
    public :: collect_rc_special_param_tests
 contains
+
+   !---------------------------------------------------------------------------
+   ! Subroutine: collect_rc_special_param_tests
+   ! Purpose:    Registers all unit tests for rc_special parameterizations
+   ! Input:
+   !    testsuite - array of unittest_type to append tests to
+   ! Output:
+   !    testsuite - updated array containing all rc_special_param tests
+   !---------------------------------------------------------------------------
    subroutine collect_rc_special_param_tests(testsuite)
       type(unittest_type), allocatable, intent(inout) :: testsuite(:)
 
@@ -28,6 +47,17 @@ contains
 
    end subroutine collect_rc_special_param_tests
 
+   !---------------------------------------------------------------------------
+   ! Subroutine: test_rc_tot_default
+   ! Purpose:    Tests the default special rc_tot parameterization (rc_snow)
+   !             Tests for constant value (ipar_snow=1) and temperature-dependent
+   !             calculations (ipar_snow=2). Also tests error handling for invalid
+   !             ipar_snow values.
+   ! Input:
+   !    error - error_type variable to capture test failures
+   ! Output:
+   !    error - allocated if test assertions fail; unallocated if all tests pass
+   !---------------------------------------------------------------------------
    subroutine test_rc_tot_default(error)
       type(error_type), allocatable, intent(out) :: error
       ! This is just a placeholder test to ensure that the default special parameterisation does not cause errors
@@ -90,6 +120,16 @@ contains
       deallocate(rc_special_f)
    end subroutine test_rc_tot_default
 
+   !---------------------------------------------------------------------------
+   ! Subroutine: test_rc_tot_fixed
+   ! Purpose:    Tests the fixed rc_tot special parameterization
+   !             Verifies that rc_tot is set to the specified fixed value (default 2000.0)
+   !             and that the ready flag is set to true. Also tests custom fixed values.
+   ! Input:
+   !    error - error_type variable to capture test failures
+   ! Output:
+   !    error - allocated if test assertions fail; unallocated if all tests pass
+   !---------------------------------------------------------------------------
    subroutine test_rc_tot_fixed(error)
       type(error_type), allocatable, intent(out) :: error
       type(depac_setup) :: setup
@@ -122,6 +162,16 @@ contains
       deallocate(rc_special_f)
    end subroutine test_rc_tot_fixed
 
+   !---------------------------------------------------------------------------
+   ! Subroutine: test_rc_tot_nitric_acid
+   ! Purpose:    Tests the nitric acid special rc_tot parameterization
+   !             Tests temperature-dependent behavior: rc_tot = 50 for T < -5°C and nwet=9,
+   !             otherwise rc_tot = 10. Verifies that ready flag is set to true.
+   ! Input:
+   !    error - error_type variable to capture test failures
+   ! Output:
+   !    error - allocated if test assertions fail; unallocated if all tests pass
+   !---------------------------------------------------------------------------
    subroutine test_rc_tot_nitric_acid(error)
       type(error_type), allocatable, intent(out) :: error
       type(depac_setup) :: setup
@@ -156,6 +206,17 @@ contains
       deallocate(rc_special_f)
    end subroutine test_rc_tot_nitric_acid
 
+   !---------------------------------------------------------------------------
+   ! Subroutine: test_rc_tot_nitric_oxide
+   ! Purpose:    Tests the nitric oxide special rc_tot parameterization
+   !             Tests moisture-dependent behavior: rc_tot = 2000 for nwet >= 1,
+   !             with optional fixed value override. Also tests interaction with
+   !             rc_snow parameterization when nwet = 9 (wet snow condition).
+   ! Input:
+   !    error - error_type variable to capture test failures
+   ! Output:
+   !    error - allocated if test assertions fail; unallocated if all tests pass
+   !---------------------------------------------------------------------------
    subroutine test_rc_tot_nitric_oxide(error)
       type(error_type), allocatable, intent(out) :: error
       type(depac_setup) :: setup

@@ -52,6 +52,9 @@ module depac
   use t_depac_error_core, only: depac_error_core, ERR_NONE, ERR_INPUT, &
     ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN
 
+  use m_depac_factory, only: make_depac_component, make_depac_land_use, make_depac_rc_r_params, &
+    make_depac_stom_params, make_depac_setup
+
   use m_version, only: VERSION, BUILD_DATE
   implicit none (type, external)
 
@@ -80,6 +83,10 @@ module depac
 
     ! error handling
     depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN, &
+
+    ! Factory functions for default configurations
+    make_depac_component, make_depac_land_use, make_depac_rc_r_params, make_depac_stom_params, &
+    make_depac_setup, &
 
     ! version info
     VERSION, BUILD_DATE

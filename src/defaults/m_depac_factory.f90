@@ -1,3 +1,13 @@
+!-------------------------------------------------------------------------------
+! File:        m_depac_factory.f90
+! Module:      m_depac_factory
+! Purpose:     Factory functions to create DEPAC configuration objects
+!              Creates components, land uses, parametrizations, and setups
+!              with default parameter values where optional parameters not provided
+! Author:      Marte Voorneveld, RIVM
+! Created:     May 12, 2026
+!-------------------------------------------------------------------------------
+
 module m_depac_factory
    use t_depac_setup, only: depac_setup
    use t_depac_component, only: depac_component
@@ -14,10 +24,28 @@ module m_depac_factory
 
    implicit none (type, external)
    private
-   public :: make_component, make_land_use, make_rc_r_params, make_stom_params, make_setup
+   public :: make_depac_component, make_depac_land_use, make_depac_rc_r_params, &
+      make_depac_stom_params, make_depac_setup
 contains
 
-   function make_setup(component, land_use, &
+   !---------------------------------------------------------------------------
+   ! Function: make_depac_setup
+   ! Purpose:  Creates a complete DEPAC setup object with all parameterizations
+   !           Assigns provided parameters or uses default values for optional ones
+   ! Inputs:
+   !    component           - depac_component defining pollutant properties
+   !    land_use            - depac_land_use defining surface characteristics
+   !    gsoil_param         - soil conductance parameter (optional, default used if absent)
+   !    csoil_param         - soil concentration parameter (optional, default used if absent)
+   !    rinc_param          - rain interception parameter (optional, default used if absent)
+   !    gw_param            - ground resistance parameter (optional, default used if absent)
+   !    gstom_param         - stomatal conductance parameter (optional, default used if absent)
+   !    comp_point_param    - component point parameter (optional, default used if absent)
+   !    rc_special_param    - special resistance parameter (optional, default used if absent)
+   ! Output:
+   !    setup - depac_setup object with all parameters initialized
+   !---------------------------------------------------------------------------
+   function make_depac_setup(component, land_use, &
       gsoil_param, csoil_param, rinc_param, &
       gw_param, gstom_param, comp_point_param, rc_special_param) result(setup)
       type(depac_component), intent(in) :: component
@@ -80,9 +108,24 @@ contains
          allocate(setup%rinc_param, source=rinc_default())
       end if
 
-   end function make_setup
+   end function make_depac_setup
 
-   function make_component(name, index, diffc, rw_val, ipar_snow, &
+   !---------------------------------------------------------------------------
+   ! Function: make_depac_component
+   ! Purpose:  Creates a DEPAC component object defining pollutant properties
+   !           and snow-related resistance parameters
+   ! Inputs:
+   !    name         - character string naming the component (e.g., 'NH3', 'O3')
+   !    index        - integer index for component identification
+   !    diffc        - real, diffusion coefficient for stomatal conductivity
+   !    rw_val       - real, constant rw value (optional)
+   !    ipar_snow    - integer, snow resistance parameterization (1=constant, 2=temperature dependent)
+   !    rsoil_frozen - real, resistance for frozen soil (s/m)
+   !    rsoil_wet    - real, resistance for wet soil (s/m)
+   ! Output:
+   !    comp - depac_component object with specified properties
+   !---------------------------------------------------------------------------
+   function make_depac_component(name, index, diffc, rw_val, ipar_snow, &
       rsoil_frozen, rsoil_wet) result(comp)
       character(len=*), intent(in) :: name
       integer, intent(in) :: index
@@ -102,9 +145,24 @@ contains
       comp%rsoil_frozen = rsoil_frozen
       comp%rsoil_wet = rsoil_wet
 
-   end function make_component
+   end function make_depac_component
 
-   function make_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, &
+   !---------------------------------------------------------------------------
+   ! Function: make_depac_land_use
+   ! Purpose:  Creates a DEPAC land use object defining surface characteristics
+   !           and resistance parameters for vegetation and soil
+   ! Inputs:
+   !    name              - character string naming the land use type (e.g., 'grass', 'forest')
+   !    index             - integer index for the land use type (optional)
+   !    gamma_stom_c_fac  - real, stomatal compensation point factor
+   !    gamma_soil_c_fac  - real, gamma_soil c factor (only for water land use), otherwise -999.0
+   !    rsoil             - real, soil resistance for this land use type and component (optional)
+   !    stom_par          - depac_stomatal_params object with stomatal parameters (optional)
+   !    rc_rinc           - depac_rc_r_params in-canopy resistance parameters (optional)
+   ! Output:
+   !    land_use - depac_land_use object with surface characteristics initialized
+   !---------------------------------------------------------------------------
+   function make_depac_land_use(name, index, gamma_stom_c_fac, gamma_soil_c_fac, rsoil, &
       stom_par, rc_rinc) result(land_use)
       character(len=*), intent(in) :: name
       integer, intent(in), optional :: index
@@ -138,9 +196,20 @@ contains
          land_use%rc_rinc%b = -999
          land_use%rc_rinc%h = -999
       end if
-   end function make_land_use
+   end function make_depac_land_use
 
-   function make_rc_r_params(b, h) result(rc_r_params)
+   !---------------------------------------------------------------------------
+   ! Function: make_depac_rc_r_params
+   ! Purpose:  Creates in-canopy resistance parameters for a given land use type
+   !           Parameters are used for rain interception and canopy resistance
+   ! Inputs:
+   !    b - real, empirical parameter for in-canopy resistance (optional)
+   !    h - real, empirical parameter for in-canopy resistance (optional)
+   ! Output:
+   !    rc_r_params - depac_rc_r_params object with parameters initialized
+   !                  Default value (-999.0) indicates parameter undefined or not applicable
+   !---------------------------------------------------------------------------
+   function make_depac_rc_r_params(b, h) result(rc_r_params)
       real, intent(in), optional :: b
       real, intent(in), optional :: h
       type(depac_rc_r_params) :: rc_r_params
@@ -153,11 +222,26 @@ contains
          rc_r_params%h = h
       end if
 
+   end function make_depac_rc_r_params
 
-
-   end function make_rc_r_params
-
-   function make_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, &
+   !---------------------------------------------------------------------------
+   ! Function: make_depac_stom_params
+   ! Purpose:  Creates stomatal conductance parameterization parameters
+   !           Parameters define temperature and vapor pressure deficit (vpd)
+   !           dependencies for plant stomatal conductance
+   ! Inputs:
+   !    F_min    - real, Minimum stomatal conductance(0-1) (s/m)
+   !    alpha    - real, Alpha for F_light calculation
+   !    Topt     - real, optimal temperature for stomatal opening (°C)
+   !    Tmin     - real, minimum temperature for stomatal opening (°C)
+   !    Tmax     - real, maximum temperature for stomatal opening (°C)
+   !    g_max    - real, maximum stomatal conductance (m/s)
+   !    vpd_max  - real, vapor pressure deficit threshold (Pa) - maximum allowed
+   !    vpd_min  - real, vapor pressure deficit threshold (Pa) - minimum allowed
+   ! Output:
+   !    stom_par - depac_stomatal_params object with parameters initialized
+   !---------------------------------------------------------------------------
+   function make_depac_stom_params(F_min, alpha, Topt, Tmin, Tmax, g_max, &
       vpd_max, vpd_min) result(stom_par)
       real, intent(in) :: F_min
       real, intent(in) :: alpha
@@ -178,6 +262,7 @@ contains
       stom_par%g_max = g_max
       stom_par%vpd_max = vpd_max
       stom_par%vpd_min = vpd_min
-   end function make_stom_params
+
+   end function make_depac_stom_params
 
 end module m_depac_factory

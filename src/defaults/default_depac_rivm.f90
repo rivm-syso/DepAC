@@ -18,8 +18,8 @@ module default_depac_config_rivm
        gw_nh3_sutton, gw_so2, gstom_emberson, comp_point_ammonia, rc_tot_nitric_acid, &
        rc_tot_nitric_oxide, rc_tot_fixed
 
-   use m_depac_factory, only: make_component, make_land_use, make_setup, &
-      make_stom_params, make_rc_r_params
+   use m_depac_factory, only: make_depac_component, make_depac_land_use, make_depac_setup, &
+      make_depac_stom_params, make_depac_rc_r_params
 
 
    implicit none (type, external)
@@ -129,7 +129,7 @@ contains
       allocate(default_components(6))
 
       default_components = [ &
-         make_component( &
+         make_depac_component( &
          name = 'NH3', &
          index = RIVM_COMP_NH3, &
          diffc = 0.21e-4, &
@@ -137,7 +137,7 @@ contains
          ipar_snow = 2, &
          rsoil_frozen = 1000.0, &
          rsoil_wet = 10.0), &
-         make_component( &
+         make_depac_component( &
          name = 'O3', &
          index = RIVM_COMP_O3, &
          diffc = 0.13e-4, &
@@ -145,7 +145,7 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0), &
-         make_component( &
+         make_depac_component( &
          name = 'SO2', &
          index = RIVM_COMP_SO2, &
          diffc = 0.11e-4, &
@@ -153,7 +153,7 @@ contains
          ipar_snow = 2, &
          rsoil_frozen = 500.0, &
          rsoil_wet = 10.0), &
-         make_component( &
+         make_depac_component( &
          name = 'NO2', &
          index = RIVM_COMP_NO2, &
          diffc = 0.13e-4, &
@@ -161,7 +161,7 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0), &
-         make_component( &
+         make_depac_component( &
          name = 'NO', &
          index = RIVM_COMP_NO, &
          diffc = 0.16e-4, &
@@ -169,7 +169,7 @@ contains
          ipar_snow = 1, &
          rsoil_frozen = -999.0, &
          rsoil_wet = -999.0), &
-         make_component( &
+         make_depac_component( &
          name = 'HNO3', &
          index = RIVM_COMP_HNO3, &
          diffc = -999.0, &
@@ -184,13 +184,13 @@ contains
 
 
       default_land_uses = [ &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'grass', &
          index = RIVM_LU_GRASS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.01, &
          alpha = 4.57*0.009, &
          Topt = 26.0, &
@@ -199,13 +199,13 @@ contains
          g_max = 270.0/41000, &
          vpd_max = 1.3, &
          vpd_min = 3.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'arable', &
          index = RIVM_LU_ARABLE, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.01, &
          alpha = 4.57*0.009, &
          Topt = 26.0, &
@@ -214,16 +214,16 @@ contains
          g_max = 300.0/41000, &
          vpd_max = 0.9, &
          vpd_min = 2.8), &
-         rc_rinc = make_rc_r_params( &
+         rc_rinc = make_depac_rc_r_params( &
          b = 14.0, &
          h = 1.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'permanent_crops', &
          index = RIVM_LU_PERMANENT_CROPS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.01, &
          alpha = 4.57*0.009, &
          Topt = 26.0, &
@@ -232,16 +232,16 @@ contains
          g_max = 300.0/41000, &
          vpd_max = 0.9, &
          vpd_min = 2.8), &
-         rc_rinc = make_rc_r_params( &
+         rc_rinc = make_depac_rc_r_params( &
          b = 14.0, &
          h = 1.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'coniferous_forest', &
          index = RIVM_LU_CONIFEROUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.1, &
          alpha = 4.57*0.006, &
          Topt = 18.0, &
@@ -250,16 +250,16 @@ contains
          g_max = 140.0/41000, &
          vpd_max = 0.5, &
          vpd_min = 3.0), &
-         rc_rinc = make_rc_r_params( &
+         rc_rinc = make_depac_rc_r_params( &
          b = 14.0, &
          h = 20.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'deciduous_forest', &
          index = RIVM_LU_DECIDUOUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.1, &
          alpha = 4.57*0.006, &
          Topt = 20.0, &
@@ -268,16 +268,16 @@ contains
          g_max = 150.0/41000, &
          vpd_max = 1.0, &
          vpd_min = 3.25), &
-         rc_rinc = make_rc_r_params( &
+         rc_rinc = make_depac_rc_r_params( &
          b = 14.0, &
          h = 20.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'water', &
          index = RIVM_LU_WATER, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = 430.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = -999.0, &
          alpha = -999.0, &
          Topt = -999.0, &
@@ -286,13 +286,13 @@ contains
          g_max = -999.0, &
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'urban', &
          index = RIVM_LU_URBAN, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = -999.0, &
          alpha = -999.0, &
          Topt = -999.0, &
@@ -301,13 +301,13 @@ contains
          g_max = -999.0, &
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'other', &
          index = RIVM_LU_OTHER, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = 0.01, &
          alpha = 4.57*0.009, &
          Topt = 26.0, &
@@ -316,13 +316,13 @@ contains
          g_max = 270.0/41000, &
          vpd_max = 1.3, &
          vpd_min = 3.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'desert', &
          index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = -999.0, &
          alpha = -999.0, &
          Topt = -999.0, &
@@ -331,13 +331,13 @@ contains
          g_max = -999.0, &
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
-         make_land_use( &
+         make_depac_land_use( &
          name = 'desert', &
          index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
          rsoil = -999.0, &
-         stom_par = make_stom_params( &
+         stom_par = make_depac_stom_params( &
          F_min = -999.0, &
          alpha = -999.0, &
          Topt = -999.0, &
@@ -354,7 +354,7 @@ contains
       do i = 1, 9
          do j = 1, 6
 
-            default_depac_setup(i, j) = make_setup( &
+            default_depac_setup(i, j) = make_depac_setup( &
                component = default_components(j), &
                land_use = default_land_uses(i) &
             )

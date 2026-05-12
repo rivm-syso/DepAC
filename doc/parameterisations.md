@@ -25,13 +25,13 @@ The following parameterizations must be allocated in a `depac_setup` for a compl
 The recommended way to create a `depac_setup` with parameterizations is using the `depac_factory` module:
 
 ```fortran
-use depac_factory, only: make_setup
+use depac_factory, only: make_depac_setup
 
 ! Create a setup with default parameterizations
-setup = make_setup(component, land_use)
+setup = make_depac_setup(component, land_use)
 
 ! Create a setup with custom parameterizations
-setup = make_setup(component, land_use, &
+setup = make_depac_setup(component, land_use, &
    gw_param = custom_gw_param(), &
    gstom_param = custom_gstom_param(), &
    comp_point_param = custom_comp_point_param())
