@@ -79,6 +79,8 @@ A coverage report will be generated in the `coverage_html` folder. Open `coverag
 > ```
 
 # Version History
+- 5.0.0 Major refactor and restructuring of the codebase to improve modularity and maintainability. This version includes significant changes to the internal architecture and may require updates to existing code that depends on DepAC.  It specifically adds more extensive possibilities for the use of other parameterisations.in a run. (release date: 2026-05-12)
+- 4.0.0 First version on GitHub with a complete rewrite of the codebase to improve modularity, maintainability, and performance. This version includes significant changes to the internal architecture and may require updates to existing code that depends on DepAC. Also added EUPL 1.2 Licence (release date: 2026-03-11)
 - 1.4.0 First releasable version of DepAC with 100% code coverage and working CI/CD implementation. This version is compatible with the new DepAC module in OPS_LT. (release date: 2026-03-11)
 - 1.3.2 Significant performace improvements by using indices comparisons instead of string comparisons in determining component types and land use types.
 - 1.3.1 Added better documentation and comments to the code with publications where missing.
