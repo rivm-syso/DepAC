@@ -15,7 +15,7 @@ module m_test_depac
 
    use m_depac_params, only: gw_nh3_sutton,comp_point_default, csoil_default, gw_default,&
        gstom_default, gsoil_default, rinc_no_path, rc_special_default
-  
+
 
    ! default configuration
    use default_depac_config_rivm, only: init_default_depac_config_rivm,&

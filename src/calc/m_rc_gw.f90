@@ -6,7 +6,7 @@
 ! Created:    November 14 2025
 ! Updated:    November 20 2025
 ! Description:
-!   Calculation of the external leaf conductance (gw) 
+!   Calculation of the external leaf conductance (gw)
 !------------------------------------------------------------------------------
 module m_rc_gw
    use t_depac_setup, only: depac_setup

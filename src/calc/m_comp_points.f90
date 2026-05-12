@@ -19,7 +19,7 @@ module m_comp_points
     private
     public :: rc_comp_point
 contains
-    
+
     ! ----------------------------------------------------------------------------
     ! Subroutine: rc_comp_point
     ! Description:

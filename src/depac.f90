@@ -27,7 +27,7 @@
 
 
 module depac
-  
+
   use t_depac_setup, only: depac_setup
   use t_depac_context, only: depac_context
 
@@ -47,11 +47,11 @@ module depac
                              depac_gstom_param, depac_gw_param, depac_rc_special_param, &
                              depac_rinc_param
 
-  
-  ! error 
+
+  ! error
   use t_depac_error_core, only: depac_error_core, ERR_NONE, ERR_INPUT, &
-    ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN           
-    
+    ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN
+
   use m_version, only: VERSION, BUILD_DATE
   implicit none (type, external)
 
@@ -77,9 +77,9 @@ module depac
     depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
     depac_gstom_param, depac_gw_param, depac_rc_special_param, &
     depac_rinc_param, &
-    
+
     ! error handling
-    depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN,
+    depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN, &
 
     ! version info
     VERSION, BUILD_DATE
