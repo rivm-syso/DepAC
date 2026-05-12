@@ -20,4 +20,5 @@ source-form = "free"
 
 [dependencies]
 DepAC.git = "https://github.com/rivm-syso/DepAC.git"
-# could use tag using DepAC.tag = "0.5.0"
+# Use a specific tag or commit for reproducibility, e.g.:
+# DepAC.tag = "5.0.0"
