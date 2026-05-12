@@ -51,6 +51,7 @@ module depac
   ! error
   use t_depac_error_core, only: depac_error_core, ERR_NONE, ERR_INPUT, &
     ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN
+  use m_depac_error, only: has_error, clear_error
 
   use m_depac_factory, only: make_depac_component, make_depac_land_use, make_depac_rc_r_params, &
     make_depac_stom_params, make_depac_setup
@@ -83,6 +84,7 @@ module depac
 
     ! error handling
     depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN, &
+    has_error, clear_error, &
 
     ! Factory functions for default configurations
     make_depac_component, make_depac_land_use, make_depac_rc_r_params, make_depac_stom_params, &

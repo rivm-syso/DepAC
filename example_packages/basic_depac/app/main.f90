@@ -1,8 +1,8 @@
 program basic_depac
     use depac, only: depac_calc,  depac_context, depac_setup, &
-        has_error
+        has_error, VERSION, BUILD_DATE
 
-    use default_depac_config_rivm, only: default_depac_config_rivm, default_depac_setup, &
+    use default_depac_config_rivm, only: default_depac_setup, &
         init_default_depac_config_rivm, &
         finalize_default_depac_config_rivm, &
         RIVM_LU_GRASS, RIVM_COMP_NH3
