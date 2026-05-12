@@ -1,0 +1,20 @@
+name: Protect main branch
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  allow-only-develop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate source branch
+        run: |
+          echo "PR source: ${{ github.head_ref }}"
+
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "Only develop can merge into main"
+            exit 1
+          fi
