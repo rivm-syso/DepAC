@@ -52,7 +52,10 @@ module default_depac_config_rivm
    type(depac_setup), dimension(:,:), allocatable :: default_depac_setup
 
    private
-   public :: init_default_depac_config_rivm, finalize_default_depac_config_rivm, default_depac_setup
+   public :: init_default_depac_config_rivm, finalize_default_depac_config_rivm, &
+   default_depac_setup, RIVM_COMP_NH3, RIVM_COMP_O3, RIVM_COMP_SO2, RIVM_COMP_NO2, RIVM_COMP_NO, RIVM_COMP_HNO3, &
+   RIVM_LU_GRASS, RIVM_LU_ARABLE, RIVM_LU_PERMANENT_CROPS, RIVM_LU_CONIFEROUS_FOREST, RIVM_LU_DECIDUOUS_FOREST, &
+   RIVM_LU_WATER, RIVM_LU_URBAN, RIVM_LU_OTHER, RIVM_LU_DESERT
 
 contains
 

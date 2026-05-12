@@ -27,14 +27,7 @@
 
 
 module depac
-  ! ! Types and subroutines for the DepAC model
-  ! use t_depac_land_use, only: depac_land_use
-  ! use t_depac_component, only: depac_component
-  ! use t_depac_meteorology, only: depac_meteorology
-  ! use t_depac_config, only: depac_config
-  ! use t_depac_location, only: depac_location
-  ! use t_depac_output, only: depac_output
-
+  
   use t_depac_setup, only: depac_setup
   use t_depac_context, only: depac_context
 
@@ -53,9 +46,13 @@ module depac
   use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
                              depac_gstom_param, depac_gw_param, depac_rc_special_param, &
                              depac_rinc_param
+
+  
   ! error 
   use t_depac_error_core, only: depac_error_core, ERR_NONE, ERR_INPUT, &
-    ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN                         
+    ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN           
+    
+  use m_version, only: VERSION, BUILD_DATE
   implicit none (type, external)
 
 
@@ -68,6 +65,7 @@ module depac
     depac_calc, depac_calc_partial, depac_calc_finish, &
     ! Ra and Rb calculations
     depac_calc_ra, depac_calc_ra_obs_h, depac_calc_rb_hicks, &
+
     ! parameterizations
     comp_point_ammonia, comp_point_default, csoil_default, csoil_water, &
     gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance, &
@@ -81,7 +79,10 @@ module depac
     depac_rinc_param, &
     
     ! error handling
-    depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN
+    depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN,
+
+    ! version info
+    VERSION, BUILD_DATE
 
 
 
