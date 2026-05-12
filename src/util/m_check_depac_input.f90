@@ -19,7 +19,7 @@ module m_check_depac_input
    use t_depac_context, only: depac_context
    use t_depac_setup, only: depac_setup
    use t_depac_error_core, only: ERR_INPUT
-   
+
    implicit none (type, external)
    public
 contains
@@ -88,7 +88,7 @@ contains
          end if
 
       end associate
-      
+
    end subroutine check_depac_parameterizations
 
    subroutine check_depac_config(setup, ctx)

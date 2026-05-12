@@ -44,7 +44,7 @@ contains
       logical :: ready
       integer :: i, j
 
-      
+
       real, dimension(6,9), parameter :: expected_rc_eff = reshape([ &
          119.335388, 58.3976135, 53.3102913, 60.1540413, -9999.00000, -999.000000, &
          123.168701, 66.0943069, 46.6053505, 68.3531799, 428.000000, -999.000000, &
@@ -482,7 +482,7 @@ contains
 
 
 
-      
+
 
       ! Check the depac output
 
