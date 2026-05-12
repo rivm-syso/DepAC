@@ -34,8 +34,10 @@ contains
 
       select type (setup)
        type is (depac_setup)
-         ! Default component point parameterisation: returns 0.0 for all components and conditions
-         ! This can be used as a placeholder or for components that do not require a specific parameterisation.
+         ! Default component point parameterisation: returns 0.0 for all
+         ! components and conditions
+         ! This can be used as a placeholder or for components
+         ! that do not require a specific parameterisation.
          ccomp_tot = 0.0
        class default
          ! If the setup is not of type depac_setup, return missing value

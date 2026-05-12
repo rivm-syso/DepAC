@@ -9,7 +9,9 @@
 !   abstract base types for all DEPAC resistance and conductance calculations.
 !------------------------------------------------------------------------------
 
-! this is just a collector module to make it easier to import all parameterisation types in one go, without having to import the full component and land use types which contain a lot of other fields that are not relevant for parameterisations.
+! this is just a collector module to make it easier to import all parameterisation types in one go,
+! without having to import the full component and land use types which contain a lot of other
+! fields that are not relevant for parameterisations.
 module c_depac_param_types
     use t_depac_comp_point_param, only: depac_comp_point_param
     use t_depac_csoil_param, only: depac_csoil_param

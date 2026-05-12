@@ -119,7 +119,8 @@ contains
    !    index        - integer index for component identification
    !    diffc        - real, diffusion coefficient for stomatal conductivity
    !    rw_val       - real, constant rw value (optional)
-   !    ipar_snow    - integer, snow resistance parameterization (1=constant, 2=temperature dependent)
+   !    ipar_snow    - integer, snow resistance parameterization (1=constant,
+   !                   2=temperature dependent)
    !    rsoil_frozen - real, resistance for frozen soil (s/m)
    !    rsoil_wet    - real, resistance for wet soil (s/m)
    ! Output:

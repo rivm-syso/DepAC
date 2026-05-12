@@ -23,7 +23,8 @@ module t_depac_component_core
    !! - rsoil_frozen: Frozen soil resistance (default -999.0).
    !! - rsoil_wet: Wet soil resistance (default -999.0).
    !! Note: The default values (-999.0 or -999) indicate missing or undefined data.
-   ! First define the type for the core component parameters, then extend it to include parameterisation function pointers.
+   ! First define the type for the core component parameters, then extend it to
+   ! include parameterisation function pointers.
    type depac_component_core
       character(len=20) :: name
       integer :: index = -999

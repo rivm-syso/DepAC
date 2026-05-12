@@ -33,7 +33,8 @@ contains
 
       select type (setup)
        type is (depac_setup)
-         ! This parameterisation returns a very high rinc value to effectively block soil moisture transport.
+         ! This parameterisation returns a very high rinc value to effectively
+         ! block soil moisture transport.
          rinc = -999.0
        class default
          ! If the setup is not of type depac_setup, return missing value

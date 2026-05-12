@@ -27,7 +27,8 @@ contains
     !   based on the setup and context. The compensation point is calculated using
     !   the apply method of the comp_point_param, which takes into account various
     !   factors such as meteorological conditions, land use, and component-specific
-    !   parameters. The result is stored in the context's output for use in subsequent calculations.
+    !   parameters. The result is stored in the context's output for use in subsequent
+    !   calculations.
     ! ----------------------------------------------------------------------------
     subroutine rc_comp_point(setup, ctx)
         type(depac_setup), intent(in) :: setup

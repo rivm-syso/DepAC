@@ -31,7 +31,8 @@ contains
 
       select type (setup)
        type is (depac_setup)
-         ! This parameterisation returns zero rinc value to effectively remove soil moisture resistance.
+         ! This parameterisation returns zero rinc value to effectively
+         ! remove soil moisture resistance.
          rinc = 0.0
        class default
          ! If the setup is not of type depac_setup, return missing value

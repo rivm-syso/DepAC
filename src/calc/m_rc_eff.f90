@@ -28,7 +28,8 @@ contains
    !   rc_eff = ((ra_obs + rb) * ccomp_tot + rc_tot * comp_point) / (comp_point - ccomp_tot)
    !   where ra_obs is the aerodynamic resistance at observation height, rb is
    ! the boundary layer resistance,
-   !   rc_tot is the total canopy resistance, comp_point is the compensation point of the component,
+   !   rc_tot is the total canopy resistance, comp_point is the compensation point of the
+   !   component,
    !   and ccomp_tot is the total compensation point.
    !   If the compensation points are equal, rc_eff is set to -9999.0 to indicate no flux
    !   and undefined resistance.

@@ -100,13 +100,13 @@ contains
          !for all components and are checked elsewhere
          ! but we provide a warning here
          if (missing(dp_conf%lai)) then
-            call log_warn('depac_config%lai is missing (-999.0). This may lead to incorrect ' // &
-               'calculations for components that require LAI.')
+            call log_warn('depac_config%lai is missing (-999.0). This may lead to incorrect ' &
+            // 'calculations for components that require LAI.')
          end if
 
          if (missing(dp_conf%sai)) then
-            call log_warn('depac_config%sai is missing (-999.0). This may lead to incorrect ' // &
-               'calculations for components that require SAI.')
+            call log_warn('depac_config%sai is missing (-999.0). This may lead to incorrect ' &
+               // 'calculations for components that require SAI.')
          end if
 
          if(missing(dp_conf%rssnow)) then
@@ -154,13 +154,13 @@ contains
 
             if(missing(dp_conf%comp_point%c_ave_nh3)) then
                call set_error(dp_err, ERR_INPUT, &
-                  'comp_point%c_ave_nh3 is missing in depac_config while calc_comp_points is true.')
+                  'comp_point%c_ave_nh3 is missing in depac_config while calc_comp_points true.')
                return
             end if
 
             if(missing(dp_conf%comp_point%c_ave_so2)) then
                call set_error(dp_err, ERR_INPUT, &
-                  'comp_point%c_ave_so2 is missing in depac_config while calc_comp_points is true.')
+                  'comp_point%c_ave_so2 is missing in depac_config while calc_comp_points true.')
                return
             end if
          end if

@@ -119,7 +119,8 @@ contains
       select type (setup)
        type is (depac_setup)
          ! Default soil compensation point parameterisation: returns 0.0 for all conditions
-         ! This can be used as a placeholder or for land use types that do not require a specific soil compensation point parameterisation.
+         ! This can be used as a placeholder or for land use types that do not require
+         ! a specific soil compensation point parameterisation.
          csoil = 0.0
        class default
          ! If the setup is not of type depac_setup, return missing value
@@ -138,7 +139,8 @@ contains
       real :: csoil, gamma_soil
       select type (setup)
        type is (depac_setup)
-         ! Water compensation point parameterisation: soil compensation point is calculated based on water compensation point factor and average ammonia concentration.
+         ! Water compensation point parameterisation: soil compensation point is
+         ! calculated based on water compensation point factor and average ammonia concentration.
          associate(comp_point => setup%config%comp_point, &
             lu_conf => setup%land_use)
 

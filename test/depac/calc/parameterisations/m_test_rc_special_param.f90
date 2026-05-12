@@ -60,7 +60,8 @@ contains
    !---------------------------------------------------------------------------
    subroutine test_rc_tot_default(error)
       type(error_type), allocatable, intent(out) :: error
-      ! This is just a placeholder test to ensure that the default special parameterisation does not cause errors
+      ! This is just a placeholder test to ensure that the default special
+      ! parameterisation does not cause errors
       type(depac_setup) :: setup
       type(depac_context) :: ctx
 
