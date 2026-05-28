@@ -39,11 +39,11 @@ contains
       type(depac_context), intent(inout) :: ctx
 
       ! Use associate to simplify access to setup and context variables
-      associate (cfg => setup%config, out => ctx%output)
-         if (cfg%comp_point%c_nh3 /= out%ccomp_tot) then
-            out%rc_eff = ((cfg%ra_obs + cfg%rb) * out%ccomp_tot + &
-               out%rc_tot * cfg%comp_point%c_nh3) / &
-               (cfg%comp_point%c_nh3 - out%ccomp_tot)
+      associate (state => ctx%state, out => ctx%output)
+         if (state%comp_point%c_nh3 /= out%ccomp_tot) then
+            out%rc_eff = ((state%ra_obs + state%rb) * out%ccomp_tot + &
+               out%rc_tot * state%comp_point%c_nh3) / &
+               (state%comp_point%c_nh3 - out%ccomp_tot)
          else
             out%rc_eff = -9999.0 ! no flux, resistance undefined
          end if

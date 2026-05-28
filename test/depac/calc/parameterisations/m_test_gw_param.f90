@@ -67,7 +67,7 @@ contains
       ctx%meteo%nwet = 0
       ctx%meteo%t = 0.
       ctx%meteo%rh = 80.
-      setup%config%comp_point%iratns = 1
+      ctx%state%comp_point%iratns = 1
 
       allocate(gw_so2_f, source=gw_so2())
       gw = gw_so2_f%apply(setup, ctx)
@@ -103,7 +103,7 @@ contains
 
 
       ! Test: iratns = 3
-      setup%config%comp_point%iratns = 3
+      ctx%state%comp_point%iratns = 3
 
       gw = gw_so2_f%apply(setup, ctx)
       call check(error, gw, 1.66666e-2, &
@@ -128,7 +128,7 @@ contains
       class(depac_gw_param), allocatable :: gw_nh3_sutton_f
       ! ! Test: vegetation, non-frozen soil
       ctx%has_vegetation = .true.
-      setup%config%sai = 0.6
+      ctx%state%sai = 0.6
       setup%config%sai_grass_haarweg = 0.5 ! typical value for test
       ctx%meteo%rh = 80.
       ctx%meteo%tsurf = 0.1
@@ -141,7 +141,7 @@ contains
       if (allocated(error)) return
 
       gw = gw_nh3_sutton_f%apply(setup, ctx)
-      call check(error, gw, setup%config%sai / 200.0, &
+      call check(error, gw, ctx%state%sai / 200.0, &
          message="gw_nh3_sutton with frozen soil", thr=1.0e-5)
       if (allocated(error)) return
 

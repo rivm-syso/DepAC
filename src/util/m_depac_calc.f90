@@ -86,9 +86,9 @@ contains
       !------------------------------------------------------------------
       ! Determine the presence of leaves and vegetation
       !------------------------------------------------------------------
-      ctx%has_leaves = (setup%config%lai > 0.0)
+      ctx%has_leaves = (ctx%state%lai > 0.0)
       ! Vegetation is present if there are leaves or if SAI > 0
-      ctx%has_vegetation = (setup%config%sai > 0.0)
+      ctx%has_vegetation = (ctx%state%sai > 0.0)
 
       !------------------------------------------------------------------
       ! Calculate special canopy resistance (Rc_special)

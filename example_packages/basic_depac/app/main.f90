@@ -42,13 +42,13 @@ program basic_depac
 
     ! set compenstation point for this component (example value)
 
-    dp_setup%config%comp_point%c_ave_nh3 = 1.0      ! Average concentration in ug/m³
+    dp_ctx%state%comp_point%c_ave_nh3 = 1.0      ! Average concentration in ug/m³
                                             ! (analogous to concentration inside leafs)
-    dp_setup%config%comp_point%c_ave_so2 = 1.0      ! Average concentration in ug/m³
-                                            ! (analogous to concentration inside leafs)
-    dp_setup%config%comp_point%c_so2 = 1.2          ! Concentration in ug/m³
-    dp_setup%config%comp_point%c_nh3 = 4.0          ! Concentration in ug/m³
-    dp_setup%config%comp_point%iratns = 3
+    dp_ctx%state%comp_point%c_ave_so2 = 1.0
+
+    dp_ctx%state%comp_point%c_so2 = 1.2          ! Concentration in ug/m³
+    dp_ctx%state%comp_point%c_nh3 = 4.0          ! Concentration in ug/m³
+    dp_ctx%state%comp_point%iratns = 3
 
 
     call depac_calc(dp_setup, dp_ctx)

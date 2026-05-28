@@ -32,9 +32,9 @@ contains
 
       select type (setup)
        type is (depac_setup)
-         associate(meteo => ctx%meteo, dp_conf => setup%config, rc_rinc => setup%land_use%rc_rinc)
+         associate(meteo => ctx%meteo, state => ctx%state, rc_rinc => setup%land_use%rc_rinc)
             if (meteo%ust > 0.0) then
-               rinc = rc_rinc%b * rc_rinc%h * dp_conf%sai / meteo%ust
+               rinc = rc_rinc%b * rc_rinc%h * state%sai / meteo%ust
             else
                rinc = 1000.0
             endif

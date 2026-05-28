@@ -134,7 +134,7 @@ contains
          ctx%meteo%glrad = 500.0
          ctx%meteo%pres_0 = 1013.25
          ctx%meteo%t = 25.0
-         setup%config%lai = 2.6
+         ctx%state%lai = 2.6
 
          vpd = 1.0
 
@@ -149,7 +149,7 @@ contains
 
          ctx%meteo%sinphi = 0.3
          ctx%meteo%glrad = 150.0
-         setup%config%lai = 2.0
+         ctx%state%lai = 2.0
 
          gstom = rc_gstom_emb(setup, ctx, vpd)
          call check(error, gstom, 128.818481, &

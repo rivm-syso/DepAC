@@ -34,7 +34,7 @@ contains
 
       select type (setup)
        type is (depac_setup)
-         associate(meteo => ctx%meteo, dp_conf => setup%config)
+         associate(meteo => ctx%meteo, state => ctx%state)
             if (ctx%has_vegetation) then
                if (meteo%nwet == 0) then
                   ! dry surface
@@ -59,7 +59,7 @@ contains
                endif
 
                ! very low NH3/SO2 ratio
-               if (dp_conf%comp_point%iratns == 3) rw = rw + 50.0
+               if (state%comp_point%iratns == 3) rw = rw + 50.0
 
                gw = 1.0 / rw
             else

@@ -53,9 +53,9 @@ contains
       ctx%has_leaves = .true.
       ctx%has_vegetation = .true.
 
-      setup%config%comp_point%c_ave_nh3 = 20.0
-      setup%config%comp_point%c_nh3 = 6.0
-      setup%config%comp_point%c_ave_so2 = 0.9
+      ctx%state%comp_point%c_ave_nh3 = 20.0
+      ctx%state%comp_point%c_nh3 = 6.0
+      ctx%state%comp_point%c_ave_so2 = 0.9
 
 
       ctx%output%gc_tot = 0.0009
@@ -94,7 +94,7 @@ contains
       allocate(setup%csoil_param, source=csoil_default())
       ctx%has_leaves = .true.
       ! negative c_ave_nh3
-      setup%config%comp_point%c_ave_nh3 = -1.0
+      ctx%state%comp_point%c_ave_nh3 = -1.0
 
       ccomp_tot = comp_point_ammonia_f%apply(setup, ctx)
 
@@ -104,8 +104,8 @@ contains
 
       ! no vegetation
       ctx%has_vegetation = .false.
-      setup%config%comp_point%c_ave_nh3 = 12
-      setup%config%comp_point%c_ave_so2 = -0.1
+      ctx%state%comp_point%c_ave_nh3 = 12
+      ctx%state%comp_point%c_ave_so2 = -0.1
 
       ccomp_tot = comp_point_ammonia_f%apply(setup, ctx)
 
@@ -181,7 +181,7 @@ contains
       if (allocated(error)) return
 
       setup%land_use%gamma_soil_c_fac = -0.1
-      setup%config%comp_point%c_ave_nh3 = 20.0
+      ctx%state%comp_point%c_ave_nh3 = 20.0
 
       csoil = csoil_water_f%apply(setup, ctx, 1.0)
 

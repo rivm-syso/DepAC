@@ -95,16 +95,16 @@ contains
       type(depac_setup), intent(in) :: setup
       type(depac_context), intent(inout) :: ctx
 
-      associate(dp_conf => setup%config, dp_err => ctx%error)
+      associate(dp_conf => setup%config, dp_err => ctx%error, state => ctx%state)
          ! lai and sai can be missing (-999.0) as they may not be needed
          !for all components and are checked elsewhere
          ! but we provide a warning here
-         if (missing(dp_conf%lai)) then
+         if (missing(state%lai)) then
             call log_warn('depac_config%lai is missing (-999.0). This may lead to incorrect ' &
             // 'calculations for components that require LAI.')
          end if
 
-         if (missing(dp_conf%sai)) then
+         if (missing(state%sai)) then
             call log_warn('depac_config%sai is missing (-999.0). This may lead to incorrect ' &
                // 'calculations for components that require SAI.')
          end if
@@ -121,12 +121,12 @@ contains
 
          if(dp_conf%calc_effective_rc) then
             ! RA and Rb are required
-            if(missing(dp_conf%ra_obs)) then
+            if(missing(state%ra_obs)) then
                call set_error(dp_err, ERR_INPUT,&
                   'ra is missing in depac_config while calc_effective_rc is true.')
                return
             end if
-            if(missing(dp_conf%rb)) then
+            if(missing(state%rb)) then
                call set_error(dp_err, ERR_INPUT,&
                   'rb is missing in depac_config while calc_effective_rc is true.')
                return
@@ -134,31 +134,31 @@ contains
          end if
 
          if(dp_conf%calc_comp_points) then
-            if(missing(dp_conf%comp_point%iratns)) then
+            if(missing(state%comp_point%iratns)) then
                call set_error(dp_err, ERR_INPUT, &
                   'comp_point%iratns is missing in depac_config while calc_comp_points is true.')
                return
             end if
 
-            if(missing(dp_conf%comp_point%c_nh3)) then
+            if(missing(state%comp_point%c_nh3)) then
                call set_error(dp_err, ERR_INPUT, &
                   'comp_point%c_nh3 is missing in depac_config while calc_comp_points is true.')
                return
             end if
 
-            if(missing(dp_conf%comp_point%c_so2)) then
+            if(missing(state%comp_point%c_so2)) then
                call set_error(dp_err, ERR_INPUT, &
                   'comp_point%c_so2 is missing in depac_config while calc_comp_points is true.')
                return
             end if
 
-            if(missing(dp_conf%comp_point%c_ave_nh3)) then
+            if(missing(state%comp_point%c_ave_nh3)) then
                call set_error(dp_err, ERR_INPUT, &
                   'comp_point%c_ave_nh3 is missing in depac_config while calc_comp_points true.')
                return
             end if
 
-            if(missing(dp_conf%comp_point%c_ave_so2)) then
+            if(missing(state%comp_point%c_ave_so2)) then
                call set_error(dp_err, ERR_INPUT, &
                   'comp_point%c_ave_so2 is missing in depac_config while calc_comp_points true.')
                return

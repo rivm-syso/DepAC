@@ -50,7 +50,7 @@ contains
       select type (setup)
        type is (depac_setup)
 
-         associate(dp_conf => setup%config, comp_point => setup%config%comp_point, &
+         associate(dp_conf => setup%config, comp_point => ctx%state%comp_point, &
             meteo => ctx%meteo, lu_conf => setup%land_use, output => ctx%output)
 
             tk = meteo%tsurf + 273.15
@@ -59,7 +59,7 @@ contains
 
             ! Stomatal compensation point:
             if (ctx%has_leaves .and. comp_point%c_ave_nh3 > 0.) then
-               gamma_stom = lu_conf%gamma_stom_c_fac * dp_conf%comp_point%c_ave_nh3 * &
+               gamma_stom = lu_conf%gamma_stom_c_fac * comp_point%c_ave_nh3 * &
                   4.7 * exp(-0.071*meteo%t)
 
                cstom = max(0.0, gamma_stom*tfac)
@@ -141,7 +141,7 @@ contains
        type is (depac_setup)
          ! Water compensation point parameterisation: soil compensation point is
          ! calculated based on water compensation point factor and average ammonia concentration.
-         associate(comp_point => setup%config%comp_point, &
+         associate(comp_point => ctx%state%comp_point, &
             lu_conf => setup%land_use)
 
             if (lu_conf%gamma_soil_c_fac > 0) then

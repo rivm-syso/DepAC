@@ -126,7 +126,7 @@ contains
 
       setup%land_use%rc_rinc%b  = 1.2
       setup%land_use%rc_rinc%h  = 5.5
-      setup%config%sai = 6.0
+      ctx%state%sai = 6.0
 
 
       rinc = rinc_f%apply(setup, ctx)

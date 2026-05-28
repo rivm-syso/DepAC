@@ -72,8 +72,8 @@ contains
 
       call init_default_depac_config_rivm()
       call set_log_level(LOG_LEVEL_NONE)
-      setup%config%lai = 7.0
-      setup%config%sai = 6.0
+      ctx%state%lai = 7.0
+      ctx%state%sai = 6.0
       setup%config%rssnow = 2000.0
       setup%config%sai_grass_haarweg = 3.5
 
@@ -90,16 +90,16 @@ contains
 
       setup%config%calc_comp_points = .true.
 
-      setup%config%comp_point%iratns = 2
-      setup%config%comp_point%c_nh3 = 100.0
-      setup%config%comp_point%c_so2 = 6.0
-      setup%config%comp_point%c_ave_nh3 = 3.0
-      setup%config%comp_point%c_ave_so2 = 2.0
+      ctx%state%comp_point%iratns = 2
+      ctx%state%comp_point%c_nh3 = 100.0
+      ctx%state%comp_point%c_so2 = 6.0
+      ctx%state%comp_point%c_ave_nh3 = 3.0
+      ctx%state%comp_point%c_ave_so2 = 2.0
 
       setup%config%calc_effective_rc = .true.
 
-      setup%config%ra_obs = 100.0
-      setup%config%rb = 50.0
+      ctx%state%ra_obs = 100.0
+      ctx%state%rb = 50.0
 
       tmp_config = setup%config
 
@@ -156,8 +156,8 @@ contains
       setup%component%rsoil_wet = 10.0
 
       setup%land_use%name = "grass"
-      setup%config%lai = 7.0
-      setup%config%sai = 6.0
+      ctx%state%lai = 7.0
+      ctx%state%sai = 6.0
       setup%config%rssnow = 2000.0
       setup%config%sai_grass_haarweg = 3.5
 
@@ -223,7 +223,7 @@ contains
       ! ! --------- Test missing depac_config input ---------
       call set_log_level(LOG_LEVEL_NONE)
       !missing lai:
-      setup%config%lai = -999.0
+      ctx%state%lai = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
          message="depac missing lai returned error, but it should just be a warning")
@@ -231,9 +231,9 @@ contains
       if (allocated(error)) return
       call clear_error(ctx%error)
       call set_log_level(LOG_LEVEL_NONE)
-      setup%config%lai = 7.0
+      ctx%state%lai = 7.0
       ! missing sai:
-      setup%config%sai = -999.0
+      ctx%state%sai = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
          message="depac missing sai returned error, but it should just be a warning")
@@ -241,7 +241,7 @@ contains
       call clear_error(ctx%error)
 
 
-      setup%config%sai = 6.0
+      ctx%state%sai = 6.0
 
       ! missing rssnow
       setup%config%rssnow = -999.0
@@ -336,11 +336,11 @@ contains
 
       setup%config%calc_comp_points = .true.
 
-      setup%config%comp_point%iratns = 2
-      setup%config%comp_point%c_nh3 = 100.0
-      setup%config%comp_point%c_so2 = 6.0
-      setup%config%comp_point%c_ave_nh3 = 3.0
-      setup%config%comp_point%c_ave_so2 = 2.0
+      ctx%state%comp_point%iratns = 2
+      ctx%state%comp_point%c_nh3 = 100.0
+      ctx%state%comp_point%c_so2 = 6.0
+      ctx%state%comp_point%c_ave_nh3 = 3.0
+      ctx%state%comp_point%c_ave_so2 = 2.0
 
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
@@ -351,54 +351,54 @@ contains
       call clear_error(ctx%error)
 
       ! missing comp_point%iratns
-      setup%config%comp_point%iratns = -999
+      ctx%state%comp_point%iratns = -999
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing comp_point%iratns did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%comp_point%iratns = 2
+      ctx%state%comp_point%iratns = 2
 
       ! missing comp_point%c_nh3
-      setup%config%comp_point%c_nh3 = -999.0
+      ctx%state%comp_point%c_nh3 = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing comp_point%c_nh3 did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%comp_point%c_nh3 = 100.0
+      ctx%state%comp_point%c_nh3 = 100.0
 
       ! missing comp_point%c_so2
-      setup%config%comp_point%c_so2 = -999.0
+      ctx%state%comp_point%c_so2 = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing comp_point%c_so2 did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%comp_point%c_so2 = 6.0
+      ctx%state%comp_point%c_so2 = 6.0
 
       ! missing comp_point%c_ave_nh3
-      setup%config%comp_point%c_ave_nh3 = -999.0
+      ctx%state%comp_point%c_ave_nh3 = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing comp_point%c_ave_nh3 did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%comp_point%c_ave_nh3 = 3.0
+      ctx%state%comp_point%c_ave_nh3 = 3.0
 
       ! missing comp_point%c_ave_so2
-      setup%config%comp_point%c_ave_so2 = -999.0
+      ctx%state%comp_point%c_ave_so2 = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing comp_point%c_ave_so2 did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%comp_point%c_ave_so2 = 2.0
+      ctx%state%comp_point%c_ave_so2 = 2.0
 
       setup%config%calc_effective_rc = .true.
 
-      setup%config%ra_obs = 100.0
-      setup%config%rb = 50.0
+      ctx%state%ra_obs = 100.0
+      ctx%state%rb = 50.0
 
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_NONE, &
@@ -407,22 +407,22 @@ contains
       call clear_error(ctx%error)
 
       ! missing ra_obs
-      setup%config%ra_obs = -999.0
+      ctx%state%ra_obs = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing ra_obs did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%ra_obs = 100.0
+      ctx%state%ra_obs = 100.0
 
       ! missing rb
-      setup%config%rb = -999.0
+      ctx%state%rb = -999.0
       call depac_calc(setup, ctx)
       call check(error, ctx%error%code, ERR_INPUT, &
          message="depac missing rb did not return error")
       if (allocated(error)) return
       call clear_error(ctx%error)
-      setup%config%rb = 50.0
+      ctx%state%rb = 50.0
 
       deallocate(setup%gsoil_param)
       call depac_calc(setup, ctx)

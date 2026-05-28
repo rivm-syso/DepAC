@@ -51,15 +51,15 @@ contains
       !                    12
       select type (setup)
        type is (depac_setup)
-         associate(meteo => ctx%meteo, dp_conf => setup%config)
+         associate(meteo => ctx%meteo, state => ctx%state, dp_conf => setup%config)
             if (ctx%has_vegetation) then
                if (meteo%t < 0.0) then
                   ! Frozen soil (from Depac v1):
-                  gw = dp_conf%sai / 200.0
+                  gw = state%sai / 200.0
                else
                   ! Use the gamma_w parameterization for NH3:
                   rw = dp_conf%sai_grass_haarweg * 2.0 *exp((100.0 - meteo%rh) / 12.0)
-                  gw = dp_conf%sai / rw
+                  gw = state%sai / rw
                end if
             else
                ! no vegetation:

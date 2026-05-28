@@ -27,11 +27,11 @@ module m_test_rc_eff
 
         call set_log_level(LOG_LEVEL_NONE)
 
-        setup%config%comp_point%c_nh3 = 10.0
+        ctx%state%comp_point%c_nh3 = 10.0
         ctx%output%ccomp_tot = 2.0
 
-        setup%config%ra_obs = 5.0
-        setup%config%rb = 3.0
+        ctx%state%ra_obs = 5.0
+        ctx%state%rb = 3.0
         ctx%output%rc_tot = 4.0
 
         call rc_eff(setup, ctx)

@@ -139,7 +139,7 @@ contains
 
       real :: sinphi
 
-      associate(stom_par  => setup%land_use%stom_par, dp_conf => setup%config, meteo => ctx%meteo)
+      associate(stom_par  => setup%land_use%stom_par, state => ctx%state, meteo => ctx%meteo)
 
          ! Check whether vegetation is present:
          if (ctx%has_vegetation) THEN
@@ -154,28 +154,28 @@ contains
             ! Direct and diffuse PAR, Photoactive (=visible) radiation:
             call par_dir_diff(meteo, PARdir, PARdiff)
             ! Calculate PARshade using Zhang et al. (2001) or Norman (1982)
-            if (meteo%glrad > 200 .and. dp_conf%lai > 2.5) then
-               PARshade = PARdiff*exp(-0.5*dp_conf%lai**0.8) + &
-                  0.07*PARdir*(1.1-0.1*dp_conf%lai)*exp(-sinphi)
+            if (meteo%glrad > 200 .and. state%lai > 2.5) then
+               PARshade = PARdiff*exp(-0.5*state%lai**0.8) + &
+                  0.07*PARdir*(1.1-0.1*state%lai)*exp(-sinphi)
             else
-               PARshade = PARdiff * exp(-0.5 * dp_conf%lai**0.7) + &
-                  0.07*PARdir*(1.1-0.1*dp_conf%lai)*exp(-sinphi)
+               PARshade = PARdiff * exp(-0.5 * state%lai**0.7) + &
+                  0.07*PARdir*(1.1-0.1*state%lai)*exp(-sinphi)
             end if
             ! PAR for sunlit leaves (canopy averaged)
-            if (meteo%glrad > 200 .and. dp_conf%lai > 2.5) then
+            if (meteo%glrad > 200 .and. state%lai > 2.5) then
                PARsun = PARdir**0.8*0.5/sinphi + PARshade
             else
                PARsun = PARdir*0.5/sinphi + PARshade
             end if
             ! Leaf area index for sunlit and shaded leaves
             ! only works for sinphi > 0, but this is already checked and adjusted above
-            LAIsun = 2*sinphi*(1-exp(-0.5*dp_conf%lai/sinphi ))
-            LAIshade = dp_conf%lai - LAIsun
+            LAIsun = 2*sinphi*(1-exp(-0.5*state%lai/sinphi ))
+            LAIshade = state%lai - LAIsun
 
 
             ! Correction factor for radiation (Emberson)
             F_light = (LAIsun*(1 - exp(-1.*stom_par%alpha*PARsun)) + &
-               LAIshade*(1 - exp(-1.*stom_par%alpha*PARshade)))/dp_conf%lai
+               LAIshade*(1 - exp(-1.*stom_par%alpha*PARshade)))/state%lai
 
             F_light = max(F_light, stom_par%F_min)
             ! Temperature influence
@@ -196,7 +196,7 @@ contains
             F_env = max(F_env, stom_par%F_min)
             gstom = stom_par%G_max * F_light * F_phen * F_env
             ! gstom expressed per m2 leafarea; convert with LAI to m2 surface
-            gstom = dp_conf%lai*gstom    ! in m/s
+            gstom = state%lai*gstom    ! in m/s
 
          else
             gstom = 0.0
