@@ -32,12 +32,12 @@ program performance_depac
 
 
     ! Set configuration parameters for this example
-    dp_setup%config%lai = 3.0
-    dp_setup%config%sai = 3.5
+    dp_ctx%state%lai = 3.0
+    dp_ctx%state%sai = 3.5
     dp_setup%config%calc_comp_points = .true.
     dp_setup%config%calc_effective_rc = .true.
-    dp_setup%config%ra_obs = 100.0
-    dp_setup%config%rb = 50.0
+    dp_ctx%state%ra_obs = 100.0
+    dp_ctx%state%rb = 50.0
 
 
     ! Set meteorological conditions for this example
