@@ -4,7 +4,7 @@
 ! Created:    May 12, 2026
 ! Modified:   May 12, 2026
 ! Description:
-!   Example custom parameterisation for external leaf conductance (gw). 
+!   Example custom parameterisation for external leaf conductance (gw).
 !------------------------------------------------------------------------------
 
 module m_gw_custom
@@ -32,7 +32,7 @@ contains
        type is (depac_setup)
 
          ! here we have access to all the context.
-       
+
          associate(meteo => ctx%meteo)
             ! As an exmample see how the meteo can be used
             if (meteo%t < 0.0) then
@@ -44,7 +44,7 @@ contains
                gw = 10.0
             end if
          end associate
-         
+
       end select
 
    end function gw_custom_apply

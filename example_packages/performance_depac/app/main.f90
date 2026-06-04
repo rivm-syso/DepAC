@@ -32,12 +32,24 @@ program performance_depac
 
 
     ! Set configuration parameters for this example
-    dp_ctx%state%lai = 3.0
-    dp_ctx%state%sai = 3.5
+
     dp_setup%config%calc_comp_points = .true.
     dp_setup%config%calc_effective_rc = .true.
+
+
+    dp_ctx%state%lai = 3.0
+    dp_ctx%state%sai = 3.5
     dp_ctx%state%ra_obs = 100.0
     dp_ctx%state%rb = 50.0
+
+    ! set compensation point
+    dp_ctx%state%comp_point%c_ave_nh3 = 1.0      ! Average concentration in ug/m³
+                                            ! (analogous to concentration inside leafs)
+    dp_ctx%state%comp_point%c_ave_so2 = 1.0      ! Average concentration in ug/m³
+                                            ! (analogous to concentration inside leafs)
+    dp_ctx%state%comp_point%c_so2 = 1.2          ! Concentration in ug/m³
+    dp_ctx%state%comp_point%c_nh3 = 4.0          ! Concentration in ug/m³
+    dp_ctx%state%comp_point%iratns = 3
 
 
     ! Set meteorological conditions for this example
@@ -52,14 +64,7 @@ program performance_depac
 
     ! set compenstation point for this component (example value)
 
-    dp_setup%config%comp_point%c_ave_nh3 = 1.0      ! Average concentration in ug/m³
-                                            ! (analogous to concentration inside leafs)
-    dp_setup%config%comp_point%c_ave_so2 = 1.0      ! Average concentration in ug/m³
-                                            ! (analogous to concentration inside leafs)
-    dp_setup%config%comp_point%c_so2 = 1.2          ! Concentration in ug/m³
-    dp_setup%config%comp_point%c_nh3 = 4.0          ! Concentration in ug/m³
-    dp_setup%config%comp_point%iratns = 3
-
+    
     call random_number(rand_vals)
 
     call cpu_time(start_time)
@@ -92,7 +97,5 @@ program performance_depac
     print *, "Compensation point (ug/m³):", dp_ctx%output%ccomp_tot
 
     print *, "Effective canopy resistance (s/m):", dp_ctx%output%rc_eff
-
-
 
 end program performance_depac

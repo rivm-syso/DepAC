@@ -9,7 +9,15 @@ program basic_depac
 
 
     implicit none (type, external)
+
+    ! The depac_context type holds all runtime state data. It is the data that dynamically changes
+    ! within a certain setup
+
     type(depac_context) :: dp_ctx
+
+    ! The depac_setup type holds all configuration and parameterisation data. It is the data that
+    ! defines the setup for a certain land use and component combination.
+    ! It includes dynamic classes for the configuration of custom parameterisations, 
     type(depac_setup) :: dp_setup
 
 
@@ -21,16 +29,18 @@ program basic_depac
 
     dp_setup = default_depac_setup(RIVM_LU_GRASS, RIVM_COMP_NH3)
 
-    ! Set configuration parameters for this example
-    dp_setup%config%lai = 3.0
-    dp_setup%config%sai = 3.5
     dp_setup%config%calc_comp_points = .true.
     dp_setup%config%calc_effective_rc = .true.
-    dp_setup%config%ra_obs = 100.0
-    dp_setup%config%rb = 50.0
+
+    ! Set configuration parameters for this example
+    dp_ctx%state%lai = 3.0
+    dp_ctx%state%sai = 3.5
+    
+    dp_ctx%state%ra_obs = 100.0
+    dp_ctx%state%rb = 50.0
 
 
-    ! Set meteorological conditions for this example
+    ! ! Set meteorological conditions for this example
 
     dp_ctx%meteo%t = 15.0
     dp_ctx%meteo%tsurf = 15.0
@@ -40,7 +50,7 @@ program basic_depac
     dp_ctx%meteo%sinphi = 0.5
     dp_ctx%meteo%pres_0 = 101500.0
 
-    ! set compenstation point for this component (example value)
+    ! ! set compenstation point for this component (example value)
 
     dp_ctx%state%comp_point%c_ave_nh3 = 1.0      ! Average concentration in ug/m³
                                             ! (analogous to concentration inside leafs)

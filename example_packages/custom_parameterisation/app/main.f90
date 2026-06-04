@@ -20,7 +20,7 @@ program basic_depac
 
     ! The depac_setup type holds all configuration and parameterisation data. It is the data that
     ! defines the setup for a certain land use and component combination.
-    ! It includes dynamic classes for the configuration of custom parameterisations, 
+    ! It includes dynamic classes for the configuration of custom parameterisations,
     type(depac_setup) :: dp_setup
 
 
@@ -42,7 +42,7 @@ program basic_depac
     ! Set configuration parameters for this example
     dp_ctx%state%lai = 3.0
     dp_ctx%state%sai = 3.5
-    
+
     dp_ctx%state%ra_obs = 100.0
     dp_ctx%state%rb = 50.0
 
