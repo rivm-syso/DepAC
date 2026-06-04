@@ -30,6 +30,6 @@ contains
             ctx%output%rc_tot = -9999.0
         else
             ctx%output%rc_tot = 1.0 / ctx%output%gc_tot
-        endif
+        end if
     end subroutine rc_tot
 end module m_rc_tot

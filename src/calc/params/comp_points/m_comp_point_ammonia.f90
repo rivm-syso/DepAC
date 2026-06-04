@@ -65,7 +65,7 @@ contains
                cstom = max(0.0, gamma_stom*tfac)
             else
                cstom = 0.0
-            endif
+            end if
 
             ! External leaf compensation point:
             if (ctx%has_vegetation .and. &
@@ -78,12 +78,12 @@ contains
                co_dep_fac = max(0.0, co_dep_fac)
                gamma_w = co_dep_fac * gamma_w
                cw = max(0.0, gamma_w*tfac)
-            elseif (ctx%has_vegetation) then
+            else if (ctx%has_vegetation) then
                gamma_w = -850. + 1840. * comp_point%c_nh3 * exp(-0.11*meteo%t)
                cw = max(0.0, gamma_w*tfac)
             else
                cw = 0.0
-            endif
+            end if
 
             ! Soil compensation point:
             csoil = setup%csoil_param%apply(setup, ctx, tfac)
@@ -98,7 +98,7 @@ contains
                   (output%gsoil_eff/output%gc_tot)*csoil
             else
                ccomp_tot = 0.0
-            endif
+            end if
          end associate
 
        class default
@@ -148,7 +148,7 @@ contains
                gamma_soil = lu_conf%gamma_soil_c_fac * 1.0
             else
                gamma_soil = abs(lu_conf%gamma_soil_c_fac) * comp_point%c_ave_nh3
-            endif
+            end if
 
             csoil = gamma_soil * tfac
          end associate

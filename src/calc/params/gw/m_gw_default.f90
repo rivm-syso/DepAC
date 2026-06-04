@@ -47,7 +47,7 @@ contains
             gw = 1.0/setup%component%rw_val
          else
             gw = 0.0
-         endif
+         end if
 
          class default
             ! If the setup is not of type depac_setup, return missing value

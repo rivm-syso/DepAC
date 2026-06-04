@@ -28,7 +28,7 @@ module m_depac_error
         type(depac_error_core), intent(inout) :: err
 
         err%code = ERR_NONE
-        err%message = ''
+        err%message = ""
     end subroutine clear_error
 
     function has_error(err) result(result)

@@ -37,7 +37,7 @@ contains
                rinc = rc_rinc%b * rc_rinc%h * state%sai / meteo%ust
             else
                rinc = 1000.0
-            endif
+            end if
          end associate
        class default
          ! If the setup is not of type depac_setup, return missing value

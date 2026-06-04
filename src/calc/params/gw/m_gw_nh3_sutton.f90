@@ -64,7 +64,7 @@ contains
             else
                ! no vegetation:
                gw = 0.0
-            endif
+            end if
          end associate
        class default
          ! If the setup is not of type depac_setup, return missing value

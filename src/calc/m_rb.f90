@@ -35,13 +35,13 @@ contains
 
         if (ctx%meteo%ust <= 0.0) then
              rb = -999.0
-             call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for rb.')
+             call log_debug("Invalid friction velocity (ust <= 0). Returning -999.0 for rb.")
              return
         end if
 
         if (setup%component%diffc <= 0.0) then
              rb = -999.0
-             call log_debug('Invalid diffusion coefficient (diffc <= 0). Returning -999.0 for rb.')
+             call log_debug("Invalid diffusion coefficient (diffc <= 0). Returning -999.0 for rb.")
              return
         end if
 

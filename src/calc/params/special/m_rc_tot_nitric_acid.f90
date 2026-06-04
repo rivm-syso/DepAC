@@ -41,7 +41,7 @@ contains
          else
             ! all other circumstances:
             ctx%output%rc_tot = 10.0
-         endif
+         end if
          ready = .true.
        class default
          ! If the setup is not of type depac_setup, set ready to false and do not modify rc_tot

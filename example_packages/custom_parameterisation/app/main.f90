@@ -84,7 +84,8 @@ program basic_depac
     print *, "Soil resistance (s/m):", dp_ctx%output%gw
 
 
-    dp_ctx%meteo%t = -5.0 ! now frozen conditions, see how this affects the custom gw parameterisation
+    dp_ctx%meteo%t = -5.0 ! now frozen conditions, see how this affects
+    ! the custom gw parameterisation
 
     call depac_calc(dp_setup, dp_ctx)
 

@@ -90,32 +90,32 @@ contains
       setup%component%ipar_snow = 1
       setup%config%rssnow = 150.
       call rc_special_f%apply(setup, ctx, ready)
-      call check(error, ctx%output%rc_tot, 150., 'ipar_snow=1 test failed', thr=1.0e-5)
+      call check(error, ctx%output%rc_tot, 150., "ipar_snow=1 test failed", thr=1.0e-5)
       if (allocated(error)) return
 
       ! Test 2: ipar_snow = 2, t < -1, should return 500
       setup%component%ipar_snow = 2
       ctx%meteo%t = -2.0
       call rc_special_f%apply(setup, ctx, ready)
-      call check(error, ctx%output%rc_tot, 500., 'ipar_snow=2, t<-1 test failed', thr=1.0e-5)
+      call check(error, ctx%output%rc_tot, 500., "ipar_snow=2, t<-1 test failed", thr=1.0e-5)
       if (allocated(error)) return
 
       ! Test 3: ipar_snow = 2, t > 1, should return 70
       ctx%meteo%t = 2.0
       call rc_special_f%apply(setup, ctx, ready)
-      call check(error, ctx%output%rc_tot, 70., 'ipar_snow=2, t>1 test failed', thr=1.0e-5)
+      call check(error, ctx%output%rc_tot, 70., "ipar_snow=2, t>1 test failed", thr=1.0e-5)
       if (allocated(error)) return
 
       ! Test 4: ipar_snow = 2, -1 <= t <= 1, should return 70*(2-t)
       ctx%meteo%t = 0.0
       call rc_special_f%apply(setup, ctx, ready)
-      call check(error, ctx%output%rc_tot, 140., 'ipar_snow=2, -1<=t<=1 test failed', thr=1.0e-5)
+      call check(error, ctx%output%rc_tot, 140., "ipar_snow=2, -1<=t<=1 test failed", thr=1.0e-5)
       if (allocated(error)) return
 
       ! test 5: invalid ipar_snow value, should set error
       setup%component%ipar_snow = 3
       call rc_special_f%apply(setup, ctx, ready)
-      call check(error, ctx%error%code, ERR_INPUT, 'Invalid ipar_snow did not set error code')
+      call check(error, ctx%error%code, ERR_INPUT, "Invalid ipar_snow did not set error code")
       if (allocated(error)) return
 
       deallocate(rc_special_f)
@@ -263,7 +263,7 @@ contains
       setup%config%rssnow = 150.
       call rc_special_f%apply(setup, ctx, ready)
 
-      call check(error, ctx%output%rc_tot, 150., 'we expected the rc_snow routine', thr=1.0e-5)
+      call check(error, ctx%output%rc_tot, 150., "we expected the rc_snow routine", thr=1.0e-5)
       if (allocated(error)) return
 
    end subroutine test_rc_tot_nitric_oxide

@@ -56,7 +56,7 @@ contains
                      else
                         rsoil_eff = lu_conf%rsoil + rinc
                      end if
-                  elseif (meteo%nwet == 1) then
+                  else if (meteo%nwet == 1) then
                      if (missing(comp%rsoil_wet)) then
                         rsoil_eff = -9999.0
                      else
@@ -74,7 +74,7 @@ contains
             else
                ! No deposition path, or missing value:
                gsoil = 0.0
-            endif
+            end if
          end associate
        class default
          ! If the setup is not of type depac_setup, return missing value

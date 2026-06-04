@@ -31,4 +31,3 @@ include = ["*.f90"]
 
 [extra.fortitude.check]
 line-length = 101 # 100 + 1 for the newline character
-ignore = ["S241"]

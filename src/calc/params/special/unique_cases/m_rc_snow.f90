@@ -52,17 +52,17 @@ contains
           case (2)
             if (t < -1.) then
                rc_tot = 500.
-            elseif (t >  1.) then
+            else if (t >  1.) then
                rc_tot = 70.
             else
                rc_tot = 70.*(2.-t)
-            endif
+            end if
           case default
             call set_error(ctx%error, ERR_INPUT, &
-               'Programming error in rc_snow: unknown value of ipar_snow: '&
+               "Programming error in rc_snow: unknown value of ipar_snow: "&
                //trim(setup%component%name))
 
-            call log_error('Programming error in rc_snow: unknown value of ipar_snow: ' &
+            call log_error("Programming error in rc_snow: unknown value of ipar_snow: " &
                //trim(setup%component%name))
             return
          end select

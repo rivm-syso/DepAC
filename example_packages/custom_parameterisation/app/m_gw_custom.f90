@@ -40,7 +40,8 @@ contains
                gw = 0.0
             else
                ! Custom parameterisation for unfrozen conditions:
-               ! For demonstration, we set a fixed value. In a real case, this could be a function of meteo and state variables.
+               ! For demonstration, we set a fixed value. In a real case, this could be a function
+               ! of meteo and state variables.
                gw = 10.0
             end if
          end associate

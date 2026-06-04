@@ -130,7 +130,7 @@ contains
 
       default_components = [ &
          make_depac_component( &
-         name = 'NH3', &
+         name = "NH3", &
          index = RIVM_COMP_NH3, &
          diffc = 0.21e-4, &
          rw_val = -999.0, &
@@ -138,7 +138,7 @@ contains
          rsoil_frozen = 1000.0, &
          rsoil_wet = 10.0), &
          make_depac_component( &
-         name = 'O3', &
+         name = "O3", &
          index = RIVM_COMP_O3, &
          diffc = 0.13e-4, &
          rw_val = 1000.0, &
@@ -146,7 +146,7 @@ contains
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0), &
          make_depac_component( &
-         name = 'SO2', &
+         name = "SO2", &
          index = RIVM_COMP_SO2, &
          diffc = 0.11e-4, &
          rw_val = -999.0, &
@@ -154,7 +154,7 @@ contains
          rsoil_frozen = 500.0, &
          rsoil_wet = 10.0), &
          make_depac_component( &
-         name = 'NO2', &
+         name = "NO2", &
          index = RIVM_COMP_NO2, &
          diffc = 0.13e-4, &
          rw_val = 2000.0, &
@@ -162,7 +162,7 @@ contains
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0), &
          make_depac_component( &
-         name = 'NO', &
+         name = "NO", &
          index = RIVM_COMP_NO, &
          diffc = 0.16e-4, &
          rw_val = -999.0, &
@@ -170,7 +170,7 @@ contains
          rsoil_frozen = -999.0, &
          rsoil_wet = -999.0), &
          make_depac_component( &
-         name = 'HNO3', &
+         name = "HNO3", &
          index = RIVM_COMP_HNO3, &
          diffc = -999.0, &
          rw_val = -999.0, &
@@ -185,7 +185,7 @@ contains
 
       default_land_uses = [ &
          make_depac_land_use( &
-         name = 'grass', &
+         name = "grass", &
          index = RIVM_LU_GRASS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -200,7 +200,7 @@ contains
          vpd_max = 1.3, &
          vpd_min = 3.0)), &
          make_depac_land_use( &
-         name = 'arable', &
+         name = "arable", &
          index = RIVM_LU_ARABLE, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -218,7 +218,7 @@ contains
          b = 14.0, &
          h = 1.0)), &
          make_depac_land_use( &
-         name = 'permanent_crops', &
+         name = "permanent_crops", &
          index = RIVM_LU_PERMANENT_CROPS, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -236,7 +236,7 @@ contains
          b = 14.0, &
          h = 1.0)), &
          make_depac_land_use( &
-         name = 'coniferous_forest', &
+         name = "coniferous_forest", &
          index = RIVM_LU_CONIFEROUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -254,7 +254,7 @@ contains
          b = 14.0, &
          h = 20.0)), &
          make_depac_land_use( &
-         name = 'deciduous_forest', &
+         name = "deciduous_forest", &
          index = RIVM_LU_DECIDUOUS_FOREST, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -272,7 +272,7 @@ contains
          b = 14.0, &
          h = 20.0)), &
          make_depac_land_use( &
-         name = 'water', &
+         name = "water", &
          index = RIVM_LU_WATER, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = 430.0, &
@@ -287,7 +287,7 @@ contains
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
          make_depac_land_use( &
-         name = 'urban', &
+         name = "urban", &
          index = RIVM_LU_URBAN, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
@@ -302,7 +302,7 @@ contains
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
          make_depac_land_use( &
-         name = 'other', &
+         name = "other", &
          index = RIVM_LU_OTHER, &
          gamma_stom_c_fac = 362.0, &
          gamma_soil_c_fac = -999.0, &
@@ -317,7 +317,7 @@ contains
          vpd_max = 1.3, &
          vpd_min = 3.0)), &
          make_depac_land_use( &
-         name = 'desert', &
+         name = "desert", &
          index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &
@@ -332,7 +332,7 @@ contains
          vpd_max = -999.0, &
          vpd_min = -999.0)), &
          make_depac_land_use( &
-         name = 'desert', &
+         name = "desert", &
          index = RIVM_LU_DESERT, &
          gamma_stom_c_fac = -999.0, &
          gamma_soil_c_fac = -999.0, &

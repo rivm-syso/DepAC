@@ -34,13 +34,13 @@ contains
 
         if (meteo%ust <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid friction velocity (ust <= 0). Returning -999.0 for ra.")
             return
         end if
 
         if (meteo%ws10 < 0.0) then
             ra = -999.0
-            call log_debug('Invalid wind speed at 10m (ws10 < 0). Returning -999.0 for ra.')
+            call log_debug("Invalid wind speed at 10m (ws10 < 0). Returning -999.0 for ra.")
             return
         end if
 
@@ -72,13 +72,13 @@ contains
         ! Check for valid inputs
         if (meteo%ust <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid friction velocity (ust <= 0). Returning -999.0 for ra.")
             return
         end if
 
         if (meteo%z0 <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid surface roughness length (z0 <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid surface roughness length (z0 <= 0). Returning -999.0 for ra.")
             return
         end if
 
