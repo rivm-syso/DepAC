@@ -19,7 +19,7 @@ contains
             vd = -999.0  ! Indicate invalid vd if denominator is too small
         end if
     end function depac_calc_vd_tot
-        
+
     pure function depac_calc_vd_eff(ctx) result(vd_eff)
         type(depac_context), intent(in) :: ctx
         real :: vd_eff
