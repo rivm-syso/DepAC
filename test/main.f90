@@ -16,6 +16,7 @@ program tester
     use m_test_rb, only: collect_calc_rb_tests
     use m_test_helpers, only: collect_test_helpers_tests
     use m_test_loggers, only: collect_test_loggers_tests
+    use m_test_vd, only: collect_vd_tests
     implicit none (type, external)
 
     ! Initialize test suites
@@ -42,7 +43,8 @@ program tester
         new_testsuite("calc_ra_tests", collect_calc_ra_tests), &
         new_testsuite("calc_rb_tests", collect_calc_rb_tests), &
         new_testsuite("test_helpers_tests", collect_test_helpers_tests), &
-        new_testsuite("test_loggers_tests", collect_test_loggers_tests) &
+        new_testsuite("test_loggers_tests", collect_test_loggers_tests), &
+        new_testsuite("vd_tests", collect_vd_tests) &
     ]
 
     do is = 1, size(testsuites)

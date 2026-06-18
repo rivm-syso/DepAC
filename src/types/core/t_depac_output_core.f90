@@ -34,6 +34,9 @@ module t_depac_output_core
       real :: gsoil_eff = -999.0
       real :: rc_tot = -999.0
       real :: rc_eff = -999.0
+
+      real :: vd = -999.0
+      real :: vd_eff = -999.0
       character(len=20) :: version = ""
       character(len=20) :: build_date = ""
     end type depac_output_core
