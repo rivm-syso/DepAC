@@ -1,7 +1,8 @@
 module m_test_gw_param
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-   use m_depac_params, only: gw_default, gw_so2, gw_nh3_sutton
+   use m_depac_params, only: gw_default, gw_so2, gw_nh3_sutton, &
+      gw_sai_scaling
 
    use t_depac_setup, only: depac_setup
    use t_depac_context, only: depac_context
@@ -19,7 +20,8 @@ contains
       testsuite = [testsuite, &
          new_unittest("gw_default", test_gw_default), &
          new_unittest("gw_so2", test_gw_so2), &
-         new_unittest("gw_nh3_sutton", test_gw_nh3_sutton) &
+         new_unittest("gw_nh3_sutton", test_gw_nh3_sutton), &
+         new_unittest("gw_sai_scaling", test_gw_sai_scaling) &
          ]
    end subroutine collect_gw_param_tests
 
@@ -53,6 +55,31 @@ contains
       call check(error, 0.5, gw, message="gw_default with vegetation test failed", thr=1.0e-5)
       if (allocated(error)) return
    end subroutine test_gw_default
+
+   subroutine test_gw_sai_scaling(error)
+      type(error_type), allocatable, intent(out) :: error
+      type(depac_setup) :: setup
+      type(depac_context) :: ctx
+      real :: gw
+      class(depac_gw_param), allocatable :: gw_sai_scaling_f
+
+      ! Test: has_vegetation true, SAI present
+      ctx%has_vegetation = .true.
+      ctx%state%sai = 0.8
+      setup%component%rw_val = 2.0
+
+      allocate(gw_sai_scaling_f, source=gw_sai_scaling())
+      gw = gw_sai_scaling_f%apply(setup, ctx)
+      call check(error, gw, 0.4, message="gw_sai_scaling with vegetation and SAI failed", thr=1.0e-5)
+      if (allocated(error)) return
+
+      ! Test: has_vegetation false
+      ctx%has_vegetation = .false.
+      gw = gw_sai_scaling_f%apply(setup, ctx)
+      call check(error, gw, 0.0, message="gw_sai_scaling with no vegetation failed", thr=1.0e-5)
+      if (allocated(error)) return
+
+   end subroutine test_gw_sai_scaling
 
    subroutine test_gw_so2(error)
       type(error_type), allocatable, intent(out) :: error
