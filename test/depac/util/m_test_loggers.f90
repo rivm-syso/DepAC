@@ -1,7 +1,6 @@
 module m_test_loggers
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-    use t_depac_meteorology, only: depac_meteorology
     use m_logger, only: set_log_level, LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARN, &
         LOG_LEVEL_ERROR, log_debug, log_info, log_warn, log_error
 

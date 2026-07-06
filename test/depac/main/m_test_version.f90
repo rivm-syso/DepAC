@@ -24,12 +24,16 @@ module m_test_version
         character(len=20) :: line
         integer :: ios
 
-        open(unit=10, file="VERSION", status='old', action='read', iostat=ios)
+        open(unit=10, file="VERSION", status="old", action="read", iostat=ios)
 
         call check(error, ios, 0, message="Failed to open VERSION file")
         if (allocated(error)) return
 
-        read(10, '(A)', iostat=ios) line
+        read(10, "(A)", iostat=ios) line
+
+        call check(error, ios, 0, message="Failed to read VERSION file")
+        if (allocated(error)) return
+
         call check(error, trim(line) == VERSION, .true.,&
              message="VERSION file does not match m_version VERSION")
         if (allocated(error)) return

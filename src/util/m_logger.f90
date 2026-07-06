@@ -25,22 +25,22 @@ contains
 
     subroutine log_error(msg)
         character(len=*), intent(in) :: msg
-        if (log_level >= LOG_LEVEL_ERROR) print *, '[ERROR] ', msg
+        if (log_level >= LOG_LEVEL_ERROR) print *, "[ERROR] ", msg
     end subroutine log_error
 
     subroutine log_warn(msg)
         character(len=*), intent(in) :: msg
-        if (log_level >= LOG_LEVEL_WARN) print *, '[WARN] ', msg
+        if (log_level >= LOG_LEVEL_WARN) print *, "[WARN] ", msg
     end subroutine log_warn
 
     subroutine log_info(msg)
         character(len=*), intent(in) :: msg
-        if (log_level >= LOG_LEVEL_INFO) print *, '[INFO] ', msg
+        if (log_level >= LOG_LEVEL_INFO) print *, "[INFO] ", msg
     end subroutine log_info
 
     subroutine log_debug(msg)
         character(len=*), intent(in) :: msg
-        if (log_level >= LOG_LEVEL_DEBUG) print *, '[DEBUG] ', msg
+        if (log_level >= LOG_LEVEL_DEBUG) print *, "[DEBUG] ", msg
     end subroutine log_debug
 
 end module m_logger

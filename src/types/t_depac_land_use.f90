@@ -1,69 +1,59 @@
 !------------------------------------------------------------------------------
 ! Module:     t_depac_land_use
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-13
-! Updated:    2026-02-27
+! Created:    November 13, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines derived types for land use parameters used in
-!   atmospheric deposition modeling. It includes types for stomatal parameters,
-!   resistance parameters, and the main land use type containing all relevant
-!   properties.
+!   Defines derived types for land use parameters including stomatal parameters
+!   and resistance values. The depac_land_use type extends depac_land_use_core
+!   and includes stomatal and canopy resistance parameterisation information.
+!------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
 
 module t_depac_land_use
-    implicit none (type, external)
-    public
-    !> Type representing stomatal conductance parameters.
-    !! Contains the following fields:
-    !! - F_min: Minimum stomatal conductance (typical values 0.01, default -999.0).
-    !! - alpha: Alpha for F_light calculation (default -999.0).
-    !! - Topt: Optimal temperature for F_temp calculation (default -999.0).
-    !! - Tmin: Minimum temperature for F_temp calculation (default -999.0).
-    !! - Tmax: Maximum temperature for F_temp calculation (default -999.0).
-    !! - g_max: Maximum stomatal conductance (default -999.0).
-    !! - vpd_max: Upper VPD limit for stomatal conductance reduction (default -999.0).
-    !! - vpd_min: Lower VPD limit for stomatal conductance reduction (default -999.0).
-    !! Note: The default values (-999.0) indicate missing or undefined data.
-    type :: depac_stomatal_params
-        real :: F_min = -999.0
-        real :: alpha = -999.0
-        real :: Topt = -999.0
-        real :: Tmin = -999.0
-        real :: Tmax = -999.0
-        real :: g_max = -999.0
-        real :: vpd_max = -999.0
-        real :: vpd_min = -999.0
-    end type depac_stomatal_params
+   use c_depac_core, only: depac_land_use_core
 
-    !> Type representing parameters for rinc calculation.
-    !! Contains the following fields:
-    !! - b: Rinc parameter b (default -999).
-    !! - h: Rinc parameter h (default -999).
-    !! Note: The default values (-999) indicate missing or undefined data.
-    type :: depac_rc_r_params
-        integer :: b = -999
-        integer :: h = -999
-    end type depac_rc_r_params
+   implicit none (type, external)
+   private
+   public :: depac_land_use, depac_stomatal_params, depac_rc_r_params
 
-    !> Type representing land use parameters for DEPAC calculations.
-    !! Contains the following fields:
-    !! - name: Name of the land use type, e.g. "forest", "grass", etc.
-    !! - index: Index of the land use type (default -999). (required)
-    !! - gamma_stom_c_fac: Factor in linear relation between gamma_stom and NH3 air concentration.
-    !! - gamma_soil_c_fac: Gamma_soil c factor for water land use (default -999.0).
-    !! - rsoil: Soil resistance for this land use type (default -999.0).
-    !! - stom_par: Stomatal conductance parameters.
-    !! - rc_rinc: Rinc calculation parameters.
-    !! Note: The default values (-999.0) indicate missing or undefined data.
-    type :: depac_land_use
-        character(len=40) :: name
-        integer :: index = -999
-        real :: gamma_stom_c_fac = -999.0
-        real :: gamma_soil_c_fac = -999.0
-        real :: rsoil = -999.0
-        type(depac_stomatal_params) :: stom_par
-        type(depac_rc_r_params) :: rc_rinc
-    end type depac_land_use
 
-    contains
+   !> Type representing stomatal conductance parameters.
+   !! Contains the following fields:
+   !! - F_min: Minimum stomatal conductance (typical values 0.01, default -999.0).
+   !! - alpha: Alpha for F_light calculation (default -999.0).
+   !! - Topt: Optimal temperature for F_temp calculation (default -999.0).
+   !! - Tmin: Minimum temperature for F_temp calculation (default -999.0).
+   !! - Tmax: Maximum temperature for F_temp calculation (default -999.0).
+   !! - g_max: Maximum stomatal conductance (default -999.0).
+   !! - vpd_max: Upper VPD limit for stomatal conductance reduction (default -999.0).
+   !! - vpd_min: Lower VPD limit for stomatal conductance reduction (default -999.0).
+   !! Note: The default values (-999.0) indicate missing or undefined data.
+   type :: depac_stomatal_params
+      real :: F_min = -999.0
+      real :: alpha = -999.0
+      real :: Topt = -999.0
+      real :: Tmin = -999.0
+      real :: Tmax = -999.0
+      real :: g_max = -999.0
+      real :: vpd_max = -999.0
+      real :: vpd_min = -999.0
+   end type depac_stomatal_params
+
+   !> Type representing parameters for rinc calculation.
+   !! Contains the following fields:
+   !! - b: Rinc parameter b (default -999.0).
+   !! - h: Rinc parameter h (default -999.0).
+   !! Note: The default values (-999.0) indicate missing or undefined data.
+   type :: depac_rc_r_params
+      real :: b = -999.0
+      real :: h = -999.0
+   end type depac_rc_r_params
+
+
+   type , extends(depac_land_use_core) :: depac_land_use
+      type(depac_stomatal_params) :: stom_par
+      type(depac_rc_r_params) :: rc_rinc
+   end type depac_land_use
+
 end module t_depac_land_use

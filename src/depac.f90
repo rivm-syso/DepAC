@@ -27,56 +27,75 @@
 
 
 module depac
-  ! Types and subroutines for the DepAC model
-  use t_depac_land_use, only: depac_land_use
-  use t_depac_component, only: depac_component
-  use t_depac_meteorology, only: depac_meteorology
-  use t_depac_config, only: depac_config
-  use t_depac_location, only: depac_location
-  use t_depac_output, only: depac_output
 
-  ! Helper modules
-  use m_depac_error, only: clear_error, has_error, set_error
-  use t_depac_error, only: ERR_INPUT, depac_error
+  use t_depac_setup, only: depac_setup
+  use t_depac_context, only: depac_context
+
+  use m_depac_calc, only: depac_calc, depac_calc_partial, depac_calc_finish
+
+  use m_ra, only: depac_calc_ra,  depac_calc_ra_obs_h
+  use m_rb, only: depac_calc_rb_hicks
+  use m_vd, only: depac_calc_vd_tot, depac_calc_vd_eff
+
+  ! all depac parameterizations are available via this module
+  use m_depac_params, only: comp_point_ammonia, comp_point_default, csoil_default, csoil_water, &
+       gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance, &
+       gstom_default, gstom_emberson, &
+       gw_default, gw_so2, gw_nh3_sutton, &
+       rc_tot_fixed, rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_special_default
+  ! the parameterization types are available via this module
+  use c_depac_param_types, only: depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
+                             depac_gstom_param, depac_gw_param, depac_rc_special_param, &
+                             depac_rinc_param
+
+
+
+
+  ! error
+  use t_depac_error_core, only: depac_error_core, ERR_NONE, ERR_INPUT, &
+    ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN
+  use m_depac_error, only: has_error, clear_error
+
+  use m_depac_factory, only: make_depac_component, make_depac_land_use, make_depac_rc_r_params, &
+    make_depac_stom_params, make_depac_setup
+
   use m_version, only: VERSION, BUILD_DATE
-  use m_logger, only: set_log_level
-  use m_check_depac_input, only: &
-    check_component_input, &
-    check_land_use_input, &
-    check_depac_config, &
-    check_meteorology_input
-
-  use default_depac_config_rivm, only: default_landuse_types, default_component_types, &
-    default_rsoil_matrix, obtain_config
-  use default_indices, only: COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
-    LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
-    LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
-
-  ! Calculation modules
-  use m_rc_special, only: rc_special
-  use m_rc_gw, only: rc_gw
-  use m_rc_gstom, only: rc_gstom
-  use m_rc_gsoil, only: rc_gsoil
-  use m_rc_tot, only: rc_tot
-  use m_comp_points, only: rc_comp_point
-  use m_rc_eff, only: rc_eff
-  use m_depac_calc, only: depac_calc_partial, depac_calc_finish, depac_calc
   implicit none (type, external)
 
 
   private
+  public :: &
+    ! types
+    depac_setup, depac_context, &
 
-  ! exposed module entities including types
-  public :: depac_calc, depac_land_use, depac_component, &
-            depac_meteorology, depac_config, depac_output, depac_error, &
-            has_error, VERSION, BUILD_DATE, depac_calc_partial, depac_calc_finish, &
-            default_landuse_types, default_component_types, &
-            default_rsoil_matrix, depac_location, &
-            COMP_NH3, COMP_O3, COMP_SO2, COMP_NO2, COMP_NO, COMP_HNO3, &
-            obtain_config,clear_error, &
-            LU_GRASS, LU_ARABLE, LU_PERMANENT_CROPS, LU_CONIFEROUS_FOREST, LU_DECIDUOUS_FOREST, &
-            LU_WATER, LU_URBAN, LU_OTHER, LU_DESERT
+    ! main DepAC calculation routines
+    depac_calc, depac_calc_partial, depac_calc_finish, &
+    ! Ra and Rb calculations
+    depac_calc_ra, depac_calc_ra_obs_h, depac_calc_rb_hicks, &
+    depac_calc_vd_tot, depac_calc_vd_eff, &
 
+    ! parameterizations
+    comp_point_ammonia, comp_point_default, csoil_default, csoil_water, &
+    gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance, &
+    gstom_default, gstom_emberson, &
+    gw_default, gw_so2, gw_nh3_sutton, &
+    rc_tot_fixed, rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_special_default, &
+
+    ! parameterization types
+    depac_comp_point_param, depac_csoil_param, depac_gsoil_param, &
+    depac_gstom_param, depac_gw_param, depac_rc_special_param, &
+    depac_rinc_param, &
+
+    ! error handling
+    depac_error_core, ERR_NONE, ERR_INPUT, ERR_COMPUTATION, ERR_MEMORY, ERR_UNKNOWN, &
+    has_error, clear_error, &
+
+    ! Factory functions for default configurations
+    make_depac_component, make_depac_land_use, make_depac_rc_r_params, make_depac_stom_params, &
+    make_depac_setup, &
+
+    ! version info
+    VERSION, BUILD_DATE
 
 
 

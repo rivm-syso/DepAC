@@ -1,14 +1,15 @@
 !------------------------------------------------------------------------------
-! Module:     t_depac_output
+! Module:     t_depac_output_core
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-14
-! Updated:    2026-02-27
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines the output type for the DepAC atmospheric deposition
-!   model. All values in depac_output are calculated results, including
-!   resistances, conductances, and compensation points.
+!   Defines output type containing calculated DEPAC results (resistances,
+!   conductances, compensation points, and version information). The
+!   depac_output_core type stores all model output for a single calculation.
 !------------------------------------------------------------------------------
-module t_depac_output
+
+module t_depac_output_core
     implicit none (type, external)
     public
     !> Type representing calculated DEPAC outputs.
@@ -24,7 +25,7 @@ module t_depac_output
     !! - version: Version of the DepAC model.
     !! - build_date: Build date of the DepAC model.
     !! Note: The default values (-999.0) indicate missing or undefined data.
-    type :: depac_output
+    type :: depac_output_core
       real :: gw = -999.0
       real :: gw_can = -999.0
       real :: gstom = -999.0
@@ -33,7 +34,10 @@ module t_depac_output
       real :: gsoil_eff = -999.0
       real :: rc_tot = -999.0
       real :: rc_eff = -999.0
+
+      real :: vd = -999.0
+      real :: vd_eff = -999.0
       character(len=20) :: version = ""
       character(len=20) :: build_date = ""
-    end type depac_output
-end module t_depac_output
+    end type depac_output_core
+end module t_depac_output_core

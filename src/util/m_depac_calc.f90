@@ -10,25 +10,19 @@
 !   Last update: January 15, 2026
 !------------------------------------------------------------------------------
 module m_depac_calc
-   use t_depac_location, only: depac_location
-   use t_depac_land_use, only: depac_land_use
-   use t_depac_component, only: depac_component
-   use t_depac_meteorology, only: depac_meteorology
-   use t_depac_config, only: depac_config
-   use t_depac_output, only: depac_output
+   use t_depac_setup, only: depac_setup
+   use t_depac_context, only: depac_context
 
    ! Helper modules
-   use m_depac_error, only: clear_error, has_error, set_error
-   use t_depac_error, only: ERR_INPUT, depac_error
+   use m_depac_error, only: clear_error, has_error
    use m_version, only: VERSION, BUILD_DATE
    use m_logger, only: set_log_level
    use m_check_depac_input, only: &
-      check_component_input, &
       check_land_use_input, &
       check_depac_config, &
-      check_meteorology_input
-   use default_depac_config_rivm, only: default_landuse_types, default_component_types, &
-      default_rsoil_matrix
+      check_meteorology_input, &
+      check_component_input, &
+      check_depac_parameterizations
    use m_helpers, only: missing
 
    ! Calculation modules
@@ -44,124 +38,132 @@ module m_depac_calc
    private
    public :: depac_calc, depac_calc_partial, depac_calc_finish
 contains
-   subroutine depac_calc_partial(comp, lu, meteo, dp_conf, dp_out, err)
-      type(depac_component), intent(in) :: comp
-      type(depac_land_use), intent(in) :: lu
-      type(depac_meteorology), intent(inout) :: meteo
-      type(depac_config), intent(inout) :: dp_conf
-      type(depac_output), intent(out) :: dp_out
-      type(depac_error), intent(out) :: err
+   subroutine depac_calc_partial(setup, ctx)
+      type(depac_setup), intent(in) :: setup
+      type(depac_context), intent(inout) :: ctx
 
-      logical :: result   ! Error status flag
       logical :: ready   ! Flag indicating if Rc_special is sufficient
 
 
-      dp_out%rc_tot = -999.0
+      ! initialeze with no deposition path
+      ctx%output%gw = -999.0
+      ctx%output%gw_can = -999.0
+      ctx%output%gstom = -999.0
+      ctx%output%ccomp_tot = -999.0
+      ctx%output%gc_tot = -999.0
+      ctx%output%gsoil_eff = -999.0
+      ctx%output%rc_tot = -999.0
+      ctx%output%rc_eff = -999.0
       !------------------------------------------------------------------
       ! Input validation checks (only disable for performance runs!)
       !------------------------------------------------------------------
-      if (dp_conf%check_input) then
-         call check_component_input(comp, err)
-         if (has_error(err)) return
 
-         call check_land_use_input(lu, err)
-         if (has_error(err)) return
+      if (setup%config%check_input) then
 
-         call check_depac_config(dp_conf, err)
-         if (has_error(err)) return
+         call check_land_use_input(setup,ctx)
+         if (has_error(ctx%error)) return
 
-         call check_meteorology_input(meteo, err)
-         if (has_error(err)) return
+         call check_depac_config(setup, ctx)
+         if (has_error(ctx%error)) return
 
+         call check_meteorology_input(ctx)
+         if (has_error(ctx%error)) return
+
+         call check_component_input(setup, ctx)
+         if (has_error(ctx%error)) return
+
+         call check_depac_parameterizations(setup, ctx)
+         if (has_error(ctx%error)) return
       end if
+
 
       !------------------------------------------------------------------
       ! Clear any previous error and set log level
       !------------------------------------------------------------------
-      call clear_error(err)
-      call set_log_level(dp_conf%log_level)
+      call clear_error(ctx%error)
+      call set_log_level(setup%config%log_level)
 
       !------------------------------------------------------------------
       ! Determine the presence of leaves and vegetation
       !------------------------------------------------------------------
-      dp_conf%has_leaves = (dp_conf%lai > 0.0)
+      ctx%has_leaves = (ctx%state%lai > 0.0)
       ! Vegetation is present if there are leaves or if SAI > 0
-      dp_conf%has_vegetation = (dp_conf%sai > 0.0)
+      ctx%has_vegetation = (ctx%state%sai > 0.0)
 
       !------------------------------------------------------------------
       ! Calculate special canopy resistance (Rc_special)
       ! ready = .true. if Rc_special is sufficient, else further calculation needed
       !------------------------------------------------------------------
-      call rc_special(comp, lu, meteo, dp_conf, dp_out, ready, err)
+      call rc_special(setup, ctx, ready)
 
-      if (has_error(err)) return
+      if (has_error(ctx%error)) return
 
       if (.not. ready) then
          !--------------------------------------------------------------
          ! Compute External Conductance
          !--------------------------------------------------------------
-         call rc_gw(comp, meteo, dp_conf, dp_out, err)      ! Ground/wet resistance
-         if (has_error(err)) return
+         call rc_gw(setup, ctx)      ! Ground/wet resistance
+         if (has_error(ctx%error)) return
+
 
          !--------------------------------------------------------------
          ! Compute stomatal Conductance
          !--------------------------------------------------------------
-         call rc_gstom(comp, lu, meteo, dp_conf, dp_out, err) ! Stomatal resistance
-         if (has_error(err)) return
+         call rc_gstom(setup, ctx) ! Stomatal resistance
+         if (has_error(ctx%error)) return
+
 
       end if
 
       ! Always set version and build date
-      dp_out%version = VERSION
-      dp_out%build_date = BUILD_DATE
+      ctx%output%version = VERSION
+      ctx%output%build_date = BUILD_DATE
    end subroutine depac_calc_partial
 
-   subroutine depac_calc_finish(comp, lu, meteo, dp_conf, dp_out, err)
-      type(depac_component), intent(in) :: comp
-      type(depac_land_use), intent(in) :: lu
-      type(depac_meteorology), intent(inout) :: meteo
-      type(depac_config), intent(inout) :: dp_conf
-      type(depac_output), intent(inout) :: dp_out
-      type(depac_error), intent(out) :: err
+   subroutine depac_calc_finish(setup, ctx)
+      type(depac_setup), intent(in) :: setup
+      type(depac_context), intent(inout) :: ctx
 
-      call clear_error(err)
+      call clear_error(ctx%error)
 
       ! the gw and gstom should already be calculated in depac_calc_partial
       ! now calculate gsoil, rc_tot, and optionally comp points and rc_eff (requires u* in meteo)
 
-      if(missing(dp_out%rc_tot)) then
+      if(missing(ctx%output%rc_tot)) then
 
          !--------------------------------------------------------------
          ! Compute (effective) Soil Conductance
          !--------------------------------------------------------------
-         call rc_gsoil(lu, meteo, comp, dp_conf, dp_out, err) ! Soil resistance
-         if (has_error(err)) return
+         call rc_gsoil(setup, ctx) ! Soil resistance
+         if (has_error(ctx%error)) return
 
          !--------------------------------------------------------------
          ! Compute total canopy resistance and conductance
          !--------------------------------------------------------------
-         call rc_tot(dp_out, err)
-         if (has_error(err)) return
+         call rc_tot(ctx) ! Total canopy resistance
+         if (has_error(ctx%error)) return
 
          !--------------------------------------------------------------
          ! Optional: Compensation point calculations
          !--------------------------------------------------------------
-         if (dp_conf%calc_comp_points) then
+         if (setup%config%calc_comp_points) then
 
             !--------------------------------------------------------------
             ! Compute compensation points
             !--------------------------------------------------------------
-            call rc_comp_point(comp, lu, meteo, dp_conf, dp_out, err)
-            if (has_error(err)) return
+            call rc_comp_point(setup, ctx)
+
+            if (has_error(ctx%error)) return
+
 
             !----------------------------------------------------------
             ! Optional: Effective resistance calculation based on
             ! Compensation points
             !----------------------------------------------------------
-            if (dp_conf%calc_effective_rc) then
+            if (setup%config%calc_effective_rc) then
 
-               call rc_eff(dp_out, dp_conf, err)
-               if (has_error(err)) return
+               call rc_eff(setup, ctx)
+               if (has_error(ctx%error)) return
             end if
          end if
       end if
@@ -173,18 +175,14 @@ contains
    !   This subroutine performs the full DepAC calculation flow, combining partial
    !   and finish steps for canopy resistance and related resistances.
    !------------------------------------------------------------------------------
-   subroutine depac_calc(comp, lu, meteo, dp_conf, dp_out, err)
-      type(depac_component), intent(in) :: comp
-      type(depac_land_use), intent(in) :: lu
-      type(depac_meteorology), intent(inout) :: meteo
-      type(depac_config), intent(inout) :: dp_conf
-      type(depac_output), intent(out) :: dp_out
-      type(depac_error), intent(out) :: err
+   subroutine depac_calc(setup, ctx)
+      type(depac_setup), intent(in) :: setup
+      type(depac_context), intent(inout) :: ctx
 
-      call depac_calc_partial(comp, lu, meteo, dp_conf, dp_out, err)
-      if (has_error(err)) return
-      call depac_calc_finish(comp, lu, meteo, dp_conf, dp_out, err)
-      if (has_error(err)) return
+      call depac_calc_partial(setup, ctx)
+      if (has_error(ctx%error)) return
+      call depac_calc_finish(setup, ctx)
+      if (has_error(ctx%error)) return
    end subroutine depac_calc
 
 end module m_depac_calc

@@ -7,8 +7,17 @@
 !   This module defines error codes and the error type for the DepAC
 !   atmospheric deposition model. It provides standardized error handling
 !   for input validation, computation, memory, and unknown errors.
+!------------------------------------------------------------------------------!------------------------------------------------------------------------------
+! Module:     t_depac_error_core
+! Author:     Marte Voorneveld, RIVM
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
+! Description:
+!   Defines error codes and error type for standardized error handling in DEPAC
+!   calculations. The depac_error_core type enables tracking and reporting of
+!   calculation errors and warnings.
 !------------------------------------------------------------------------------
-module t_depac_error
+module t_depac_error_core
     implicit none (type, external)
     public
 
@@ -23,8 +32,8 @@ module t_depac_error
     !! Contains the following fields:
     !! - code: Error code (see ERR_* parameters).
     !! - message: Human-readable error message.
-    type :: depac_error
+    type :: depac_error_core
         integer :: code
         character(len=256) :: message
-    end type depac_error
-end module t_depac_error
+    end type depac_error_core
+end module t_depac_error_core
