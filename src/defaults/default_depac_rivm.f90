@@ -16,7 +16,7 @@ module default_depac_config_rivm
       rc_special_default, rinc_default, rinc_no_path, rinc_no_resistance,&
        csoil_default, csoil_water, &
        gw_nh3_sutton, gw_so2, gstom_emberson, comp_point_ammonia, rc_tot_nitric_acid, &
-       rc_tot_nitric_oxide, rc_tot_fixed
+       rc_tot_nitric_oxide, rc_tot_fixed, gw_sai_scaling
 
    use m_depac_factory, only: make_depac_component, make_depac_land_use, make_depac_setup, &
       make_depac_stom_params, make_depac_rc_r_params
@@ -68,6 +68,7 @@ contains
       integer :: i, j
       logical, dimension(6,9), save :: use_gw_nh3_sutton = .false.
       logical, dimension(6,9), save :: use_gw_so2 = .false.
+      logical, dimension(6,9), save :: use_gw_sai_scaling = .false.
 
       logical, dimension(6,9), save :: use_gstom_emberson = .false.
       logical, dimension(6,9), save :: use_comp_point_ammonia = .false.
@@ -84,6 +85,7 @@ contains
 
       use_gw_nh3_sutton(RIVM_COMP_NH3,:) = .true.
       use_gw_so2(RIVM_COMP_SO2,:) = .true.
+      use_gw_sai_scaling(RIVM_COMP_O3,:) = .true.
 
       use_gstom_emberson(RIVM_COMP_NH3, :) = .true.
       use_gstom_emberson(RIVM_COMP_O3, :) = .true.
@@ -141,7 +143,7 @@ contains
          name = "O3", &
          index = RIVM_COMP_O3, &
          diffc = 0.13e-4, &
-         rw_val = 1000.0, &
+         rw_val = 2500.0, &
          ipar_snow = 1, &
          rsoil_frozen = 2000.0, &
          rsoil_wet = 2000.0), &
@@ -369,6 +371,11 @@ contains
             if(use_gw_so2(j, i)) then
                deallocate(default_depac_setup(i, j)%gw_param)
                allocate(default_depac_setup(i, j)%gw_param, source=gw_so2())
+            end if
+
+            if(use_gw_sai_scaling(j, i)) then
+               deallocate(default_depac_setup(i, j)%gw_param)
+               allocate(default_depac_setup(i, j)%gw_param, source=gw_sai_scaling())
             end if
 
             if(use_gstom_emberson(j, i)) then

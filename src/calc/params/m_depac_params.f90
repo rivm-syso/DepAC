@@ -26,6 +26,7 @@ module m_depac_params
     use m_gw_default, only: gw_default
     use m_gw_so2, only: gw_so2
     use m_gw_nh3_sutton, only: gw_nh3_sutton
+    use m_gw_sai_scaling, only: gw_sai_scaling
 
     ! Comp point
     use m_comp_point_ammonia, only: comp_point_ammonia
@@ -47,6 +48,6 @@ module m_depac_params
     public :: comp_point_ammonia, comp_point_default, csoil_default, csoil_water, &
        gsoil_default, rinc_default, rinc_no_path, rinc_no_resistance, &
        gstom_default, gstom_emberson, &
-       gw_default, gw_so2, gw_nh3_sutton, &
+       gw_default, gw_so2, gw_nh3_sutton, gw_sai_scaling, &
        rc_tot_fixed, rc_tot_nitric_acid, rc_tot_nitric_oxide, rc_special_default
 end module m_depac_params
