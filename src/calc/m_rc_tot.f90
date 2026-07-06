@@ -15,22 +15,21 @@
 !------------------------------------------------------------------------------
 module m_rc_tot
 
-    use t_depac_output, only: depac_output
-    use t_depac_error, only: depac_error
+    use t_depac_context, only: depac_context
     implicit none (type, external)
     public
 contains
-
-    subroutine rc_tot(dp_out, err)
-        type(depac_output), intent(inout) :: dp_out  ! output of this run
-        type(depac_error), intent(inout) :: err      ! error handling
+    subroutine rc_tot(ctx)
+        type(depac_context), intent(inout) :: ctx
         ! Total conductance:
-        dp_out%gc_tot = dp_out%gstom + dp_out%gsoil_eff + dp_out%gw
+        ctx%output%gc_tot = ctx%output%gstom + ctx%output%gsoil_eff + ctx%output%gw
+
+
         ! Total resistance (note: gw can be negative, but no total emission allowed here):
-        if (dp_out%gc_tot <= 0.0 .or. dp_out%gw < 0.0) then
-            dp_out%rc_tot = -9999.0
+        if (ctx%output%gc_tot <= 0.0 .or. ctx%output%gw < 0.0) then
+            ctx%output%rc_tot = -9999.0
         else
-            dp_out%rc_tot = 1.0 / dp_out%gc_tot
-        endif
+            ctx%output%rc_tot = 1.0 / ctx%output%gc_tot
+        end if
     end subroutine rc_tot
 end module m_rc_tot

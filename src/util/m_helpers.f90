@@ -9,24 +9,24 @@
 !------------------------------------------------------------------------------
 
 module m_helpers
-      implicit none (type, external)
-      public
-      interface missing
-            module procedure missing_real, missing_int
-      end interface
+   implicit none (type, external)
+   public
+   interface missing
+      module procedure missing_real, missing_int
+   end interface
 contains
 
-      ! Add helper functions or subroutines here as needed
-      logical function missing_real(x)
-         real, intent(in) :: x
-         real, parameter :: EPS = 1.0e-5
-         missing_real = (abs(x + 999.) <= EPS)
-      end function missing_real
+   ! Add helper functions or subroutines here as needed
+   pure logical function missing_real(x)
+      real, intent(in) :: x
+      real, parameter :: EPS = 1.0e-5
+      missing_real = (abs(x + 999.) <= EPS)
+   end function missing_real
 
-      logical function missing_int(x)
-         integer, intent(in) :: x
-         missing_int = (x == -999)
-      end function missing_int
+   pure logical function missing_int(x)
+      integer, intent(in) :: x
+      missing_int = (x == -999)
+   end function missing_int
 
 
 !***********************************************************************
@@ -40,18 +40,20 @@ contains
 !
 !  Feb 2010 MCvZ added to modmeteo_para, copied from ops_depu (OPS 4.1.17)
 !***********************************************************************
-      function fpsih(eta) result(res)
-         real, intent(in) :: eta
-         real :: res
-         real :: y
+   function fpsih(eta) result(res)
+      real, intent(in) :: eta
+      real :: res
+      real :: y
 
-         if (eta < 0.0) then
-            y = sqrt(1.0 - 16.0 * eta)
-            res = 2.0 * log((1.0 + y) / 2.0)
-         else
-            res = -(0.7 * eta) - (0.75 * eta - 10.72) * exp(-0.35 * eta) - 10.72
-         end if
-      end function fpsih
+      if (eta < 0.0) then
+         y = sqrt(1.0 - 16.0 * eta)
+         res = 2.0 * log((1.0 + y) / 2.0)
+      else
+         res = -(0.7 * eta) - (0.75 * eta - 10.72) * exp(-0.35 * eta) - 10.72
+      end if
+   end function fpsih
+
+
 
 
 end module m_helpers

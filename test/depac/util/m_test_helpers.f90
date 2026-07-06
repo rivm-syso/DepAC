@@ -1,13 +1,12 @@
 module m_test_helpers
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-    use t_depac_meteorology, only: depac_meteorology
     use m_helpers, only: fpsih, missing
 
 
     implicit none (type, external)
     private
-    public :: collect_test_helpers_tests
+    public :: collect_test_helpers_tests, test_fpsih
     contains
     subroutine collect_test_helpers_tests(testsuite)
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
@@ -36,5 +35,8 @@ module m_test_helpers
         if (allocated(error)) return
 
     end subroutine test_fpsih
+
+
+
 
 end module m_test_helpers

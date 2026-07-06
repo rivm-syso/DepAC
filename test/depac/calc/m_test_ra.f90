@@ -1,8 +1,9 @@
 module m_test_ra
     use testdrive, only : new_unittest, unittest_type, error_type, check
 
-    use t_depac_meteorology, only: depac_meteorology
     use m_ra, only: depac_calc_ra, depac_calc_ra_obs_h
+
+    use c_depac_core, only: depac_meteorology_core
 
 
     implicit none (type, external)
@@ -22,8 +23,9 @@ module m_test_ra
     subroutine test_calc_ra(error)
         type(error_type), allocatable, intent(out) :: error
         ! internal variables
-        type(depac_meteorology) :: meteo
         real :: ra
+
+        type(depac_meteorology_core) :: meteo
         real :: obs_h
 
         meteo%ust = -0.1

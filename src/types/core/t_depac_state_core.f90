@@ -1,17 +1,15 @@
 !------------------------------------------------------------------------------
-! Module:     t_depac_config
+! Module:     t_depac_state_core
 ! Author:     Marte Voorneveld, RIVM
-! Created:    2025-11-14
-! Updated:    2026-02-27
+! Created:    November 14, 2025
+! Modified:   May 12, 2026
 ! Description:
-!   This module defines configuration variables and constants for the DepAC
-!   atmospheric deposition model. It includes diffusion coefficients,
-!   resistance constants, and logical options for calculation modes and
-!   model behavior.
+!   Defines state constants, diffusion coefficients, and compensation
+!   point type for DEPAC model. The depac_state_core and depac_compensation_point
+!   types provide model state and component-specific parameters.
 !------------------------------------------------------------------------------
-module t_depac_config
-    use m_logger, only: LOG_LEVEL_WARN
-    use t_depac_location, only: depac_location
+!------------------------------------------------------------------------------
+module t_depac_state_core
     implicit none (type, external)
     public
 
@@ -50,25 +48,12 @@ module t_depac_config
     !! - comp_point: Compensation point configuration. (see depac_compensation_point type).
     !! - coord: Location data for DEPAC run. (see depac_location type).
     !! Note: The default values (-999.0 or -999) indicate missing or undefined data.
-    type :: depac_config
-        logical :: check_input = .true.
-        real :: dwat = 0.21e-4
-        real :: dO3  = 0.13e-4
-        real :: rssnow = 2000.0
-        real :: sai_grass_haarweg = 3.5
-        logical :: calc_comp_points = .false.
-        logical :: calc_effective_rc = .false.
-        integer :: log_level = LOG_LEVEL_WARN
+    type :: depac_state_core
         real :: lai = -999.0
         real :: sai = -999.0
         real :: ra_obs = -999.0
         real :: rb = -999.0
-        logical :: has_leaves
-        logical :: has_vegetation
         type(depac_compensation_point) :: comp_point
-        type(depac_location) :: coord
-    end type depac_config
+    end type depac_state_core
 
-
-
-end module t_depac_config
+end module t_depac_state_core

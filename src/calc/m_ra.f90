@@ -11,36 +11,36 @@
 !   aerodynamic resistance based on meteorological and surface parameters,
 !   supporting dry deposition calculations and model output.
 !------------------------------------------------------------------------------
-
 module m_ra
-    use t_depac_meteorology, only: depac_meteorology
-    use t_depac_location, only: depac_location
-    use m_helpers, only: fpsih
     use m_logger, only: log_debug
+    use c_depac_core, only: depac_meteorology_core
+    use m_helpers, only: fpsih
     implicit none (type, external)
     public
 contains
 
     ! --------------------------------------------------------------------------
     ! Function:   depac_calc_ra
+    ! Created:    November 14 2025
+    ! Updated:    May 11 2026
     ! Description:
     !   Calculates aerodynamic resistance (ra) using meteorological data.
     !   The formula used is ra = ws10 / ust^2, where ws10 is the wind speed at
     !   10 meters and ust is the friction velocity.
     ! --------------------------------------------------------------------------
     function depac_calc_ra(meteo) result(ra)
-        type(depac_meteorology), intent(in) :: meteo
+        type(depac_meteorology_core), intent(in) :: meteo
         real :: ra
 
         if (meteo%ust <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid friction velocity (ust <= 0). Returning -999.0 for ra.")
             return
         end if
 
         if (meteo%ws10 < 0.0) then
             ra = -999.0
-            call log_debug('Invalid wind speed at 10m (ws10 < 0). Returning -999.0 for ra.')
+            call log_debug("Invalid wind speed at 10m (ws10 < 0). Returning -999.0 for ra.")
             return
         end if
 
@@ -50,6 +50,8 @@ contains
 
     ! --------------------------------------------------------------------------
     ! Function:   depac_calc_ra_obs_h
+    ! Created:    November 14 2025
+    ! Updated:    May 11 2026
     ! Description:
     !   Calculates aerodynamic resistance (Ra) at a specified observation height
     !   using meteorological data. The formula used is:
@@ -61,7 +63,7 @@ contains
     !   temperature profile. Empirical fit by Holtslag and De Bruin (1987).
     ! --------------------------------------------------------------------------
     function depac_calc_ra_obs_h(meteo, obs_h) result(ra)
-        type(depac_meteorology), intent(in) :: meteo
+        type(depac_meteorology_core), intent(in) :: meteo
         real, intent(in) :: obs_h
         real :: ra
         ! Local variables
@@ -70,13 +72,13 @@ contains
         ! Check for valid inputs
         if (meteo%ust <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid friction velocity (ust <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid friction velocity (ust <= 0). Returning -999.0 for ra.")
             return
         end if
 
         if (meteo%z0 <= 0.0) then
             ra = -999.0
-            call log_debug('Invalid surface roughness length (z0 <= 0). Returning -999.0 for ra.')
+            call log_debug("Invalid surface roughness length (z0 <= 0). Returning -999.0 for ra.")
             return
         end if
 

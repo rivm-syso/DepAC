@@ -26,3 +26,8 @@ source-form = "free"
 [dev-dependencies]
 test-drive.git = "https://github.com/fortran-lang/test-drive"
 
+[extra.fortitude]
+include = ["*.f90"]
+
+[extra.fortitude.check]
+line-length = 101 # 100 + 1 for the newline character

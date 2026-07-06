@@ -21,7 +21,7 @@ jobs:
           activate-environment: depac
           auto-activate-base: false
           use-only-tar-bz2: false
-      - name: Install fortitude-lint
+      - name: Install fortitude-lint==0.9.0
         run: pip install fortitude-lint
       - name: Run Fortitude style checker
         run: fortitude check
