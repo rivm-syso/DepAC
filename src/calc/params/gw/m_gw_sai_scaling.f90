@@ -33,7 +33,8 @@ contains
       select type (setup)
        type is (depac_setup)
 
-         ! Returns gw scaled by SAI (Specific Area Index) if vegetation is present, otherwise returns 0.0.
+         ! Returns gw scaled by SAI (Specific Area Index) if vegetation is present,
+         ! otherwise returns 0.0.
          if(missing(setup%component%rw_val)) then
 
             gw = 0.0
