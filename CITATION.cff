@@ -1,0 +1,53 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'DepAC: Deposition of Airborne Compounds'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - family-names: Voorneveld
+    given-names: M.D.
+    orcid: 'https://orcid.org/0009-0006-8532-5462'
+    affiliation: >-
+      National Institute for Public Health and the
+      Environment.
+  - given-names: M.C.
+    family-names: van Zanten
+    affiliation: >-
+      National Institute for Public Health and the
+      Environment.
+  - given-names: R.J.
+    family-names: Wichink Kruit
+    affiliation: >-
+      National Institute for Public Health and the
+      Environment.
+  - given-names: F.J.
+    family-names: Sauter
+    affiliation: >-
+      National Institute for Public Health and the
+      Environment.
+  - given-names: W.A.J.
+    family-names: van Pul
+  - family-names: van Jaarsveld
+    given-names: J.A.
+repository-code: 'https://github.com/rivm-syso/DepAC'
+url: 'https://www.rivm.nl/operationele-prioritaire-stoffen-model'
+abstract: >-
+  DepAC (Deposition of Airborne Compounds) is a scientific
+  Fortran library and toolkit for modeling atmospheric
+  deposition processes. Developed by RIVM, DepAC provides
+  robust routines for calculating dry deposition velocities,
+  resistances, conductances, and compensation points for a
+  specific set of chemical species and land use types.
+keywords:
+  - air pollution
+  - deposition
+  - atmosphere
+  - chemistry
+  - leaves
+license: EUPL-1.2
+version: 5.0.1
+date-released: '2026-07-16'
