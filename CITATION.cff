@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Voorneveld"
+  given-names: "M.D."
+  orcid: "https://orcid.org/0009-0006-8532-5462"
+- family-names: "van Zanten"
+  given-names: "M.C."
+- family-names: "Sauter"
+  given-names: "F.J."
+- family-names: "Wichink Kruit"
+  given-names: "R.J."
+- family-names: "van Jaarsveld"
+  given-names: "J.A."
+- family-names: "van Pul"
+  given-names: "W.A.J."
+title: "DepAC: Deposition of Airborne Compounds"
+version: 5.0.1
+date-released: 2026-07-16
+url: "https://github.com/rivm-syso/DepAC"
