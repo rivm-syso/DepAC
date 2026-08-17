@@ -4,7 +4,9 @@ channels:
   - defaults
 dependencies:
   - cmake>=4.2.3
-  - gfortran>=15.2.0
+  # gfortran 16.x has a codegen bug causing SIGSEGV in derived-type array
+  # constructors (hit by test-drive's unittest_type collection idiom); pin <16
+  - gfortran>=15.2.0,<16
   - conda-forge::fpm>=0.12.0
   - binutils>=2.44
   - lcov>=1.16
