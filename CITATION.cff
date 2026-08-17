@@ -1,6 +1,5 @@
 # This CITATION.cff file was generated with cffinit.
 # Visit https://bit.ly/cffinit to generate yours today!
-
 cff-version: 1.2.0
 title: 'DepAC: Deposition of Airborne Compounds'
 message: >-
@@ -50,4 +49,5 @@ keywords:
   - leaves
 license: EUPL-1.2
 version: 5.0.2
-date-released: '2026-07-16'
+date-released: 2026-08-17
+doi: 10.21945/3cd59c9d-4b49-44ac-bd91-617d40b8895d
