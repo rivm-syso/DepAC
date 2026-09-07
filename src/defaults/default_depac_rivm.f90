@@ -114,7 +114,7 @@ contains
 
 
       ! Matrix of rsoil values for each land use and component type
-      default_rsoil_matrix = reshape([ &
+      default_rsoil_matrix = transpose(reshape([ &
       ! NH3,   O3,   SO2,   NO2,   NO,  HNO3
          100.0, 1000.0, 1000.0, 1000.0, -999.0, -999.0, &   ! grass
          100.0,  200.0, 1000.0, 1000.0, -999.0, -999.0, &   ! arable
@@ -125,7 +125,7 @@ contains
          100.0,  400.0, 1000.0, 1000.0, 1000.0, -999.0, &   ! urban
          100.0,  400.0, 1000.0, 1000.0, -999.0, -999.0, &   ! other
          100.0, 2000.0, 1000.0, 1000.0, 2000.0, -999.0  &   ! desert
-         ], [9, 6])
+         ], [6, 9]))
       ! This subroutine can be used to initialize any additional data structures
       ! or perform checks on the default configuration if needed.
       allocate(default_components(6))
