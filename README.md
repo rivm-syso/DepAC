@@ -79,6 +79,8 @@ A coverage report will be generated in the `coverage_html` folder. Open `coverag
 > ```
 
 # Version History
+- 5.0.4 Added small improvements to align exactly with old DepAC from ops_lt
+- 5.0.3 Important bug fix where a table was transposed accidentally
 - 5.0.2 Minor bug fixes, fixed gfortran version and added DOI number to citation information. (release date: 2026-08-17)
 - 5.0.0 Major refactor and restructuring of the codebase to improve modularity and maintainability. This version includes significant changes to the internal architecture and may require updates to existing code that depends on DepAC.  It specifically adds more extensive possibilities for the use of other parameterisations.in a run. (release date: 2026-05-12)
 - 4.0.0 First version on GitHub with a complete rewrite of the codebase to improve modularity, maintainability, and performance. This version includes significant changes to the internal architecture and may require updates to existing code that depends on DepAC. Also added EUPL 1.2 Licence (release date: 2026-03-11)
