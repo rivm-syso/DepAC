@@ -39,7 +39,7 @@ contains
          associate(config => setup%config, meteo => ctx%meteo,&
             comp => setup%component)
 
-            if (ctx%has_vegetation) then
+            if (ctx%has_leaves) then
                if (meteo%glrad > 0.0) then
                   vpd = rc_get_vpd(meteo)
 

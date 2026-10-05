@@ -94,6 +94,7 @@ contains
       ! Calculate special canopy resistance (Rc_special)
       ! ready = .true. if Rc_special is sufficient, else further calculation needed
       !------------------------------------------------------------------
+      ready = .false.
       call rc_special(setup, ctx, ready)
 
       if (has_error(ctx%error)) return
