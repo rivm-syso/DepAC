@@ -388,6 +388,11 @@ contains
                allocate(default_depac_setup(i, j)%comp_point_param, source=comp_point_ammonia())
             end if
 
+            if(i == RIVM_LU_WATER .and. j == RIVM_COMP_NH3) then
+               deallocate(default_depac_setup(i, j)%csoil_param)
+               allocate(default_depac_setup(i, j)%csoil_param, source=csoil_water())
+            end if
+
             if(use_rc_tot_nitric_acid(j, i)) then
                deallocate(default_depac_setup(i, j)%rc_special_param)
                allocate(default_depac_setup(i, j)%rc_special_param, source=rc_tot_nitric_acid())
