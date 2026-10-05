@@ -144,7 +144,7 @@ contains
          associate(comp_point => ctx%state%comp_point, &
             lu_conf => setup%land_use)
 
-            if (lu_conf%gamma_soil_c_fac > 0) then
+            if (lu_conf%gamma_soil_c_fac >= 0) then
                gamma_soil = lu_conf%gamma_soil_c_fac * 1.0
             else
                gamma_soil = abs(lu_conf%gamma_soil_c_fac) * comp_point%c_ave_nh3
