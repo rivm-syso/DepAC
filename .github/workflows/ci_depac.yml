@@ -19,7 +19,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
@@ -38,7 +38,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
@@ -59,7 +59,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
@@ -78,7 +78,7 @@ jobs:
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
@@ -86,7 +86,7 @@ jobs:
           use-only-tar-bz2: false
       - name: Generate coverage report
         shell: bash -el {0}
-        run: ./scripts/gen_coverage.sh
+        run: bash ./scripts/gen_coverage.sh
       - name: Store coverage artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -127,11 +127,11 @@ jobs:
 
       - name: Bump version files
         if: steps.guard.outputs.skip != 'true'
-        run: ./scripts/bump_version.sh
+        run: bash ./scripts/bump_version.sh
 
       - name: Update coverage badge in README
         if: steps.guard.outputs.skip != 'true'
-        run: COVERAGE_ENV_FILE=coverage.env ./scripts/update_coverage_badge.sh
+        run: COVERAGE_ENV_FILE=coverage.env bash ./scripts/update_coverage_badge.sh
 
       - name: Read bump metadata
         id: bump
