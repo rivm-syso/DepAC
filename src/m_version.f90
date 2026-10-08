@@ -10,6 +10,6 @@ module m_version
   implicit none (type, external)
   public
   ! SHOULD BE THE SAME AS VERSION file
-  character(len=*), parameter :: VERSION = "5.0.3"
-  character(len=*), parameter :: BUILD_DATE = "2026-09-07"
+    character(len=*), parameter :: VERSION = "5.0.4"
+    character(len=*), parameter :: BUILD_DATE = "2026-10-08"
 end module m_version
