@@ -1,7 +1,7 @@
 [![CI DepAC](https://github.com/rivm-syso/DepAC/actions/workflows/ci_depac.yml/badge.svg)](https://github.com/rivm-syso/DepAC/actions/workflows/ci_depac.yml)
 ![Static Badge](https://img.shields.io/badge/coverage-100%25-green)
 ![GitHub Tag](https://img.shields.io/github/v/tag/rivm-syso/DepAC)
-![Release Date](https://img.shields.io/badge/release-2026--03--11-blue)
+![Release Date](https://img.shields.io/badge/release-2026--09--07-blue)
 
 # DepAC: Deposition of Airborne Compounds
 

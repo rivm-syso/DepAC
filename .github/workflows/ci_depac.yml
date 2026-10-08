@@ -1,5 +1,9 @@
 name: CI DepAC
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   push:
     branches: [main, develop]
@@ -8,18 +12,18 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Install fortitude-lint==0.9.0
         run: pip install fortitude-lint
@@ -27,18 +31,18 @@ jobs:
         run: fortitude check
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Build with fpm
         shell: bash -el {0}
@@ -48,19 +52,194 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Run tests
         shell: bash -el {0}
         run: fpm test
+
+  coverage:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/conda_pkgs_dir
+          key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
+        with:
+          environment-file: depac.yml
+          activate-environment: depac
+          auto-activate: false
+          use-only-tar-bz2: false
+      - name: Generate coverage report
+        shell: bash -el {0}
+        run: bash ./scripts/gen_coverage.sh
+      - name: Store coverage artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: coverage-html
+          path: coverage_html/
+
+  version_release:
+    needs: [lint, build, test, coverage]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Guard against re-bumping
+        id: guard
+        run: |
+          if git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -qx "VERSION"; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "VERSION changed in this push; skipping bump job"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download coverage artifacts
+        if: steps.guard.outputs.skip != 'true'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: coverage-html
+          path: coverage_html/
+
+      - name: Configure Git identity
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version files
+        if: steps.guard.outputs.skip != 'true'
+        run: bash ./scripts/bump_version.sh
+
+      - name: Update coverage badge in README
+        if: steps.guard.outputs.skip != 'true'
+        run: COVERAGE_ENV_FILE=coverage.env bash ./scripts/update_coverage_badge.sh
+
+      - name: Read bump metadata
+        id: bump
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          source version.env
+          source coverage.env
+          echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "build_date=${BUILD_DATE}" >> "$GITHUB_OUTPUT"
+          echo "coverage_percent=${COVERAGE_PERCENT}" >> "$GITHUB_OUTPUT"
+          echo "coverage_color=${COVERAGE_COLOR}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push bump branch
+        id: commit_bump
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          source version.env
+          branch="ci/version-bump-${NEW_VERSION}"
+          git add VERSION README.md src/m_version.f90
+          if git diff --cached --quiet; then
+            echo "created=false" >> "$GITHUB_OUTPUT"
+            echo "No bump changes detected; skipping branch push"
+            exit 0
+          fi
+          git commit -m "chore: bump version to ${NEW_VERSION}"
+          git push --force-with-lease origin HEAD:"${branch}"
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"
+          echo "created=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update bump PR
+        if: steps.commit_bump.outputs.created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          source version.env
+          branch="${{ steps.commit_bump.outputs.branch }}"
+          api_url="https://api.github.com/repos/${GITHUB_REPOSITORY}"
+
+          existing_pr=$(curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${api_url}/pulls?state=open&head=${GITHUB_REPOSITORY_OWNER}:${branch}&base=develop" | jq -r '.[0].number // empty')
+
+          if [[ -n "${existing_pr}" ]]; then
+            echo "Bump PR already open: #${existing_pr}"
+            exit 0
+          fi
+
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${api_url}/pulls" \
+            -d @- <<EOF
+          {
+            "title": "chore: bump version to ${NEW_VERSION}",
+            "head": "${branch}",
+            "base": "develop",
+            "body": "Automated version bump generated by CI.\\n\\n- Version: ${NEW_VERSION}\\n- Build date: ${{ steps.bump.outputs.build_date }}\\n- Coverage: ${{ steps.bump.outputs.coverage_percent }}% (${{ steps.bump.outputs.coverage_color }})"
+          }
+          EOF
+
+  release_from_bump_commit:
+    needs: [lint, build, test, coverage]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version
+        id: release
+        run: |
+          version="$(tr -d '[:space:]' < VERSION)"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Decide whether to release
+        id: release_guard
+        run: |
+          version_changed=false
+          if git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -qx "VERSION"; then
+            version_changed=true
+          fi
+
+          tag_exists=false
+          version="${{ steps.release.outputs.version }}"
+          if git ls-remote --exit-code --tags origin "refs/tags/${version}" >/dev/null 2>&1; then
+            tag_exists=true
+          fi
+
+          if [[ "${version_changed}" == true && "${tag_exists}" == false ]]; then
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create and push tag
+        if: steps.release_guard.outputs.should_release == 'true'
+        run: |
+          version="${{ steps.release.outputs.version }}"
+          git tag "${version}"
+          git push origin "${version}"
+
+      - name: Create GitHub release
+        if: steps.release_guard.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        with:
+          tag_name: ${{ steps.release.outputs.version }}
+          name: DepAC ${{ steps.release.outputs.version }}
+          body: |
+            Automated release for DepAC version ${{ steps.release.outputs.version }}.
