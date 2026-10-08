@@ -12,10 +12,10 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
@@ -23,7 +23,7 @@ jobs:
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Install fortitude-lint==0.9.0
         run: pip install fortitude-lint
@@ -31,10 +31,10 @@ jobs:
         run: fortitude check
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
@@ -42,7 +42,7 @@ jobs:
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Build with fpm
         shell: bash -el {0}
@@ -52,10 +52,10 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
@@ -63,7 +63,7 @@ jobs:
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Run tests
         shell: bash -el {0}
@@ -71,10 +71,10 @@ jobs:
 
   coverage:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ hashFiles('depac.yml') }}
@@ -82,13 +82,13 @@ jobs:
         with:
           environment-file: depac.yml
           activate-environment: depac
-          auto-activate-base: false
+          auto-activate: false
           use-only-tar-bz2: false
       - name: Generate coverage report
         shell: bash -el {0}
         run: bash ./scripts/gen_coverage.sh
       - name: Store coverage artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: coverage-html
           path: coverage_html/
@@ -96,9 +96,9 @@ jobs:
   version_release:
     needs: [lint, build, test, coverage]
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -114,7 +114,7 @@ jobs:
 
       - name: Download coverage artifacts
         if: steps.guard.outputs.skip != 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: coverage-html
           path: coverage_html/
@@ -196,9 +196,9 @@ jobs:
   release_from_bump_commit:
     needs: [lint, build, test, coverage]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -237,7 +237,7 @@ jobs:
 
       - name: Create GitHub release
         if: steps.release_guard.outputs.should_release == 'true'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           tag_name: ${{ steps.release.outputs.version }}
           name: DepAC ${{ steps.release.outputs.version }}
