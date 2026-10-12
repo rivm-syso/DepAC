@@ -29,7 +29,7 @@ jobs:
       - name: Install fortitude-lint==0.9.0
         run: pip install fortitude-lint
       - name: Run Fortitude style checker
-        run: fortitude check
+        run: fortitude check --output-format github
 
   build:
     runs-on: ubuntu-24.04
