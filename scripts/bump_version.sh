@@ -62,8 +62,18 @@ new_version="${major}.${minor}.${patch}"
 build_date="$(date -u +%Y-%m-%d)"
 
 printf '%s\n' "${new_version}" > "${VERSION_FILE}"
-sed -i -E "s/(character\(len=\*\), parameter :: VERSION = \”).*(\”)/\1${new_version}\2/" "${VERSION_MODULE_FILE}"
-sed -i -E "s/(character\(len=\*\), parameter :: BUILD_DATE = \”).*(\”)/\1${build_date}\2/" "${VERSION_MODULE_FILE}"
+sed -i -E "s/(character\(len=\*\), parameter :: VERSION = \").*(\")/\1${new_version}\2/" "${VERSION_MODULE_FILE}"
+sed -i -E "s/(character\(len=\*\), parameter :: BUILD_DATE = \").*(\")/\1${build_date}\2/" "${VERSION_MODULE_FILE}"
+
+if ! grep -Fq "parameter :: VERSION = \"${new_version}\"" "${VERSION_MODULE_FILE}"; then
+  echo "ERROR: failed to update VERSION in ${VERSION_MODULE_FILE}" >&2
+  exit 1
+fi
+
+if ! grep -Fq "parameter :: BUILD_DATE = \"${build_date}\"" "${VERSION_MODULE_FILE}"; then
+  echo "ERROR: failed to update BUILD_DATE in ${VERSION_MODULE_FILE}" >&2
+  exit 1
+fi
 
 cat > version.env <<EOF
 OLD_VERSION=${normalized_current}
